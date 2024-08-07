@@ -7,13 +7,15 @@ import (
 	"os"
 )
 
+var Log = NewLogger()
+
 type Logger struct {
-	logger *logrus.Logger
+	*logrus.Logger
 }
 
 func NewLogger() *Logger {
 	return &Logger{
-		logger: &logrus.Logger{
+		Logger: &logrus.Logger{
 			Out:          os.Stdout,
 			Formatter:    new(logrus.TextFormatter),
 			Hooks:        make(logrus.LevelHooks),
@@ -25,7 +27,7 @@ func NewLogger() *Logger {
 }
 
 func (logger *Logger) Log(ctx context.Context, level log2.LogLevel, msg string, data map[string]interface{}) {
-	l := logger.logger.WithContext(ctx).WithFields(data)
+	l := logger.Logger.WithContext(ctx).WithFields(data)
 	switch level {
 	case log2.LogLevelTrace:
 		l.Trace(msg)

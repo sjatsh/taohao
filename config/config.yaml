@@ -1,0 +1,20 @@
+server:
+  cron:
+    paid_check_spec: "*/10 * * * * ?"
+web:
+  addr: "http://localhost:3000"
+origins:
+  - ".*"
+ngrok:
+  token: "2iFDXtevWyfvVgqZxP06T8YFwll_5TiBkmrL4Ekhn3HiiJ1ZT"
+  tunnel:
+    labels:
+      edge: "edghts_2jku47jNYaNuxlEYrtar0p2SvBH"
+db:
+  mysql:
+    addr: "localhost:3306"
+    user: "root"
+    password: "root"
+    db_name: "taohao"
+    max_open_conn: 100
+    max_idle_conn: 50

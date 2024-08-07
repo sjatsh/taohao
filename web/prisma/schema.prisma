@@ -1,0 +1,38 @@
+generator client {
+  provider     = "prisma-client-js"
+  relationMode = "prisma"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator zod {
+  provider         = "zod-prisma-types"
+  useMultipleFiles = true
+}
+
+model products {
+  id           Int      @id @default(autoincrement())
+  title        String   @db.VarChar(255)
+  num          Int
+  price        Float
+  origin_price Float?
+  image        String   @db.VarChar(255)
+  content      String   @db.LongText
+  created_at   DateTime @default(now())
+  updated_at   DateTime @default(now()) @updatedAt
+}
+
+model orders {
+  id         Int      @id @default(autoincrement())
+  order_id   String   @unique @db.VarChar(255)
+  product_id Int
+  num        Int
+  email      String   @db.VarChar(255)
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
+
+  @@index([order_id, email])
+}
