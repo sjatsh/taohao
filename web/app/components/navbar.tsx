@@ -4,7 +4,6 @@ import NextLink from "next/link";
 
 import {siteConfig} from "@/config/site";
 import {Logo, Order,} from "@/app/components/icons";
-import Announcement from "@/app/components/announcement";
 
 export const Navbar = () => {
     return (
@@ -21,9 +20,6 @@ export const Navbar = () => {
                 className="hidden sm:flex basis-1/5 sm:basis-full"
                 justify="end"
             >
-                {/*<NavbarItem className="hidden md:flex">*/}
-                {/*    <Announcement/>*/}
-                {/*</NavbarItem>*/}
                 <NavbarItem className="hidden md:flex">
                     <NextLink
                         href={siteConfig.pages.orders.search}
