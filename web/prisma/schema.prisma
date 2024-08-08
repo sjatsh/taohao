@@ -5,7 +5,7 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -16,9 +16,9 @@ model products {
   price        Float
   origin_price Float?
   image        String   @default("") @db.VarChar(255)
-  content      String   @db.LongText
+  content      String   @db.Text
   pay_type     String   @default("") @db.VarChar(255)
-  kami         String   @db.LongText
+  kami         String   @db.Text
   created_at   DateTime @default(now())
   updated_at   DateTime @default(now()) @updatedAt
   orders       orders[]
@@ -34,7 +34,7 @@ model orders {
   email      String   @db.VarChar(255)
   payment    String   @default("") @db.VarChar(255)
   status     Int      @default(0)
-  kami       String   @db.LongText
+  kami       String   @db.Text
   created_at DateTime @default(now())
   updated_at DateTime @default(now()) @updatedAt
 

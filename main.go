@@ -10,7 +10,6 @@ import (
 	"net/http"
 	"os"
 	"os/exec"
-	"strings"
 )
 
 func main() {
@@ -63,12 +62,7 @@ func run(ctx context.Context) error {
 	r.Use(gin.Recovery())
 	r.Use(gin.Logger())
 	r.Any("/*path", func(c *gin.Context) {
-		path := c.Request.RequestURI
-		if strings.HasPrefix(path, "/api/") {
-			c.JSON(http.StatusOK, gin.H{"message": "api not found"})
-			return
-		}
-		req, err := http.NewRequest(c.Request.Method, config2.Cfg.Web.Addr+path, c.Request.Body)
+		req, err := http.NewRequest(c.Request.Method, config2.Cfg.Web.Addr+c.Request.RequestURI, c.Request.Body)
 		if err != nil {
 			c.Status(http.StatusInternalServerError)
 			c.Abort()
