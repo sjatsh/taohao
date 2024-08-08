@@ -1,5 +1,7 @@
-import {Card, CardBody, CardFooter, Image} from "@nextui-org/react";
-import {FC} from "react";
+'use client';
+
+import {Card, CardBody, CardFooter, Image, Skeleton} from "@nextui-org/react";
+import React, {FC} from "react";
 import {CardHeader} from "@nextui-org/card";
 
 export interface OrderCardProps {
@@ -11,6 +13,7 @@ export interface OrderCardProps {
 }
 
 export const OrderCard: FC<OrderCardProps> = (props: OrderCardProps) => {
+    const [loaded, setLoaded] = React.useState(false);
     return (
         <>
             <Card
@@ -28,14 +31,19 @@ export const OrderCard: FC<OrderCardProps> = (props: OrderCardProps) => {
                             <h4 className="font-bold text-green-600">库存: {props.num}</h4>
                     }
                 </CardHeader>
-                <CardBody className="overflow-visible p-0">
-                    <Image
-                        className="w-auto object-cover"
-                        radius="lg"
-                        shadow="sm"
-                        src={props.img}
-                    />
-                </CardBody>
+                <Skeleton isLoaded={loaded}>
+                    <CardBody className="overflow-visible p-0">
+                        <Image
+                            className="w-auto object-cover"
+                            radius="lg"
+                            shadow="sm"
+                            src={props.img}
+                            onLoad={() => {
+                                setLoaded(true);
+                            }}
+                        />
+                    </CardBody>
+                </Skeleton>
                 <CardFooter className="text-medium justify-between">
                     <b>{props.title}</b>
                     <p className="text-default-500">￥{props.price}</p>

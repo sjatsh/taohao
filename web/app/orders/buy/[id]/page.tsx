@@ -1,12 +1,13 @@
 'use client';
 
-import React, {Suspense, useMemo} from "react";
+import React, {Suspense, useEffect, useMemo, useState} from "react";
 import {Button} from "@nextui-org/button";
 import toast from "react-hot-toast";
 import {Input} from "@nextui-org/input";
 import {WeiXin} from "@/app/components/icons";
 import {trpc} from "@/lib/trpc";
-import {Image, Modal, ModalBody, ModalContent, ModalHeader, useDisclosure} from "@nextui-org/react";
+import {Image, Modal, ModalBody, ModalContent, ModalHeader, Skeleton, useDisclosure} from "@nextui-org/react";
+import {redirect} from "next/navigation";
 
 export default function Page(
     {
@@ -30,11 +31,40 @@ export default function Page(
         return !validateNum(num);
     }, [num]);
 
+    const [payment, setPayment] = React.useState("微信");
     const {isOpen, onOpen, onClose} = useDisclosure();
+    const [qrCodeUrl, setQrcodeUrl] = React.useState("");
+    const orderCreate = trpc.orders.create.useMutation();
+    const orderFind = trpc.orders.find.useMutation();
+    const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
-    const orderMutation = trpc.orders.create.useMutation();
+    useEffect(() => {
+        orderCreate.error && toast.error(orderCreate.error.message);
+        if (orderCreate.data) {
+            setQrcodeUrl(orderCreate.data.qrcode_url);
+            orderFind.mutate(orderCreate.data.order_id)
+        }
+    }, [orderCreate.data, orderCreate.error]);
 
-    const submitOnClick = () => {
+    useEffect(() => {
+        if (!orderFind.data) {
+            return
+        }
+        switch (orderFind.data.status) {
+            case 0:
+                sleep(3000).then(() => {
+                    orderFind.mutate(orderFind.data!.order_id)
+                })
+                break
+            case 1:
+                onClose()
+                return redirect(`/orders/detail?order_id=${orderFind.data.order_id}`)
+            default:
+                break;
+        }
+    }, [orderFind.data]);
+
+    const submitOnClick = async () => {
         if (email === "" || emailIsInvalid) {
             toast.error('请输入有效的邮箱');
             return;
@@ -45,18 +75,19 @@ export default function Page(
         }
         onOpen();
 
-        orderMutation.mutate({
+        orderCreate.mutate({
             product_id: parseInt(params.id),
             num: parseInt(num),
-            email: email
+            email: email,
+            payment: payment,
         })
     }
 
-    const product = trpc.products.byId.useQuery({id: parseInt(params.id)}).data;
+    const product = trpc.products.byId.useQuery(parseInt(params.id)).data;
 
     return (
         <>
-            <PaymentDialog isOpen={isOpen} onClose={onClose} price={product?.price}/>
+            <PaymentDialog isOpen={isOpen} onClose={onClose} price={product?.price} qrCodeUrl={qrCodeUrl}/>
             <Suspense>
                 <div>
                     <p className="font-medium text-gray-900 text-2xl">购买{product?.title}</p>
@@ -64,7 +95,7 @@ export default function Page(
                 <div className="my-1">
                     <Button color="primary" variant="bordered"
                             className="p-2 m-0.5 min-w-5 h-5 text-tiny gap-2 rounded-small">
-                        自动发货
+                        {product?.pay_type}
                     </Button>
                     <Button color="primary" variant="bordered"
                             className="p-2 m-0.5 min-w-5 h-5 text-tiny gap-2 rounded-small">
@@ -114,9 +145,12 @@ export default function Page(
             </div>
             <div className="my-0.5">
                 <Button
-                    color="primary"
+                    color={payment === "微信" ? "primary" : "default"}
                     variant="bordered"
                     startContent={<WeiXin/>}
+                    onSelect={() => {
+                        setPayment("微信")
+                    }}
                 >
                     微信
                 </Button>
@@ -140,30 +174,30 @@ function PaymentDialog(
         isOpen,
         onClose,
         price,
+        qrCodeUrl
     }:
         {
             isOpen: boolean;
             onClose: () => void;
             price?: number
+            qrCodeUrl: string
         }
 ) {
+    const [loaded, setLoaded] = useState(false)
     return (
-        <Modal isOpen={isOpen} onClose={onClose}>
+        <Modal size="xs" isOpen={isOpen} onClose={onClose}>
             <ModalContent>
                 <ModalHeader>
-                    <div className="grid auto-rows-auto">
-                        <div className="grid grid-cols-5">
-                            <p className="col-span-1">付款金额: </p>
-                            <p className="col-span-1 font-medium text-xl text-red-600">￥ {price}</p>
-                        </div>
-                        <p className="font-light text-small text-red-600">
-                            注意：转账备注请填写订单邮箱地址，否则会导致无法自动发货
-                        </p>
-                    </div>
+                    付款金额:
+                    <p className="font-medium text-xl text-red-600"> ￥{price}</p>
                 </ModalHeader>
-                <ModalBody>
-                    <Image src="/wechat_pay.png"/>
-                </ModalBody>
+                <Skeleton isLoaded={loaded}>
+                    <ModalBody className="items-center min-w-[320px] min-h-[288px]">
+                        <Image src={qrCodeUrl} onLoad={() => {
+                            setLoaded(true)
+                        }}/>
+                    </ModalBody>
+                </Skeleton>
             </ModalContent>
         </Modal>
     )

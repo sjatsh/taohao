@@ -11,6 +11,7 @@ export const defaultProductSelect = {
     price: true,
     origin_price: true,
     image: true,
+    pay_type: true,
 } satisfies Prisma.productsSelect;
 
 export const products = router({
@@ -20,22 +21,19 @@ export const products = router({
     }),
     byId: trpc.procedure
         .input(
-            z.object({
-                id: z.number(),
-            }),
+            z.number(),
         )
         .query(async ({input}) => {
-            const {id} = input;
             const res = await prisma.products.findUnique({
                 select: defaultProductSelect,
                 where: {
-                    id: id,
+                    id: input,
                 },
             });
             if (!res) {
                 throw new TRPCError({
                     code: 'NOT_FOUND',
-                    message: `No post with id '${id}'`,
+                    message: `No post with id '${input}'`,
                 });
             }
             return res;

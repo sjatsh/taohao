@@ -5,15 +5,6 @@ import type {OpenApiMeta} from 'trpc-openapi'
 import {ZodError} from 'zod'
 
 export interface AuthContext {
-    user: {
-        id: string
-        name?: string
-        email: string
-        emailVerified: boolean
-        image?: string
-        created_at: string
-        updated_at: string
-    }
 }
 
 export const trpc = initTRPC.meta<OpenApiMeta>().context<AuthContext>().create({

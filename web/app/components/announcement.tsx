@@ -35,9 +35,9 @@ export default function Announcement() {
                             客服Tg: <NextLink
                             target="_blank"
                             className="text-blue-600"
-                            href={"https://t.me/" + siteConfig.TgName}
+                            href={"https://t.me/" + siteConfig.tg_name}
                         >
-                            @{siteConfig.TgName}
+                            @{siteConfig.tg_name}
                         </NextLink>
                         </div>
                     </ModalBody>

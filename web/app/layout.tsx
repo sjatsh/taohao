@@ -1,7 +1,7 @@
 import "@/styles/globals.css";
 import {Link} from "@nextui-org/link";
 import clsx from "clsx";
-import {fontMono, fontSans} from "@/config/fonts";
+import {fontSans} from "@/config/fonts";
 import {Navbar} from "@/app/components/navbar";
 import {Toaster} from "react-hot-toast";
 import React from "react";

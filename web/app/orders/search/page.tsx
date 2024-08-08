@@ -4,6 +4,7 @@ import React, {useMemo} from "react";
 import {Tab, Tabs} from "@nextui-org/react";
 import {Button} from "@nextui-org/button";
 import {Input} from "@nextui-org/input";
+import NextLink from "next/link";
 
 export default function Page() {
     const [email, setEmail] = React.useState("");
@@ -13,15 +14,7 @@ export default function Page() {
         return !validateEmail(email);
     }, [email]);
 
-    const [orderNum, setOrderNum] = React.useState("");
-
-    const queryEmail = function () {
-        // query email
-    }
-
-    const queryOrderNum = function () {
-        // query order num
-    }
+    const [orderId, setOrderId] = React.useState("");
 
     return (
         <>
@@ -54,7 +47,12 @@ export default function Page() {
                             />
                         </div>
                         <div>
-                            <Button color="primary" size="sm" className="mr-2" onClick={queryEmail}>查询</Button>
+                            <NextLink
+                                className={`${email === "" ? 'pointer-events-none' : ''}`}
+                                href={`/orders/detail?email=${email}`}
+                            >
+                                <Button color="primary" size="sm" className="mr-2">查询</Button>
+                            </NextLink>
                             <Button color="primary" size="sm" onClick={() => {
                                 setEmail("")
                             }}>重置</Button>
@@ -73,14 +71,19 @@ export default function Page() {
                             <Input
                                 type="text"
                                 variant={"bordered"}
-                                onValueChange={setOrderNum}
-                                value={orderNum}
+                                onValueChange={setOrderId}
+                                value={orderId}
                             />
                         </div>
                         <div>
-                            <Button color="primary" size="sm" className="mr-2" onClick={queryOrderNum}>查询</Button>
+                            <NextLink
+                                className={`${orderId === "" ? 'pointer-events-none' : ''}`}
+                                href={`/orders/detail?order_id=${orderId}`}
+                            >
+                                <Button color="primary" size="sm" className="mr-2">查询</Button>
+                            </NextLink>
                             <Button color="primary" size="sm" onClick={() => {
-                                setOrderNum("")
+                                setOrderId("")
                             }}>重置</Button>
                         </div>
                     </Tab>
