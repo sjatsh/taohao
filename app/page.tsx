@@ -34,7 +34,6 @@ export default async function Home() {
                 </NextLink>
               ) : (
                 <OrderCard
-                  key={item.id}
                   img={item.image}
                   num={item.num}
                   price={item.price}
