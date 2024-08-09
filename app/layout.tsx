@@ -4,14 +4,15 @@ import clsx from 'clsx'
 import { Toaster } from 'react-hot-toast'
 import React from 'react'
 import { Metadata, Viewport } from 'next'
+import { SpeedInsights } from '@vercel/speed-insights/next'
+import { Analytics } from '@vercel/analytics/react'
+import { GoogleAnalytics } from '@next/third-parties/google'
 
 import { fontSans } from '@/config/fonts'
 import { Navbar } from '@/app/components/navbar'
 import { siteConfig } from '@/config/site'
 import TrpcContext from '@/context/trpc'
 import { Providers } from '@/app/providers'
-import { SpeedInsights } from '@vercel/speed-insights/next'
-import { Analytics } from "@vercel/analytics/react"
 
 export const viewport: Viewport = {
   themeColor: [
@@ -61,6 +62,7 @@ export default function RootLayout({
         </Providers>
         <SpeedInsights />
         <Analytics />
+        <GoogleAnalytics gaId="G-Z2CTC03KDJ" />
       </body>
     </html>
   )
