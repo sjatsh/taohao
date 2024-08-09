@@ -18,7 +18,8 @@ export default async function Layout(
             <p className="pb-8 pl-4 text-gray-500 text-lg font-bold">商品详情</p>
             <div className="grid grid-cols-6 gap-4">
                 <div className="col-start-1 col-end-5 border rounded-md shadow-xl p-10">
-                    <div className={`prose prose-h1:text-4xl prose-h1:text-green prose-p:text-base prose-strong:text-blue prose-ul:list-decimal prose-ul:text-dark`}>
+                    <div
+                        className={`prose prose-h1:text-4xl prose-h1:text-green prose-p:text-base prose-strong:text-blue prose-ul:list-decimal prose-ul:text-dark`}>
                         <Markdown>{content}</Markdown>
                     </div>
                 </div>

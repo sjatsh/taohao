@@ -1,14 +1,5 @@
 import "@/styles/globals.css";
-import {Link} from "@nextui-org/link";
-import clsx from "clsx";
-import {fontSans} from "@/config/fonts";
-import {Navbar} from "@/app/components/navbar";
-import {Toaster} from "react-hot-toast";
 import React from "react";
-import {Metadata, Viewport} from "next";
-import {siteConfig} from "@/config/site";
-import TrpcContext from "@/context/trpc";
-import {Providers} from "@/app/providers";
 
 export default function Layout(
     {
