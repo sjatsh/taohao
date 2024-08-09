@@ -71,21 +71,6 @@ export async function POST(request: NextRequest) {
     })
   })
 
-  const orders = await prisma.orders.updateMany({
-    where: {
-      order_id: orderId.toString(),
-    },
-    data: {
-      status: 1,
-    },
-  })
-
-  if (!orders) {
-    return new Response('order not found', {
-      status: 400,
-    })
-  }
-
   return new Response('success', {
     status: 200,
   })
