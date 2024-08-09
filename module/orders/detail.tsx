@@ -23,9 +23,7 @@ export const DetailPage: React.FC<{
     }
 }> = ({props}) => {
     return (
-        <Suspense
-            key={props.order_id}
-        >
+        <Suspense>
             <div className="flex mb-3">
                 <Button
                     color="primary"
@@ -62,7 +60,6 @@ export const DetailPage: React.FC<{
                 <div className="col-span-2">
                     <p className="text-gray-500 text-sm my-2">卡密</p>
                     <Textarea
-                        key={props.order_id}
                         variant="bordered"
                         disableAnimation
                         disableAutosize

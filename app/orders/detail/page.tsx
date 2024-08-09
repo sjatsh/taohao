@@ -51,6 +51,7 @@ export default async function Page(
                 orders.map((order) => (
                     <div className="my-5">
                         <DetailPage
+                            key={order.order_id}
                             props={{
                                 ...order,
                             }}
