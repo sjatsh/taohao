@@ -19,11 +19,11 @@ export const defaultProductSelect = {
 
 export const products = router({
   list: trpc.procedure.query(async () => {
-    const items = await prisma.products.findMany({
+    const res = await prisma.products.findMany({
       select: defaultProductSelect,
     })
 
-    return items.reverse()
+    return res.reverse()
   }),
   byId: trpc.procedure.input(z.number()).query(async ({input}) => {
     const res = await prisma.products.findUnique({

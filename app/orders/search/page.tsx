@@ -1,9 +1,9 @@
 'use client'
 
-import React, { useMemo } from 'react'
-import { Tab, Tabs } from '@nextui-org/react'
-import { Button } from '@nextui-org/button'
-import { Input } from '@nextui-org/input'
+import React, {useMemo} from 'react'
+import {Tab, Tabs} from '@nextui-org/react'
+import {Button} from '@nextui-org/button'
+import {Input} from '@nextui-org/input'
 import NextLink from 'next/link'
 
 export default function Page() {
@@ -27,12 +27,7 @@ export default function Page() {
         </p>
       </div>
       <div className="rounded-md border px-6 py-6 shadow-xl">
-        <Tabs
-          key={email + orderId}
-          aria-label="订单查询"
-          color="primary"
-          variant="underlined"
-        >
+        <Tabs aria-label="订单查询" color="primary" variant="underlined">
           <Tab key="email" title="邮箱">
             <div className="mb-3">
               <p className="text-small text-gray-500">邮箱</p>
@@ -50,7 +45,7 @@ export default function Page() {
             </div>
             <div>
               <NextLink
-                className={`${email === '' ? 'pointer-events-none' : ''}`}
+                className={`${email === '' || emailIsInvalid ? 'pointer-events-none' : ''}`}
                 href={`/orders/detail?email=${email}`}
               >
                 <Button className="mr-2" color="primary" size="sm">
