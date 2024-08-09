@@ -1,11 +1,11 @@
-import type { Prisma } from '@prisma/client'
+import type {Prisma} from '@prisma/client'
 
-import { z } from 'zod'
-import { TRPCError } from '@trpc/server'
+import {z} from 'zod'
+import {TRPCError} from '@trpc/server'
 
-import { router, trpc } from '../trpc'
+import {router, trpc} from '../trpc'
 
-import { prisma } from '@/prisma'
+import {prisma} from '@/prisma'
 
 export const defaultProductSelect = {
   id: true,
@@ -25,7 +25,7 @@ export const products = router({
 
     return items.reverse()
   }),
-  byId: trpc.procedure.input(z.number()).query(async ({ input }) => {
+  byId: trpc.procedure.input(z.number()).query(async ({input}) => {
     const res = await prisma.products.findUnique({
       select: defaultProductSelect,
       where: {
