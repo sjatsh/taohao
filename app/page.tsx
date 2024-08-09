@@ -10,7 +10,6 @@ export default async function Home() {
     select: defaultProductSelect,
   })
 
-  // @ts-ignore
   return (
     <>
       <Announcement/>
