@@ -1,8 +1,8 @@
 'use client'
 
-import {Card, CardBody, CardFooter, Image, Skeleton} from '@nextui-org/react'
-import React, {FC} from 'react'
-import {CardHeader} from '@nextui-org/card'
+import { Card, CardBody, CardFooter, Image, Skeleton } from '@nextui-org/react'
+import React, { FC } from 'react'
+import { CardHeader } from '@nextui-org/card'
 
 export interface OrderCardProps {
   title: string
@@ -38,7 +38,7 @@ export const OrderCard: FC<OrderCardProps> = (props: OrderCardProps) => {
               shadow="sm"
               src={props.img}
               onLoad={() => {
-                setLoaded(true);
+                setLoaded(true)
               }}
             />
           </CardBody>

@@ -6,7 +6,7 @@ import { siteConfig } from '@/config/site'
 import Announcement from '@/app/components/announcement'
 import { trpc } from '@/lib/trpc'
 
-export default async function Home() {
+export default function Home() {
   const { data: products } = trpc.products.list.useQuery()
 
   return (

@@ -51,15 +51,6 @@ export async function POST(request: NextRequest) {
     }
     const restKami = kami.slice(0, order.num)
 
-    await prisma.products.updateMany({
-      where: {
-        id: order.product_id,
-      },
-      data: {
-        num: order.product.num - order.num,
-        kami: JSON.stringify(kami.slice(order.num, kami.length)),
-      },
-    })
     await prisma.orders.updateMany({
       where: {
         order_id: orderId.toString(),
@@ -67,6 +58,15 @@ export async function POST(request: NextRequest) {
       data: {
         status: 1,
         kami: restKami.join('\n'),
+      },
+    })
+    await prisma.products.updateMany({
+      where: {
+        id: order.product_id,
+      },
+      data: {
+        num: order.product.num - order.num,
+        kami: JSON.stringify(kami.slice(order.num, kami.length)),
       },
     })
   })
