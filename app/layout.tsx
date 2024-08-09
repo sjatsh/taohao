@@ -10,6 +10,7 @@ import { Navbar } from '@/app/components/navbar'
 import { siteConfig } from '@/config/site'
 import TrpcContext from '@/context/trpc'
 import { Providers } from '@/app/providers'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 
 export const viewport: Viewport = {
   themeColor: [
@@ -57,6 +58,7 @@ export default function RootLayout({
           </div>
           <Toaster />
         </Providers>
+        <SpeedInsights />
       </body>
     </html>
   )
