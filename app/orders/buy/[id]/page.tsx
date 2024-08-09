@@ -13,6 +13,11 @@ import {trpc} from '@/lib/trpc'
 export default function Page({params}: { params: { id: string } }) {
   const {data: product} = trpc.products.byId.useQuery(parseInt(params.id))
 
+  useEffect(() => {
+    if (!product) return
+    setLoaded(true)
+  }, [product])
+
   const [email, setEmail] = React.useState('')
   const validateEmail = (value: string) =>
     value.match(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}$/i)
@@ -31,7 +36,7 @@ export default function Page({params}: { params: { id: string } }) {
   }, [num])
 
   const [payment, setPayment] = React.useState('微信')
-  const {isOpen, onOpen, onClose} = useDisclosure()
+  const { isOpen, onOpen, onClose } = useDisclosure()
   const [qrCodeUrl, setQrcodeUrl] = React.useState('')
   const orderCreate = trpc.orders.create.useMutation()
   const orderFind = trpc.orders.find.useMutation()
@@ -95,6 +100,8 @@ export default function Page({params}: { params: { id: string } }) {
     })
   }
 
+  const [loaded, setLoaded] = useState(false)
+
   return (
     <>
       <PaymentDialog
@@ -104,44 +111,50 @@ export default function Page({params}: { params: { id: string } }) {
         onClose={onClose}
       />
       <Suspense>
-        <div>
-          <p className="text-2xl font-medium text-gray-900">
-            购买{product?.title}
-          </p>
-        </div>
+        <Skeleton isLoaded={loaded}>
+          <div>
+            <p className="text-2xl font-medium text-gray-900">
+              购买{product?.title}
+            </p>
+          </div>
+        </Skeleton>
         <div className="my-1">
-          <Button
-            className="m-0.5 h-5 min-w-5 gap-2 rounded-small p-2 text-tiny"
-            color="primary"
-            variant="bordered"
-          >
-            {product?.pay_type}
-          </Button>
-          <Button
-            className="m-0.5 h-5 min-w-5 gap-2 rounded-small p-2 text-tiny"
-            color="primary"
-            variant="bordered"
-          >
-            库存({product?.num})
-          </Button>
-          <Button
-            className="m-0.5 h-5 min-w-5 gap-2 rounded-small p-2 text-tiny"
-            color="default"
-            variant="bordered"
-          >
-            限购(20)
-          </Button>
+          <Skeleton isLoaded={loaded}>
+            <Button
+              className="m-0.5 h-5 min-w-5 gap-2 rounded-small p-2 text-tiny"
+              color="primary"
+              variant="bordered"
+            >
+              {product?.pay_type}
+            </Button>
+            <Button
+              className="m-0.5 h-5 min-w-5 gap-2 rounded-small p-2 text-tiny"
+              color="primary"
+              variant="bordered"
+            >
+              库存({product?.num})
+            </Button>
+            <Button
+              className="m-0.5 h-5 min-w-5 gap-2 rounded-small p-2 text-tiny"
+              color="default"
+              variant="bordered"
+            >
+              限购(20)
+            </Button>
+          </Skeleton>
         </div>
-        <div className="my-2 flex items-end">
-          <p className="text-xl font-medium text-red-600">
-            ￥ {product?.price}
-          </p>
-          <p
-            className={`ml-1 text-tiny line-through ${!product?.origin_price ? 'disabled' : ''}`}
-          >
-            ￥ {product?.origin_price}
-          </p>
-        </div>
+        <Skeleton isLoaded={loaded}>
+          <div className="my-2 flex items-end">
+            <p className="text-xl font-medium text-red-600">
+              ￥ {product?.price}
+            </p>
+            <p
+              className={`ml-1 text-tiny line-through ${!product?.origin_price ? 'disabled' : ''}`}
+            >
+              ￥ {product?.origin_price}
+            </p>
+          </div>
+        </Skeleton>
       </Suspense>
 
       <div className="my-1">
@@ -176,7 +189,7 @@ export default function Page({params}: { params: { id: string } }) {
       <div className="my-0.5">
         <Button
           color={payment === '微信' ? 'primary' : 'default'}
-          startContent={<WeiXin/>}
+          startContent={<WeiXin />}
           variant="bordered"
           onSelect={() => {
             setPayment('微信')
@@ -199,16 +212,16 @@ export default function Page({params}: { params: { id: string } }) {
 }
 
 function PaymentDialog({
-                         isOpen,
-                         onClose, price,
-                         qrCodeUrl,
-                       }: {
-                         isOpen: boolean
-                         onClose: () => void
-                         price?: number
-                         qrCodeUrl: string
-                       }
-) {
+  isOpen,
+  onClose,
+  price,
+  qrCodeUrl,
+}: {
+  isOpen: boolean
+  onClose: () => void
+  price?: number
+  qrCodeUrl: string
+}) {
   const [loaded, setLoaded] = useState(false)
 
   return (
