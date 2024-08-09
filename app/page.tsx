@@ -3,20 +3,17 @@ import { Key } from 'react'
 
 import { OrderCard } from '@/app/components/order'
 import { siteConfig } from '@/config/site'
-import { defaultProductSelect } from '@/server/routers/products'
-import { prisma } from '@/prisma'
 import Announcement from '@/app/components/announcement'
+import { trpc } from '@/lib/trpc'
 
 export default async function Home() {
-  const products = await prisma.products.findMany({
-    select: defaultProductSelect,
-  })
+  const { data: products } = trpc.products.list.useQuery()
 
   return (
     <>
       <Announcement />
       <div className="mt-5 grid grid-cols-5">
-        {products.map(
+        {products?.map(
           (item: {
             id: Key | null | undefined
             num: number
