@@ -1,7 +1,7 @@
 import { type NextRequest } from 'next/server'
 
 import { getHash } from '@/lib/xunhu_pay'
-import {getMaybeTransactionClient, startTransaction} from '@/prisma'
+import { getMaybeTransactionClient, startTransaction } from '@/prisma'
 
 export async function POST(request: NextRequest) {
   const formData = await request.formData()

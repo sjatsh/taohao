@@ -1,17 +1,17 @@
 'use client'
 
-import React, {Suspense, useEffect, useMemo, useState} from 'react'
-import {Button} from '@nextui-org/button'
+import React, { Suspense, useEffect, useMemo, useState } from 'react'
+import { Button } from '@nextui-org/button'
 import toast from 'react-hot-toast'
-import {Input} from '@nextui-org/input'
-import {Image, Modal, ModalBody, ModalContent, ModalHeader, Skeleton, useDisclosure,} from '@nextui-org/react'
-import {redirect} from 'next/navigation'
+import { Input } from '@nextui-org/input'
+import { Image, Modal, ModalBody, ModalContent, ModalHeader, Skeleton, useDisclosure, } from '@nextui-org/react'
+import { redirect } from 'next/navigation'
 
-import {WeiXin} from '@/app/components/icons'
-import {trpc} from '@/lib/trpc'
+import { WeiXin } from '@/app/components/icons'
+import { trpc } from '@/lib/trpc'
 
-export default function Page({params}: { params: { id: string } }) {
-  const {data: product} = trpc.products.byId.useQuery(parseInt(params.id))
+export default function Page({ params }: { params: { id: string } }) {
+  const { data: product } = trpc.products.byId.useQuery(parseInt(params.id))
 
   useEffect(() => {
     if (!product) return

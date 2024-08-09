@@ -1,7 +1,7 @@
 import React from 'react'
 
-import {DetailPage} from '@/module/orders/detail'
-import {prisma} from '@/prisma'
+import { DetailPage } from '@/module/orders/detail'
+import { prisma } from '@/prisma'
 
 export default async function Page(
   {

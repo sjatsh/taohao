@@ -1,9 +1,9 @@
 'use client'
 
-import React, {useMemo} from 'react'
-import {Tab, Tabs} from '@nextui-org/react'
-import {Button} from '@nextui-org/button'
-import {Input} from '@nextui-org/input'
+import React, { useMemo } from 'react'
+import { Tab, Tabs } from '@nextui-org/react'
+import { Button } from '@nextui-org/button'
+import { Input } from '@nextui-org/input'
 import NextLink from 'next/link'
 
 export default function Page() {
