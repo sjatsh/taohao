@@ -1,5 +1,5 @@
-import {getHash} from "@/lib/xunhu_pay";
-import {prisma} from "@/prisma";
+import {getHash} from "@/lib/xunhu_pay"
+import {prisma} from "@/prisma"
 
 export async function POST(request: Request) {
     const formData = await request.formData();
