@@ -25,7 +25,11 @@ export default function Page() {
                 </p>
             </div>
             <div className="rounded-md border shadow-xl px-6 py-6">
-                <Tabs aria-label="订单查询" color="primary" variant="underlined">
+                <Tabs
+                    key={email + orderId}
+                    aria-label="订单查询"
+                    color="primary"
+                    variant="underlined">
                     <Tab
                         key="email"
                         title="邮箱"
