@@ -1,7 +1,8 @@
-import {getHash} from "@/lib/xunhu_pay"
-import {prisma} from "@/prisma"
+import {getHash} from "@/lib/xunhu_pay";
+import {prisma} from "@/prisma";
+import {type NextRequest} from "next/server";
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
     const formData = await request.formData();
     let params: { [key: string]: string } = {}
     formData.forEach(function (value, key, parent) {
