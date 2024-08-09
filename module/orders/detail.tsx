@@ -23,7 +23,9 @@ export const DetailPage: React.FC<{
     }
 }> = ({props}) => {
     return (
-        <Suspense>
+        <Suspense
+            key={props.order_id}
+        >
             <div className="flex mb-3">
                 <Button
                     color="primary"
