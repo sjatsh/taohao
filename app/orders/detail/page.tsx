@@ -48,10 +48,11 @@ export default async function Page(
     return (
         <>
             {
-                orders.map((order) => (
-                    <div className="my-5">
+                orders.map((order, index) => (
+                    <div
+                        key={index}
+                        className="my-5">
                         <DetailPage
-                            key={order.order_id}
                             props={{
                                 ...order,
                             }}
