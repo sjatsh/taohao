@@ -33,6 +33,11 @@ export const orders = router({
       if (!product) {
         throw new Error('product not found')
       }
+
+      if (product.num < input.num) {
+        throw new Error('product not enough')
+      }
+
       const order_id = cuid()
       const res = await prisma.orders.create({
         data: {
@@ -56,7 +61,7 @@ export const orders = router({
         qrcode_url: createWxPayRes.url_qrcode,
       }
     }),
-  find: trpc.procedure.input(z.string()).mutation(async ({ input }) => {
+  find: trpc.procedure.input(z.string()).mutation(async ({input}) => {
     return prisma.orders.findFirst({
       where: {
         order_id: input,

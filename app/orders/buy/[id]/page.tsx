@@ -19,6 +19,8 @@ import { WeiXin } from '@/app/components/icons'
 import { trpc } from '@/lib/trpc'
 
 export default function Page({ params }: { params: { id: string } }) {
+  const { data: product } = trpc.products.byId.useQuery(parseInt(params.id))
+
   const [email, setEmail] = React.useState('')
   const validateEmail = (value: string) =>
     value.match(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}$/i)
@@ -37,7 +39,7 @@ export default function Page({ params }: { params: { id: string } }) {
   }, [num])
 
   const [payment, setPayment] = React.useState('微信')
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const {isOpen, onOpen, onClose} = useDisclosure()
   const [qrCodeUrl, setQrcodeUrl] = React.useState('')
   const orderCreate = trpc.orders.create.useMutation()
   const orderFind = trpc.orders.find.useMutation()
@@ -76,8 +78,18 @@ export default function Page({ params }: { params: { id: string } }) {
 
       return
     }
-    if (num === '' || numIsInvalid || parseInt(num) < 1 || parseInt(num) > 20) {
-      toast.error('请输入有效的数量')
+    if (
+      num === '' ||
+      numIsInvalid ||
+      parseInt(num) < 1 ||
+      parseInt(num) > 20 ||
+      parseInt(num) > product!.num
+    ) {
+      if (parseInt(num) > product!.num) {
+        toast.error('库存不足')
+      } else {
+        toast.error('请输入有效的数量')
+      }
 
       return
     }
@@ -90,8 +102,6 @@ export default function Page({ params }: { params: { id: string } }) {
       payment: payment,
     })
   }
-
-  const product = trpc.products.byId.useQuery(parseInt(params.id)).data
 
   return (
     <>
@@ -174,7 +184,7 @@ export default function Page({ params }: { params: { id: string } }) {
       <div className="my-0.5">
         <Button
           color={payment === '微信' ? 'primary' : 'default'}
-          startContent={<WeiXin />}
+          startContent={<WeiXin/>}
           variant="bordered"
           onSelect={() => {
             setPayment('微信')
@@ -197,11 +207,11 @@ export default function Page({ params }: { params: { id: string } }) {
 }
 
 function PaymentDialog({
-  isOpen,
-  onClose,
-  price,
-  qrCodeUrl,
-}: {
+                         isOpen,
+                         onClose,
+                         price,
+                         qrCodeUrl,
+                       }: {
   isOpen: boolean
   onClose: () => void
   price?: number
