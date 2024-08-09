@@ -1,8 +1,11 @@
-import { router, trpc } from "../trpc";
-import { z } from "zod";
-import { TRPCError } from "@trpc/server";
-import type { Prisma } from "@prisma/client";
-import { prisma } from "@/prisma";
+import type { Prisma } from '@prisma/client'
+
+import { z } from 'zod'
+import { TRPCError } from '@trpc/server'
+
+import { router, trpc } from '../trpc'
+
+import { prisma } from '@/prisma'
 
 export const defaultProductSelect = {
   id: true,
@@ -12,12 +15,13 @@ export const defaultProductSelect = {
   origin_price: true,
   image: true,
   pay_type: true,
-} satisfies Prisma.productsSelect;
+} satisfies Prisma.productsSelect
 
 export const products = router({
   list: trpc.procedure.query(async () => {
-    const items = await prisma.products.findMany();
-    return items.reverse();
+    const items = await prisma.products.findMany()
+
+    return items.reverse()
   }),
   byId: trpc.procedure.input(z.number()).query(async ({ input }) => {
     const res = await prisma.products.findUnique({
@@ -25,13 +29,15 @@ export const products = router({
       where: {
         id: input,
       },
-    });
+    })
+
     if (!res) {
       throw new TRPCError({
-        code: "NOT_FOUND",
+        code: 'NOT_FOUND',
         message: `No post with id '${input}'`,
-      });
+      })
     }
-    return res;
+
+    return res
   }),
-});
+})

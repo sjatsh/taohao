@@ -1,16 +1,17 @@
-import { trpcServer } from "@hono/trpc-server";
-import { Hono } from "hono";
-import { router } from "@/server/routers";
+import { trpcServer } from '@hono/trpc-server'
+import { Hono } from 'hono'
 
-const trpc = new Hono();
+import { router } from '@/server/routers'
+
+const trpc = new Hono()
 
 trpc.use(
   trpcServer({
     router,
-    async createContext(opts) {
-      return {};
+    async createContext() {
+      return {}
     },
   }),
-);
+)
 
-export default trpc;
+export default trpc

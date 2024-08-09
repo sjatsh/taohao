@@ -1,11 +1,9 @@
-"use client";
+'use client'
 
-import React, { Suspense, useEffect, useMemo, useState } from "react";
-import { Button } from "@nextui-org/button";
-import toast from "react-hot-toast";
-import { Input } from "@nextui-org/input";
-import { WeiXin } from "@/app/components/icons";
-import { trpc } from "@/lib/trpc";
+import React, { Suspense, useEffect, useMemo, useState } from 'react'
+import { Button } from '@nextui-org/button'
+import toast from 'react-hot-toast'
+import { Input } from '@nextui-org/input'
 import {
   Image,
   Modal,
@@ -14,122 +12,130 @@ import {
   ModalHeader,
   Skeleton,
   useDisclosure,
-} from "@nextui-org/react";
-import { redirect } from "next/navigation";
+} from '@nextui-org/react'
+import { redirect } from 'next/navigation'
+
+import { WeiXin } from '@/app/components/icons'
+import { trpc } from '@/lib/trpc'
 
 export default function Page({ params }: { params: { id: string } }) {
-  const [email, setEmail] = React.useState("");
+  const [email, setEmail] = React.useState('')
   const validateEmail = (value: string) =>
-    value.match(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}$/i);
+    value.match(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}$/i)
   const emailIsInvalid = useMemo(() => {
-    if (email === "") return false;
-    return !validateEmail(email);
-  }, [email]);
+    if (email === '') return false
 
-  const [num, setNum] = React.useState("1");
-  const validateNum = (value: string) => value.match(/^[1-9]\d*$/i);
+    return !validateEmail(email)
+  }, [email])
+
+  const [num, setNum] = React.useState('1')
+  const validateNum = (value: string) => value.match(/^[1-9]\d*$/i)
   const numIsInvalid = useMemo(() => {
-    if (num === "") return false;
-    return !validateNum(num);
-  }, [num]);
+    if (num === '') return false
 
-  const [payment, setPayment] = React.useState("微信");
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const [qrCodeUrl, setQrcodeUrl] = React.useState("");
-  const orderCreate = trpc.orders.create.useMutation();
-  const orderFind = trpc.orders.find.useMutation();
-  const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+    return !validateNum(num)
+  }, [num])
+
+  const [payment, setPayment] = React.useState('微信')
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const [qrCodeUrl, setQrcodeUrl] = React.useState('')
+  const orderCreate = trpc.orders.create.useMutation()
+  const orderFind = trpc.orders.find.useMutation()
+  const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms))
 
   useEffect(() => {
-    orderCreate.error && toast.error(orderCreate.error.message);
+    orderCreate.error && toast.error(orderCreate.error.message)
     if (orderCreate.data) {
-      setQrcodeUrl(orderCreate.data.qrcode_url);
-      orderFind.mutate(orderCreate.data.order_id);
+      setQrcodeUrl(orderCreate.data.qrcode_url)
+      orderFind.mutate(orderCreate.data.order_id)
     }
-  }, [orderCreate.data, orderCreate.error]);
+  }, [orderCreate.data, orderCreate.error])
 
   useEffect(() => {
     if (!orderFind.data) {
-      return;
+      return
     }
     switch (orderFind.data.status) {
       case 0:
         sleep(3000).then(() => {
-          orderFind.mutate(orderFind.data!.order_id);
-        });
-        break;
+          orderFind.mutate(orderFind.data!.order_id)
+        })
+        break
       case 1:
-        onClose();
-        return redirect(`/orders/detail?order_id=${orderFind.data.order_id}`);
+        onClose()
+
+        return redirect(`/orders/detail?order_id=${orderFind.data.order_id}`)
       default:
-        break;
+        break
     }
-  }, [orderFind.data]);
+  }, [orderFind.data])
 
   const submitOnClick = async () => {
-    if (email === "" || emailIsInvalid) {
-      toast.error("请输入有效的邮箱");
-      return;
+    if (email === '' || emailIsInvalid) {
+      toast.error('请输入有效的邮箱')
+
+      return
     }
-    if (num === "" || numIsInvalid || parseInt(num) < 1 || parseInt(num) > 20) {
-      toast.error("请输入有效的数量");
-      return;
+    if (num === '' || numIsInvalid || parseInt(num) < 1 || parseInt(num) > 20) {
+      toast.error('请输入有效的数量')
+
+      return
     }
-    onOpen();
+    onOpen()
 
     orderCreate.mutate({
       product_id: parseInt(params.id),
       num: parseInt(num),
       email: email,
       payment: payment,
-    });
-  };
+    })
+  }
 
-  const product = trpc.products.byId.useQuery(parseInt(params.id)).data;
+  const product = trpc.products.byId.useQuery(parseInt(params.id)).data
 
   return (
     <>
       <PaymentDialog
         isOpen={isOpen}
-        onClose={onClose}
         price={product?.price}
         qrCodeUrl={qrCodeUrl}
+        onClose={onClose}
       />
       <Suspense>
         <div>
-          <p className="font-medium text-gray-900 text-2xl">
+          <p className="text-2xl font-medium text-gray-900">
             购买{product?.title}
           </p>
         </div>
         <div className="my-1">
           <Button
+            className="m-0.5 h-5 min-w-5 gap-2 rounded-small p-2 text-tiny"
             color="primary"
             variant="bordered"
-            className="p-2 m-0.5 min-w-5 h-5 text-tiny gap-2 rounded-small"
           >
             {product?.pay_type}
           </Button>
           <Button
+            className="m-0.5 h-5 min-w-5 gap-2 rounded-small p-2 text-tiny"
             color="primary"
             variant="bordered"
-            className="p-2 m-0.5 min-w-5 h-5 text-tiny gap-2 rounded-small"
           >
             库存({product?.num})
           </Button>
           <Button
+            className="m-0.5 h-5 min-w-5 gap-2 rounded-small p-2 text-tiny"
             color="default"
             variant="bordered"
-            className="p-2 m-0.5 min-w-5 h-5 text-tiny gap-2 rounded-small"
           >
             限购(20)
           </Button>
         </div>
         <div className="my-2 flex items-end">
-          <p className="font-medium text-xl text-red-600">
+          <p className="text-xl font-medium text-red-600">
             ￥ {product?.price}
           </p>
           <p
-            className={`text-tiny ml-1 line-through ${!product?.origin_price ? "disabled" : ""}`}
+            className={`ml-1 text-tiny line-through ${!product?.origin_price ? 'disabled' : ''}`}
           >
             ￥ {product?.origin_price}
           </p>
@@ -138,56 +144,56 @@ export default function Page({ params }: { params: { id: string } }) {
 
       <div className="my-1">
         <Input
-          type="email"
-          variant={"bordered"}
+          color={emailIsInvalid ? 'danger' : 'default'}
+          errorMessage="Please enter a valid email"
+          isInvalid={emailIsInvalid}
           label="邮箱"
           placeholder="接收卡密或通知"
-          isInvalid={emailIsInvalid}
-          color={emailIsInvalid ? "danger" : "default"}
-          errorMessage="Please enter a valid email"
+          type="email"
+          variant={'bordered'}
           onValueChange={setEmail}
         />
       </div>
       <div className="my-1">
         <Input
-          type="number"
-          variant={"bordered"}
-          label="数量"
-          min="1"
-          max={product?.num}
+          color={numIsInvalid ? 'danger' : 'default'}
           defaultValue="1"
-          isInvalid={numIsInvalid}
-          color={numIsInvalid ? "danger" : "default"}
           errorMessage="Please enter a valid number"
+          isInvalid={numIsInvalid}
+          label="数量"
+          max={product?.num}
+          min="1"
+          type="number"
+          variant={'bordered'}
           onValueChange={setNum}
         />
       </div>
       <div className="my-0.5">
-        <p className="text-tiny ml-1 text-gray-600">支付方式</p>
+        <p className="ml-1 text-tiny text-gray-600">支付方式</p>
       </div>
       <div className="my-0.5">
         <Button
-          color={payment === "微信" ? "primary" : "default"}
-          variant="bordered"
+          color={payment === '微信' ? 'primary' : 'default'}
           startContent={<WeiXin />}
+          variant="bordered"
           onSelect={() => {
-            setPayment("微信");
+            setPayment('微信')
           }}
         >
           微信
         </Button>
       </div>
       <div className="grid grid-rows-subgrid">
-        <div className="grid grid-cols-3 ">
+        <div className="grid grid-cols-3">
           <div className="col-start-2 grid place-items-center">
-            <Button color="danger" onClick={submitOnClick} isLoading={isOpen}>
+            <Button color="danger" isLoading={isOpen} onClick={submitOnClick}>
               提交订单
             </Button>
           </div>
         </div>
       </div>
     </>
-  );
+  )
 }
 
 function PaymentDialog({
@@ -196,30 +202,31 @@ function PaymentDialog({
   price,
   qrCodeUrl,
 }: {
-  isOpen: boolean;
-  onClose: () => void;
-  price?: number;
-  qrCodeUrl: string;
+  isOpen: boolean
+  onClose: () => void
+  price?: number
+  qrCodeUrl: string
 }) {
-  const [loaded, setLoaded] = useState(false);
+  const [loaded, setLoaded] = useState(false)
+
   return (
-    <Modal size="xs" isOpen={isOpen} onClose={onClose}>
+    <Modal isOpen={isOpen} size="xs" onClose={onClose}>
       <ModalContent>
         <ModalHeader>
           付款金额:
-          <p className="font-medium text-xl text-red-600"> ￥{price}</p>
+          <p className="text-xl font-medium text-red-600"> ￥{price}</p>
         </ModalHeader>
         <Skeleton isLoaded={loaded}>
-          <ModalBody className="items-center min-w-[320px] min-h-[288px]">
+          <ModalBody className="min-h-[288px] min-w-[320px] items-center">
             <Image
               src={qrCodeUrl}
               onLoad={() => {
-                setLoaded(true);
+                setLoaded(true)
               }}
             />
           </ModalBody>
         </Skeleton>
       </ModalContent>
     </Modal>
-  );
+  )
 }

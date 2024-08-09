@@ -1,8 +1,10 @@
-import { router, trpc } from "../trpc";
-import { z } from "zod";
-import { prisma } from "@/prisma";
-import cuid from "cuid";
-import { wxPay } from "@/lib/xunhu_pay";
+import cuid from 'cuid'
+import { z } from 'zod'
+
+import { router, trpc } from '../trpc'
+
+import { prisma } from '@/prisma'
+import { wxPay } from '@/lib/xunhu_pay'
 
 export const orders = router({
   byOrderId: trpc.procedure.input(z.string()).query(async ({ input }) => {
@@ -10,7 +12,7 @@ export const orders = router({
       where: {
         order_id: input,
       },
-    });
+    })
   }),
   create: trpc.procedure
     .input(
@@ -26,11 +28,12 @@ export const orders = router({
         where: {
           id: input.product_id,
         },
-      });
+      })
+
       if (!product) {
-        throw new Error("product not found");
+        throw new Error('product not found')
       }
-      const order_id = cuid();
+      const order_id = cuid()
       const res = await prisma.orders.create({
         data: {
           order_id: order_id,
@@ -39,24 +42,25 @@ export const orders = router({
           price: product.price,
           email: input.email,
           payment: input.payment,
-          kami: "",
+          kami: '',
         },
-      });
+      })
       const createWxPayRes = await wxPay({
         order_id: order_id,
         money: product.price * input.num,
         title: product.title,
-      });
+      })
+
       return {
         order_id: res.order_id,
         qrcode_url: createWxPayRes.url_qrcode,
-      };
+      }
     }),
   find: trpc.procedure.input(z.string()).mutation(async ({ input }) => {
     return prisma.orders.findFirst({
       where: {
         order_id: input,
       },
-    });
+    })
   }),
-});
+})

@@ -1,31 +1,32 @@
-"use client";
+'use client'
 
-import React, { useMemo } from "react";
-import { Tab, Tabs } from "@nextui-org/react";
-import { Button } from "@nextui-org/button";
-import { Input } from "@nextui-org/input";
-import NextLink from "next/link";
+import React, { useMemo } from 'react'
+import { Tab, Tabs } from '@nextui-org/react'
+import { Button } from '@nextui-org/button'
+import { Input } from '@nextui-org/input'
+import NextLink from 'next/link'
 
 export default function Page() {
-  const [email, setEmail] = React.useState("");
+  const [email, setEmail] = React.useState('')
   const validateEmail = (value: string) =>
-    value.match(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}$/i);
+    value.match(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}$/i)
   const emailIsInvalid = useMemo(() => {
-    if (email === "") return false;
-    return !validateEmail(email);
-  }, [email]);
+    if (email === '') return false
 
-  const [orderId, setOrderId] = React.useState("");
+    return !validateEmail(email)
+  }, [email])
+
+  const [orderId, setOrderId] = React.useState('')
 
   return (
     <>
-      <p className="pb-8 pl-4 text-gray-500 text-lg font-bold">查询订单</p>
-      <div className="rounded-md border shadow-xl px-6 py-6 mb-10">
-        <p className="text-gray-500 text-small">
+      <p className="pb-8 pl-4 text-lg font-bold text-gray-500">查询订单</p>
+      <div className="mb-10 rounded-md border px-6 py-6 shadow-xl">
+        <p className="text-small text-gray-500">
           注意：最多只能查询近5笔订单。
         </p>
       </div>
-      <div className="rounded-md border shadow-xl px-6 py-6">
+      <div className="rounded-md border px-6 py-6 shadow-xl">
         <Tabs
           key={email + orderId}
           aria-label="订单查询"
@@ -34,25 +35,25 @@ export default function Page() {
         >
           <Tab key="email" title="邮箱">
             <div className="mb-3">
-              <p className="text-gray-500 text-small">邮箱</p>
+              <p className="text-small text-gray-500">邮箱</p>
             </div>
             <div className="mb-3">
               <Input
-                type="email"
-                variant={"bordered"}
-                isInvalid={emailIsInvalid}
-                color={emailIsInvalid ? "danger" : "default"}
+                color={emailIsInvalid ? 'danger' : 'default'}
                 errorMessage="Please enter a valid email"
-                onValueChange={setEmail}
+                isInvalid={emailIsInvalid}
+                type="email"
                 value={email}
+                variant={'bordered'}
+                onValueChange={setEmail}
               />
             </div>
             <div>
               <NextLink
-                className={`${email === "" ? "pointer-events-none" : ""}`}
+                className={`${email === '' ? 'pointer-events-none' : ''}`}
                 href={`/orders/detail?email=${email}`}
               >
-                <Button color="primary" size="sm" className="mr-2">
+                <Button className="mr-2" color="primary" size="sm">
                   查询
                 </Button>
               </NextLink>
@@ -60,7 +61,7 @@ export default function Page() {
                 color="primary"
                 size="sm"
                 onClick={() => {
-                  setEmail("");
+                  setEmail('')
                 }}
               >
                 重置
@@ -69,22 +70,22 @@ export default function Page() {
           </Tab>
           <Tab key="order_num" title="订单">
             <div className="mb-3">
-              <p className="text-gray-500 text-small">订单号</p>
+              <p className="text-small text-gray-500">订单号</p>
             </div>
             <div className="mb-3">
               <Input
                 type="text"
-                variant={"bordered"}
-                onValueChange={setOrderId}
                 value={orderId}
+                variant={'bordered'}
+                onValueChange={setOrderId}
               />
             </div>
             <div>
               <NextLink
-                className={`${orderId === "" ? "pointer-events-none" : ""}`}
+                className={`${orderId === '' ? 'pointer-events-none' : ''}`}
                 href={`/orders/detail?order_id=${orderId}`}
               >
-                <Button color="primary" size="sm" className="mr-2">
+                <Button className="mr-2" color="primary" size="sm">
                   查询
                 </Button>
               </NextLink>
@@ -92,7 +93,7 @@ export default function Page() {
                 color="primary"
                 size="sm"
                 onClick={() => {
-                  setOrderId("");
+                  setOrderId('')
                 }}
               >
                 重置
@@ -102,5 +103,5 @@ export default function Page() {
         </Tabs>
       </div>
     </>
-  );
+  )
 }
