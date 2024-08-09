@@ -1,7 +1,7 @@
 import { type NextRequest } from 'next/server'
 
 import { getHash } from '@/lib/xunhu_pay'
-import { prisma, startTransaction } from '@/prisma'
+import { startTransaction } from '@/prisma'
 
 export async function POST(request: NextRequest) {
   const formData = await request.formData()
@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
     })
   }
 
-  startTransaction(async (prisma) => {
+  const resp = await startTransaction(async (prisma) => {
     const order = await prisma.orders.findUnique({
       where: {
         order_id: orderId.toString(),
@@ -70,6 +70,8 @@ export async function POST(request: NextRequest) {
       },
     })
   })
+
+  console.log(resp)
 
   return new Response('success', {
     status: 200,
