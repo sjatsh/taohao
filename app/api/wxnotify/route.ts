@@ -1,7 +1,7 @@
-import { type NextRequest } from 'next/server'
+import {type NextRequest} from 'next/server'
 
-import { getHash } from '@/lib/xunhu_pay'
-import { startTransaction } from '@/prisma'
+import {getHash} from '@/lib/xunhu_pay'
+import {startTransaction} from '@/prisma'
 
 export async function POST(request: NextRequest) {
   const formData = await request.formData()
@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
     })
   }
 
-  const resp = await startTransaction(async (prisma) => {
+  await startTransaction(async (prisma) => {
     const order = await prisma.orders.findUnique({
       where: {
         order_id: orderId.toString(),
@@ -51,7 +51,7 @@ export async function POST(request: NextRequest) {
     }
     const restKami = kami.slice(0, order.num)
 
-    prisma.products.updateMany({
+    await prisma.products.updateMany({
       where: {
         id: order.product_id,
       },
@@ -60,7 +60,7 @@ export async function POST(request: NextRequest) {
         kami: JSON.stringify(kami.slice(order.num, kami.length)),
       },
     })
-    prisma.orders.updateMany({
+    await prisma.orders.updateMany({
       where: {
         order_id: orderId.toString(),
       },
@@ -70,8 +70,6 @@ export async function POST(request: NextRequest) {
       },
     })
   })
-
-  console.log(resp)
 
   return new Response('success', {
     status: 200,
