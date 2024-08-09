@@ -11,6 +11,7 @@ import { siteConfig } from '@/config/site'
 import TrpcContext from '@/context/trpc'
 import { Providers } from '@/app/providers'
 import { SpeedInsights } from '@vercel/speed-insights/next'
+import { Analytics } from "@vercel/analytics/react"
 
 export const viewport: Viewport = {
   themeColor: [
@@ -59,6 +60,7 @@ export default function RootLayout({
           <Toaster />
         </Providers>
         <SpeedInsights />
+        <Analytics />
       </body>
     </html>
   )
