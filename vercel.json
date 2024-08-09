@@ -1,0 +1,10 @@
+{
+  "functions": {
+    "app/api/**/*": {
+      "maxDuration": 10
+    },
+    "app/trpc/**/*": {
+      "maxDuration": 10
+    }
+  }
+}
