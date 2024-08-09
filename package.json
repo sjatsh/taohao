@@ -4,12 +4,12 @@
 	"private": true,
 	"packageManager": "pnpm@9.1.1",
 	"scripts": {
-		"dev": "next dev -p 3000 -H 0.0.0.0",
+		"dev": "next dev",
 		"build": "next build",
-		"start": "next start -H 0.0.0.0",
+		"start": "next start",
 		"prisma:deploy": "prisma migrate dev",
 		"prisma:generate": "prisma generate",
-		"lint": "eslint . --ext .ts,.tsx -c .eslintrc.json --fix"
+		"lint": "next lint"
 	},
 	"dependencies": {
 		"@hono/trpc-server": "^0.3.1",
