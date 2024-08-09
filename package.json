@@ -9,6 +9,7 @@
     "start": "next start",
     "prisma:deploy": "prisma migrate dev",
     "prisma:generate": "prisma generate",
+    "postinstall": "prisma generate",
     "lint": "next lint",
     "format": "prettier --write ."
   },
