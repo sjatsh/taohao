@@ -1,7 +1,9 @@
 import { type NextRequest } from 'next/server'
 
 import { getHash } from '@/lib/xunhu_pay'
-import { getMaybeTransactionClient, startTransaction } from '@/prisma'
+import { getMaybeTransactionClient, prisma, startTransaction } from '@/prisma'
+import { resend } from '@/lib/resend'
+import { OrderEmail } from "@/module/emails/order"
 
 export async function POST(request: NextRequest) {
   const formData = await request.formData()
@@ -27,49 +29,67 @@ export async function POST(request: NextRequest) {
     })
   }
 
-  await startTransaction(async () => {
-    const p = getMaybeTransactionClient()
-    const order = await p.orders.findUnique({
-      where: {
-        order_id: orderId.toString(),
-      },
-      include: {
-        product: true,
-      },
-    })
+  const order = await prisma.orders.findUnique({
+    where: {
+      order_id: orderId.toString(),
+    },
+    include: {
+      product: true,
+    },
+  })
 
-    if (!order) {
-      return new Response('order not found', {
-        status: 400,
+  if (!order) {
+    return new Error("order not found")
+  }
+
+  try {
+    await startTransaction(async () => {
+      const p = getMaybeTransactionClient()
+      const kami = JSON.parse(order.product.kami) as string[]
+
+      if (kami.length < order.num) {
+        return new Error("kami not enough")
+      }
+      const restKami = kami.slice(0, order.num)
+
+      await p.orders.updateMany({
+        where: {
+          order_id: orderId.toString(),
+        },
+        data: {
+          status: 1,
+          kami: restKami.join('\n'),
+        },
       })
-    }
-    const kami = JSON.parse(order.product.kami) as string[]
-
-    if (kami.length < order.num) {
-      return new Response('kami not enough', {
-        status: 500,
+      await p.products.updateMany({
+        where: {
+          id: order.product_id,
+        },
+        data: {
+          num: order.product.num - order.num,
+          kami: JSON.stringify(kami.slice(order.num, kami.length)),
+        },
       })
-    }
-    const restKami = kami.slice(0, order.num)
+    })
+  }
+  catch (e: any) {
+    console.error(e)
+    return new Response(e, {
+      status: 500,
+    })
+  }
 
-    await p.orders.updateMany({
-      where: {
-        order_id: orderId.toString(),
-      },
-      data: {
-        status: 1,
-        kami: restKami.join('\n'),
-      },
-    })
-    await p.products.updateMany({
-      where: {
-        id: order.product_id,
-      },
-      data: {
-        num: order.product.num - order.num,
-        kami: JSON.stringify(kami.slice(order.num, kami.length)),
-      },
-    })
+  await resend.emails.send({
+    from: 'admin@sjis.me',
+    to: order.email,
+    subject: '【淘号网】感谢您的购买，请查收您的收据',
+    react: OrderEmail({
+      title_text: '购买' + order.product.title,
+      order_id: order.order_id,
+      num: order.num,
+      kami: order.kami,
+      email: order.email,
+    }),
   })
 
   return new Response('success', {

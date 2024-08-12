@@ -4,6 +4,9 @@ import React, { Suspense } from 'react'
 import { Button } from '@nextui-org/button'
 import toast from 'react-hot-toast'
 import { Textarea } from '@nextui-org/input'
+import { resend } from '@/lib/resend'
+import { OrderEmail } from '../emails/order'
+import { render } from "@react-email/components";
 
 export const DetailPage: React.FC<{
   props: {
@@ -22,6 +25,20 @@ export const DetailPage: React.FC<{
     }
   }
 }> = ({ props }) => {
+
+  resend.emails.send({
+    from: 'admin@sjis.me',
+    to: props.email,
+    subject: '【淘号网】感谢您的购买，请查收您的收据',
+    react: OrderEmail({
+      title_text: '购买' + props.product.title,
+      order_id: props.order_id,
+      num: props.num,
+      kami: props.kami,
+      email: props.email,
+    })
+  })
+
   return (
     <Suspense>
       <div className="mb-3 flex">

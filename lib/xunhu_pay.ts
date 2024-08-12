@@ -1,6 +1,6 @@
 import { Md5 } from "ts-md5";
-import { siteConfig } from "@/config/site";
 import cuid from "cuid";
+import { XUNHU_PAY_API_URL, XUNHU_PAY_APP_ID, XUNHU_PAY_APP_SECRET, XUNHU_PAY_WAP_NAME, XUNHU_PAY_WAP_URL } from "@/env/server";
 
 export interface wxPayOptions {
   order_id: string;
@@ -11,21 +11,21 @@ export interface wxPayOptions {
 export async function wxPay(options: wxPayOptions) {
   const params = {
     version: "1.1",
-    appid: siteConfig.xunhu_pay.appid,
+    appid: XUNHU_PAY_APP_ID,
     trade_order_id: options.order_id,
     total_fee: options.money.toString(),
     title: options.title,
     time: Math.floor(new Date().valueOf() / 1000).toString(),
-    notify_url: `${siteConfig.xunhu_pay.wap_url}/api/wxnotify`,
+    notify_url: `${XUNHU_PAY_WAP_URL}/api/wxnotify`,
     nonce_str: cuid(),
     type: "WAP",
-    wap_url: siteConfig.xunhu_pay.wap_url,
-    wap_name: siteConfig.xunhu_pay.wap_name,
+    wap_url: XUNHU_PAY_WAP_URL,
+    wap_name: XUNHU_PAY_WAP_NAME,
   };
   const hash = getHash(params);
   const requestParams = new URLSearchParams({ ...params, hash });
 
-  const resp = await fetch(siteConfig.xunhu_pay.api_url + "/do.html", {
+  const resp = await fetch(XUNHU_PAY_API_URL + "/do.html", {
     method: "POST",
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
@@ -44,7 +44,7 @@ export async function wxPay(options: wxPayOptions) {
 
 export async function query(orderId: string) {
   const params = {
-    appid: siteConfig.xunhu_pay.appid,
+    appid: XUNHU_PAY_APP_ID,
     out_trade_order: orderId,
     time: Math.floor(new Date().valueOf() / 1000).toString(),
     nonce_str: cuid(),
@@ -52,7 +52,7 @@ export async function query(orderId: string) {
   const hash = getHash(params);
   const requestParams = new URLSearchParams({ ...params, hash });
 
-  const resp = await fetch(siteConfig.xunhu_pay.api_url + "/query.html", {
+  const resp = await fetch(XUNHU_PAY_API_URL + "/query.html", {
     method: "POST",
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
@@ -75,5 +75,5 @@ export function getHash(params: { [key: string]: string }) {
     .sort()
     .map((key) => `${key}=${params[key]}`)
     .join("&");
-  return Md5.hashStr(sortedParams + siteConfig.xunhu_pay.app_secret);
+  return Md5.hashStr(sortedParams + XUNHU_PAY_APP_SECRET);
 }
