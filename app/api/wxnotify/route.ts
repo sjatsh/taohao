@@ -39,7 +39,9 @@ export async function POST(request: NextRequest) {
   })
 
   if (!order) {
-    return new Error("order not found")
+    return new Response('order not found', {
+      status: 404,
+    })
   }
 
 
@@ -77,7 +79,7 @@ export async function POST(request: NextRequest) {
     })
   }
 
-  OrderEmail({
+  await OrderEmail({
     title_text: order.product.title,
     order_id: order.order_id,
     num: order.num,

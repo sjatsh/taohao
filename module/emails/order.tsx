@@ -33,7 +33,7 @@ export const OrderEmail = ({
   kami,
   email
 }: EmailProps) => {
-  resend.emails.send({
+  return resend.emails.send({
     from: 'admin@sjis.me',
     to: email,
     subject: '【淘号网】感谢您的购买，请查收您的收据',
