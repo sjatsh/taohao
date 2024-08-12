@@ -1,11 +1,8 @@
 import { createEnv } from '@t3-oss/env-nextjs'
 
 export const config = createEnv({
-  client: {
-  },
-  runtimeEnv: {
-  },
+  client: {},
+  runtimeEnv: {},
 })
 
-export const {
-} = config
+export const {} = config

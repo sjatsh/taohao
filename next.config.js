@@ -1,5 +1,5 @@
 /** @type {import('next').NextConfig} */
-const withMDX = require("@next/mdx")({
+const withMDX = require('@next/mdx')({
   // Optionally provide remark and rehype plugins
   options: {
     // If you use remark-gfm, you'll need to use next.config.mjs
@@ -10,17 +10,17 @@ const withMDX = require("@next/mdx")({
     // If you use `MDXProvider`, uncomment the following line.
     // providerImportSource: "@mdx-js/react",
   },
-});
+})
 
 const nextConfig = {
-  pageExtensions: ["ts", "tsx", "js", "jsx", "md", "mdx"],
+  pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
   experimental: {
     serverActions: {
-      allowedOrigins: ["*"],
+      allowedOrigins: ['*'],
     },
     mdxRs: true,
   },
-  transpilePackages: ["next-mdx-remote"],
-};
+  transpilePackages: ['next-mdx-remote'],
+}
 
-module.exports = withMDX(nextConfig);
+module.exports = withMDX(nextConfig)

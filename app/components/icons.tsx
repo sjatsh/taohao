@@ -361,7 +361,7 @@ export const SearchIcon = (props: IconSvgProps) => (
 )
 
 export const NextUILogo: React.FC<IconSvgProps> = (props) => {
-  const { width, height = 40 } = props;
+  const { width, height = 40 } = props
 
   return (
     <svg

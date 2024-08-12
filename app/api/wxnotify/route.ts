@@ -3,7 +3,7 @@ import { type NextRequest } from 'next/server'
 import { getHash } from '@/lib/xunhu_pay'
 import { getMaybeTransactionClient, prisma, startTransaction } from '@/prisma'
 import { resend } from '@/lib/resend'
-import { OrderEmail } from "@/module/emails/order"
+import { OrderEmail } from '@/module/emails/order'
 
 export async function POST(request: NextRequest) {
   const formData = await request.formData()
@@ -44,13 +44,12 @@ export async function POST(request: NextRequest) {
     })
   }
 
-
   const res = await startTransaction(async () => {
     const p = getMaybeTransactionClient()
     const kami = JSON.parse(order.product.kami) as string[]
 
     if (kami.length < order.num) {
-      return new Error("kami not enough")
+      return new Error('kami not enough')
     }
     const restKami = kami.slice(0, order.num)
 

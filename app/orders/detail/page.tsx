@@ -3,15 +3,14 @@ import React from 'react'
 import { DetailPage } from '@/module/orders/detail'
 import { prisma } from '@/prisma'
 
-export default async function Page(
-  {
-    searchParams,
-  }: {
-    searchParams: {
-      order_id: string
-      email: string
-    }
-  }) {
+export default async function Page({
+  searchParams,
+}: {
+  searchParams: {
+    order_id: string
+    email: string
+  }
+}) {
   let orders: any[] = []
 
   if (searchParams.order_id) {

@@ -22,7 +22,6 @@ export const DetailPage: React.FC<{
     }
   }
 }> = ({ props }) => {
-
   return (
     <Suspense>
       <div className="mb-3 flex">
@@ -31,7 +30,7 @@ export const DetailPage: React.FC<{
           color="primary"
           variant="bordered"
           onClick={async () => {
-            await navigator.clipboard.writeText(props.order_id);
+            await navigator.clipboard.writeText(props.order_id)
             toast.success('单号已复制')
           }}
         >
@@ -84,7 +83,7 @@ export const DetailPage: React.FC<{
               color="primary"
               variant="bordered"
               onClick={async () => {
-                await navigator.clipboard.writeText(props.kami);
+                await navigator.clipboard.writeText(props.kami)
                 toast.success('卡密已复制')
               }}
             >
@@ -94,5 +93,5 @@ export const DetailPage: React.FC<{
         </div>
       </div>
     </Suspense>
-  );
-};
+  )
+}

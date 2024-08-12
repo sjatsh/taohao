@@ -1,16 +1,22 @@
-import { Md5 } from "ts-md5";
-import cuid from "cuid";
-import { XUNHU_PAY_API_URL, XUNHU_PAY_APP_ID, XUNHU_PAY_APP_SECRET, XUNHU_PAY_WAP_NAME, XUNHU_PAY_WAP_URL } from "@/env/server";
+import { Md5 } from 'ts-md5'
+import cuid from 'cuid'
+import {
+  XUNHU_PAY_API_URL,
+  XUNHU_PAY_APP_ID,
+  XUNHU_PAY_APP_SECRET,
+  XUNHU_PAY_WAP_NAME,
+  XUNHU_PAY_WAP_URL,
+} from '@/env/server'
 
 export interface wxPayOptions {
-  order_id: string;
-  money: number;
-  title: string;
+  order_id: string
+  money: number
+  title: string
 }
 
 export async function wxPay(options: wxPayOptions) {
   const params = {
-    version: "1.1",
+    version: '1.1',
     appid: XUNHU_PAY_APP_ID,
     trade_order_id: options.order_id,
     total_fee: options.money.toString(),
@@ -18,28 +24,28 @@ export async function wxPay(options: wxPayOptions) {
     time: Math.floor(new Date().valueOf() / 1000).toString(),
     notify_url: `${XUNHU_PAY_WAP_URL}/api/wxnotify`,
     nonce_str: cuid(),
-    type: "WAP",
+    type: 'WAP',
     wap_url: XUNHU_PAY_WAP_URL,
     wap_name: XUNHU_PAY_WAP_NAME,
-  };
-  const hash = getHash(params);
-  const requestParams = new URLSearchParams({ ...params, hash });
+  }
+  const hash = getHash(params)
+  const requestParams = new URLSearchParams({ ...params, hash })
 
-  const resp = await fetch(XUNHU_PAY_API_URL + "/do.html", {
-    method: "POST",
+  const resp = await fetch(XUNHU_PAY_API_URL + '/do.html', {
+    method: 'POST',
     headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
+      'Content-Type': 'application/x-www-form-urlencoded',
     },
     body: requestParams,
-  });
+  })
   if (resp.status !== 200) {
-    throw new Error(resp.statusText);
+    throw new Error(resp.statusText)
   }
-  const data = await resp.json();
+  const data = await resp.json()
   if (data.errcode !== 0) {
-    throw new Error(data.errmsg);
+    throw new Error(data.errmsg)
   }
-  return data;
+  return data
 }
 
 export async function query(orderId: string) {
@@ -48,32 +54,32 @@ export async function query(orderId: string) {
     out_trade_order: orderId,
     time: Math.floor(new Date().valueOf() / 1000).toString(),
     nonce_str: cuid(),
-  };
-  const hash = getHash(params);
-  const requestParams = new URLSearchParams({ ...params, hash });
+  }
+  const hash = getHash(params)
+  const requestParams = new URLSearchParams({ ...params, hash })
 
-  const resp = await fetch(XUNHU_PAY_API_URL + "/query.html", {
-    method: "POST",
+  const resp = await fetch(XUNHU_PAY_API_URL + '/query.html', {
+    method: 'POST',
     headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
+      'Content-Type': 'application/x-www-form-urlencoded',
     },
     body: requestParams,
-  });
+  })
   if (resp.status !== 200) {
-    throw new Error(resp.statusText);
+    throw new Error(resp.statusText)
   }
-  const data = await resp.json();
+  const data = await resp.json()
   if (data.errcode !== 0) {
-    throw new Error(data.errmsg);
+    throw new Error(data.errmsg)
   }
-  return data;
+  return data
 }
 
 export function getHash(params: { [key: string]: string }) {
   const sortedParams = Object.keys(params)
-    .filter((key) => params[key] && key !== "hash")
+    .filter((key) => params[key] && key !== 'hash')
     .sort()
     .map((key) => `${key}=${params[key]}`)
-    .join("&");
-  return Md5.hashStr(sortedParams + XUNHU_PAY_APP_SECRET);
+    .join('&')
+  return Md5.hashStr(sortedParams + XUNHU_PAY_APP_SECRET)
 }

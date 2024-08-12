@@ -76,14 +76,14 @@ export function maybeTransaction<R>(
   callback: Callback<R>,
   options?: Options,
 ): Types.Utils.JsPromise<R> {
-  const client = transactionStorage.getStore();
+  const client = transactionStorage.getStore()
 
   if (client) {
     return callback(client)
   } else {
     return prisma.$transaction(async (prisma) => {
       return transactionStorage.run(prisma, () => {
-        return callback(prisma);
+        return callback(prisma)
       })
     }, options)
   }

@@ -61,7 +61,7 @@ export const orders = router({
         qrcode_url: createWxPayRes.url_qrcode,
       }
     }),
-  find: trpc.procedure.input(z.string()).mutation(async ({input}) => {
+  find: trpc.procedure.input(z.string()).mutation(async ({ input }) => {
     return prisma.orders.findFirst({
       where: {
         order_id: input,

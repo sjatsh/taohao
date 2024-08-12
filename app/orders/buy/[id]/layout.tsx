@@ -7,10 +7,10 @@ export default async function Layout({
   children,
   params,
 }: {
-  children: React.ReactNode;
-  params: { id: string };
+  children: React.ReactNode
+  params: { id: string }
 }) {
-  const content = await getContent(params.id);
+  const content = await getContent(params.id)
 
   return (
     <>
