@@ -42,39 +42,37 @@ export async function POST(request: NextRequest) {
     return new Error("order not found")
   }
 
-  try {
-    await startTransaction(async () => {
-      const p = getMaybeTransactionClient()
-      const kami = JSON.parse(order.product.kami) as string[]
 
-      if (kami.length < order.num) {
-        return new Error("kami not enough")
-      }
-      const restKami = kami.slice(0, order.num)
+  const res = await startTransaction(async () => {
+    const p = getMaybeTransactionClient()
+    const kami = JSON.parse(order.product.kami) as string[]
 
-      await p.orders.updateMany({
-        where: {
-          order_id: orderId.toString(),
-        },
-        data: {
-          status: 1,
-          kami: restKami.join('\n'),
-        },
-      })
-      await p.products.updateMany({
-        where: {
-          id: order.product_id,
-        },
-        data: {
-          num: order.product.num - order.num,
-          kami: JSON.stringify(kami.slice(order.num, kami.length)),
-        },
-      })
+    if (kami.length < order.num) {
+      return new Error("kami not enough")
+    }
+    const restKami = kami.slice(0, order.num)
+
+    await p.orders.updateMany({
+      where: {
+        order_id: orderId.toString(),
+      },
+      data: {
+        status: 1,
+        kami: restKami.join('\n'),
+      },
     })
-  }
-  catch (e: any) {
-    console.error(e)
-    return new Response(e, {
+    await p.products.updateMany({
+      where: {
+        id: order.product_id,
+      },
+      data: {
+        num: order.product.num - order.num,
+        kami: JSON.stringify(kami.slice(order.num, kami.length)),
+      },
+    })
+  })
+  if (res instanceof Error) {
+    return new Response('error', {
       status: 500,
     })
   }
