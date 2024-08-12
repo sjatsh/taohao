@@ -79,17 +79,13 @@ export async function POST(request: NextRequest) {
     })
   }
 
-  await resend.emails.send({
-    from: 'admin@sjis.me',
-    to: order.email,
-    subject: '【淘号网】感谢您的购买，请查收您的收据',
-    react: OrderEmail({
-      title_text: '购买' + order.product.title,
-      order_id: order.order_id,
-      num: order.num,
-      kami: order.kami,
-      email: order.email,
-    }),
+  OrderEmail({
+    title_text: order.product.title,
+    order_id: order.order_id,
+    num: order.num,
+    price: order.price,
+    kami: order.kami,
+    email: order.email,
   })
 
   return new Response('success', {

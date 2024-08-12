@@ -1,3 +1,6 @@
+'use server'
+
+import { resend } from "@/lib/resend"
 import {
   Body,
   Column,
@@ -7,101 +10,118 @@ import {
   Hr,
   Html,
   Img,
-  Link,
-  Preview,
   Section,
   Text,
   Row,
-} from "@react-email/components";
-import * as React from "react";
+} from "@react-email/components"
+import * as React from "react"
 
 interface EmailProps {
   title_text: string
   order_id: string
   num: number
+  price: number
   kami: string
   email: string
 }
-
-const baseUrl = process.env.SITE_URL ? process.env.SITE_URL : "";
 
 export const OrderEmail = ({
   title_text,
   order_id,
   num,
+  price,
   kami,
   email
-}: EmailProps) => (
-  <Html>
-    <Head />
-    <Preview>Stack overflow tips for searching</Preview>
-    <Body style={main}>
-      <Container style={container}>
-        <Section style={logo}>
-          <Img width={146} src={`${baseUrl}/static/stack-overflow-logo.png`} />
-        </Section>
+}: EmailProps) => {
+  resend.emails.send({
+    from: 'admin@sjis.me',
+    to: email,
+    subject: '【淘号网】感谢您的购买，请查收您的收据',
+    react: orderEmail({
+      title_text: '购买' + title_text,
+      order_id: order_id,
+      num: num,
+      price: price,
+      kami: kami,
+      email: email,
+    }),
+  })
+}
 
-        <Section style={header}>
-          <Row>
-            <Column style={headerContent}>
-              <Heading style={headerContentTitle}>
-                Find what you want, faster
-              </Heading>
-              <Text style={headerContentSubtitle}>
-                Tips and tricks for searching on Stack Overflow
-              </Text>
-            </Column>
-            <Column style={headerImageContainer}>
-              <Img
-                style={headerImage}
-                width={340}
-                src={`${baseUrl}/static/stack-overflow-header.png`}
-              />
-            </Column>
-          </Row>
-        </Section>
-
-        <Section style={content}>
-          <Heading as="h2" style={title}>
-            Searching for solutions
-          </Heading>
-          <Text style={paragraph}>
-            With more than 18 million questions, it's possible that someone has
-            already provided a solution to the problem you're facing.{" "}
-          </Text>
-
-          <Hr style={divider} />
-
-          <Heading as="h2" style={title}>
-            Use the search bar at the top of the page to find what you need
-          </Heading>
-          <Text style={paragraph}>
-            Here are a few simple search tips to get you started:
-          </Text>
-
-
-          <Text style={paragraph}>
-            The more information you can put in the search bar, the more likely
-            you will be to either find the answer you need or feel confident
-            that no one else has asked the question before.
-          </Text>
-
-          <Hr style={divider} />
-
-          <Heading as="h2" style={title}>
-            Take a break and read about the worst coder in the world
-          </Heading>
-
-          <Section style={buttonContainer}>
-            <Link style={button} href="https://stackoverflow.blog/2019/10/22/">
-              I need a break
-            </Link>
+const orderEmail = ({
+  title_text,
+  order_id,
+  num,
+  price,
+  kami,
+}: EmailProps) => {
+  return (
+    <Html>
+      <Head />
+      <Body style={main}>
+        <Container style={container}>
+          <Section style={logo}>
+            <Img width={50} src="https://vz7a7a7pnsqvl2ta.public.blob.vercel-storage.com/images/taohao-figGwbbpBDFO3pJvpPb0phQChtjLPG.png" />
           </Section>
-        </Section>
-      </Container>
-    </Body>
-  </Html>
-);
+
+          <Section style={header}>
+            <div style={headerContent}>
+              <div style={headerContentTitle}>
+                {title_text}
+              </div>
+            </div>
+          </Section>
+
+          <Section style={content}>
+            <Heading as="h2" style={title}>
+              订单号: {order_id}
+            </Heading>
+
+            <Hr style={divider} />
+
+            <Heading as="h2" style={title}>
+              您的卡密信息
+            </Heading>
+            <Text style={paragraph}>
+              {kami}
+            </Text>
+
+            <Hr style={divider} />
+
+            <Row>
+              <Column>
+                <Heading style={paragraph}>
+                  {title_text}
+                </Heading>
+              </Column>
+              <Column>
+                <Heading style={paragraph}>
+                  x{num}
+                </Heading>
+              </Column>
+            </Row>
+            <Hr />
+            <Row>
+              <Column>
+                <Heading style={{
+                  fontSize: "15px",
+                  lineHeight: "21px",
+                  color: "#3c3f44",
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  marginRight: "80px",
+                }}>
+                  总价：￥{num * price}
+                </Heading>
+              </Column>
+            </Row>
+
+          </Section>
+        </Container>
+      </Body>
+    </Html>
+  )
+}
 
 
 const main = {
