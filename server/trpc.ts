@@ -5,7 +5,16 @@ import { initTRPC } from '@trpc/server'
 import superjson from 'superjson'
 import { ZodError } from 'zod'
 
-export interface AuthContext {}
+export interface AuthContext {
+  user: {
+    id: string
+    name: string
+    email: string
+  }
+  header: {
+    'x-real-ip': string
+  }
+}
 
 export const trpc = initTRPC
   .meta<OpenApiMeta>()

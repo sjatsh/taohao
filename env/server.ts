@@ -11,6 +11,10 @@ export const config = createEnv({
     SITE_URL: z.string().url(),
     POSTGRES_PRISMA_URL: z.string().url(),
     RESEND_API_KEY: z.string(),
+    BLOB_READ_WRITE_TOKEN: z.string(),
+    NODE_ENV: z.enum(['development', 'production', 'test']),
+    NEXTAUTH_SECRET: z.string(),
+    ADMIN_PASSWORD: z.string(),
   },
   experimental__runtimeEnv: process.env,
 })
@@ -24,4 +28,8 @@ export const {
   SITE_URL,
   POSTGRES_PRISMA_URL,
   RESEND_API_KEY,
+  BLOB_READ_WRITE_TOKEN,
+  NODE_ENV,
+  NEXTAUTH_SECRET,
+  ADMIN_PASSWORD,
 } = config

@@ -11,7 +11,7 @@ datasource db {
 
 model products {
   id           Int      @id @default(autoincrement())
-  title        String   @db.VarChar(255)
+  title        String   @unique @db.VarChar(255)
   num          Int
   price        Float
   origin_price Float?
