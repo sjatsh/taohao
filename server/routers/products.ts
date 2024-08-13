@@ -19,31 +19,39 @@ export const defaultProductSelect = {
 } satisfies Prisma.productsSelect
 
 export const products = router({
-  list: trpc.procedure.query(async () => {
+  list: trpc.procedure
+    .use(isLogin)
+    .input(
+      z.object({
+        password: z.string().optional(),
+      }),
+    )
+    .mutation(async ({ ctx }) => {
+      if (ctx.authed) {
+        return prisma.products.findMany()
+      }
+      return prisma.products.findMany({
+        select: defaultProductSelect,
+      })
+    }),
+  listNoAuth: trpc.procedure.query(async () => {
     return prisma.products.findMany({
       select: defaultProductSelect,
     })
   }),
   byId: trpc.procedure.input(z.number()).query(async ({ input }) => {
-    const res = await prisma.products.findUnique({
+    return prisma.products.findUnique({
       select: defaultProductSelect,
       where: {
         id: input,
       },
     })
-
-    if (!res) {
-      throw new TRPCError({
-        code: 'NOT_FOUND',
-        message: `No post with id '${input}'`,
-      })
-    }
-    return res
   }),
   create: trpc.procedure
     .use(isLogin)
     .input(
       z.object({
+        id: z.number(),
         password: z.string(),
         title: z.string(),
         num: z.number(),
@@ -55,8 +63,15 @@ export const products = router({
         kami: z.string(),
       }),
     )
-    .mutation(async ({ input }) => {
+    .mutation(async ({ ctx, input }) => {
+      if (!ctx.authed) {
+        throw new TRPCError({
+          code: 'UNAUTHORIZED',
+        })
+      }
+
       const data = {
+        title: input.title,
         num: input.num,
         price: input.price,
         origin_price: input.origin_price,
@@ -65,14 +80,12 @@ export const products = router({
         content: input.content,
         kami: input.kami,
       }
+
       return prisma.products.upsert({
-        create: {
-          ...data,
-          title: input.title,
-        },
+        create: data,
         update: data,
         where: {
-          title: input.title,
+          id: input.id,
         },
       })
     }),
