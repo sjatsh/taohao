@@ -73,9 +73,9 @@ const ListboxWrapper = ({ children }: { children: React.ReactNode }) => (
 )
 
 const Pdoducts: FC<{ password: string }> = (props: { password: string }) => {
-  const [products, setProducts] = useState([])
+  const [products, setProducts] = useState<products[]>()
   const productsMutaion = trpc.products.list.useMutation()
-  const [product, setProduct] = useState({})
+  const [product, setProduct] = useState<products>()
 
   return (
     <div className="ml-5">
@@ -86,6 +86,7 @@ const Pdoducts: FC<{ password: string }> = (props: { password: string }) => {
             const productsRes = await productsMutaion.mutateAsync({
               password: props.password,
             })
+            //@ts-ignore
             setProducts(productsRes)
           }
         }}
@@ -99,12 +100,16 @@ const Pdoducts: FC<{ password: string }> = (props: { password: string }) => {
             className="mb-5 max-w-xs"
             label="选择修改商品"
             items={products}
-            onSelectionChange={(e: Set<string>) => {
+            onSelectionChange={(e) => {
+              //@ts-ignore
               if (e.values().next().value === undefined) {
+                //@ts-ignore
                 setProduct({})
                 return
               }
+              //@ts-ignore
               const id = parseInt(e.values().next().value)
+              //@ts-ignore
               products.map((item: products) => {
                 if (item.id === id) {
                   setProduct(item)
@@ -115,22 +120,22 @@ const Pdoducts: FC<{ password: string }> = (props: { password: string }) => {
               return items.map((item) => (
                 <div key={item.key} className="flex items-center gap-2">
                   <Avatar
-                    alt={item.data.title}
+                    alt={item.data?.title}
                     className="flex-shrink-0"
                     size="sm"
-                    src={item.data.image}
+                    src={item.data?.image}
                   />
                   <div className="flex flex-col">
-                    <span>{item.data.title}</span>
+                    <span>{item.data?.title}</span>
                     <span className="text-tiny text-default-500">
-                      ￥{item.data.price}
+                      ￥{item.data?.price}
                     </span>
                   </div>
                 </div>
               ))
             }}
           >
-            {(product) => (
+            {(product: products) => (
               <SelectItem key={product.id} textValue={product.title}>
                 <div className="flex items-center gap-2">
                   <Avatar
