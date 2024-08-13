@@ -189,7 +189,9 @@ const Pdoducts: FC<{ password: string }> = ({
                 return
               }
 
-              const jsonObj = JSON.parse(jsonContent.text)
+              // @ts-ignore
+              const jsonText = jsonContent.text
+              const jsonObj = JSON.parse(jsonText)
               if (jsonObj.length <= 0) {
                 toast.error('卡密不能为空')
                 return
@@ -207,7 +209,7 @@ const Pdoducts: FC<{ password: string }> = ({
                 origin_price: parseInt(originPrice),
                 image: imageUrl,
                 content: content,
-                kami: jsonContent.text,
+                kami: jsonText,
                 pay_type: paymentType,
               })
               setSubmit(false)
