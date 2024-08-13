@@ -295,7 +295,7 @@ const Product: FC<productsProps> = (props: productsProps) => {
         color="primary"
         className="mb-2 ml-5 mt-5"
         isLoading={submit}
-        onClick={() => {
+        onClick={async () => {
           if (title === '') {
             toast.error('标题不能为空')
             return
@@ -329,20 +329,25 @@ const Product: FC<productsProps> = (props: productsProps) => {
           }
 
           setSubmit(true)
-          createProduct.mutate({
-            id: id,
-            password: props.password,
-            title: title,
-            num: jsonObj.length,
-            price: parseFloat(price),
-            origin_price: parseFloat(originPrice),
-            image: imageUrl,
-            content: content,
-            kami: jsonText,
-            pay_type: payType,
-          })
-          setSubmit(false)
-          toast.success('添加成功')
+          try {
+            await createProduct.mutateAsync({
+              id: id,
+              password: props.password,
+              title: title,
+              num: jsonObj.length,
+              price: parseFloat(price),
+              origin_price: parseFloat(originPrice),
+              image: imageUrl,
+              content: content,
+              kami: jsonText,
+              pay_type: payType,
+            })
+          } catch (e: any) {
+            toast.error(e.toString())
+          } finally {
+            setSubmit(false)
+            toast.success('添加成功')
+          }
         }}
       >
         提交
