@@ -12,7 +12,7 @@ export default function Home() {
   return (
     <>
       <Announcement />
-      <div className="mt-5 grid grid-cols-5">
+      <div className="mt-5 grid grid-cols-6">
         {products?.map(
           (item: {
             id: number
