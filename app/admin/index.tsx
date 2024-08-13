@@ -73,9 +73,9 @@ const ListboxWrapper = ({ children }: { children: React.ReactNode }) => (
 )
 
 const Pdoducts: FC<{ password: string }> = (props: { password: string }) => {
-  const [products, setProducts] = useState<products[]>()
-  const productsMutaion = trpc.products.list.useMutation()
+  const [productsData, setProductsData] = useState<products[]>([])
   const [product, setProduct] = useState<products>()
+  const productsMutaion = trpc.products.list.useMutation()
 
   return (
     <div className="ml-5">
@@ -87,7 +87,7 @@ const Pdoducts: FC<{ password: string }> = (props: { password: string }) => {
               password: props.password,
             })
             //@ts-ignore
-            setProducts(productsRes)
+            setProductsData(productsRes)
           }
         }}
       >
@@ -99,7 +99,7 @@ const Pdoducts: FC<{ password: string }> = (props: { password: string }) => {
             key={'products-select'}
             className="mb-5 max-w-xs"
             label="选择修改商品"
-            items={products}
+            items={productsData}
             onSelectionChange={(e) => {
               //@ts-ignore
               if (e.values().next().value === undefined) {
@@ -110,7 +110,7 @@ const Pdoducts: FC<{ password: string }> = (props: { password: string }) => {
               //@ts-ignore
               const id = parseInt(e.values().next().value)
               //@ts-ignore
-              products.map((item: products) => {
+              productsData.map((item: products) => {
                 if (item.id === id) {
                   setProduct(item)
                 }
@@ -334,8 +334,8 @@ const Product: FC<productsProps> = (props: productsProps) => {
             password: props.password,
             title: title,
             num: jsonObj.length,
-            price: parseInt(price),
-            origin_price: parseInt(originPrice),
+            price: parseFloat(price),
+            origin_price: parseFloat(originPrice),
             image: imageUrl,
             content: content,
             kami: jsonText,
