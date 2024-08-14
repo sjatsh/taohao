@@ -30,11 +30,10 @@ export const OrderCard: FC<OrderCardProps> = (props: OrderCardProps) => {
             <h4 className="font-bold text-green-600">库存: {props.num}</h4>
           )}
         </CardHeader>
-
-        <CardBody className="overflow-visible p-5">
-          <Skeleton isLoaded={loaded}>
+        <Skeleton isLoaded={loaded}>
+          <CardBody className="min-h-[140px] w-[160px] overflow-visible p-5">
             <Image
-              className="min-h-[140px] w-[160px] object-cover"
+              className="object-cover"
               radius="lg"
               shadow="sm"
               src={props.img}
@@ -42,8 +41,8 @@ export const OrderCard: FC<OrderCardProps> = (props: OrderCardProps) => {
                 setLoaded(true)
               }}
             />
-          </Skeleton>
-        </CardBody>
+          </CardBody>
+        </Skeleton>
         <CardFooter className="justify-between text-medium">
           <b>{props.title}</b>
           <p className="text-default-500">￥{props.price}</p>
