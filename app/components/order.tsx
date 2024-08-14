@@ -18,7 +18,6 @@ export const OrderCard: FC<OrderCardProps> = (props: OrderCardProps) => {
     <>
       <Card
         isPressable
-        className="max-w-48"
         isDisabled={props.num === 0}
         isHoverable={true}
         shadow="sm"
@@ -31,9 +30,9 @@ export const OrderCard: FC<OrderCardProps> = (props: OrderCardProps) => {
           )}
         </CardHeader>
         <Skeleton isLoaded={loaded}>
-          <CardBody className="h-[180px] max-w-[218px] overflow-visible p-2">
+          <CardBody className="h-[180px] w-[192px] overflow-visible p-5">
             <Image
-              className="max-w-210 object-cover"
+              className="object-cover"
               radius="lg"
               shadow="sm"
               src={props.img}
