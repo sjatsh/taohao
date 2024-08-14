@@ -18,6 +18,7 @@ export const OrderCard: FC<OrderCardProps> = (props: OrderCardProps) => {
     <>
       <Card
         isPressable
+        className="my-3"
         isDisabled={props.num === 0}
         isHoverable={true}
         shadow="sm"
