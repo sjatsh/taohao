@@ -12,7 +12,7 @@ export default function Home() {
   return (
     <>
       <Announcement />
-      <div className="mt-5 grid grid-cols-6">
+      <div className="mt-5 flex flex-row">
         {products?.map(
           (item: {
             id: number
@@ -21,7 +21,7 @@ export default function Home() {
             price: number
             title: string
           }) => (
-            <>
+            <div key={item.id} className="mx-2">
               {item.num > 0 ? (
                 <NextLink href={`/orders/buy/${item.id}`}>
                   <OrderCard
@@ -39,7 +39,7 @@ export default function Home() {
                   title={item.title}
                 />
               )}
-            </>
+            </div>
           ),
         )}
       </div>
