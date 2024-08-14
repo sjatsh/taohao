@@ -31,7 +31,7 @@ export const OrderCard: FC<OrderCardProps> = (props: OrderCardProps) => {
           )}
         </CardHeader>
         <Skeleton isLoaded={loaded}>
-          <CardBody className="h-[180px] w-[192px] overflow-visible p-5">
+          <CardBody className="min-h-[140px] w-[160px] overflow-visible p-5">
             <Image
               className="object-cover"
               radius="lg"
