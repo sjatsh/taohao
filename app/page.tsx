@@ -12,7 +12,7 @@ export default function Home() {
   return (
     <>
       <Announcement />
-      <div className="mt-5 flex flex-row">
+      <div className="mt-5 flex flex-wrap">
         {products?.map(
           (item: {
             id: number

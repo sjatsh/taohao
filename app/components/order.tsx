@@ -22,7 +22,7 @@ export const OrderCard: FC<OrderCardProps> = (props: OrderCardProps) => {
         isHoverable={true}
         shadow="sm"
       >
-        <CardHeader className="flex-col items-start px-4 pb-0 pt-2">
+        <CardHeader className="px-4 pb-0 pt-2">
           {props.num === 0 ? (
             <h4 className="font-bold text-red-600">缺货</h4>
           ) : (
