@@ -10,8 +10,10 @@ export default function Home() {
   const { data: products } = trpc.products.listNoAuth.useQuery()
 
   return (
-    <>
-      <Announcement />
+    <div className="p-5">
+      <div className="ml-2">
+        <Announcement />
+      </div>
       <div className="mt-5 flex flex-wrap">
         {products?.map(
           (item: {
@@ -43,6 +45,6 @@ export default function Home() {
           ),
         )}
       </div>
-    </>
+    </div>
   )
 }
