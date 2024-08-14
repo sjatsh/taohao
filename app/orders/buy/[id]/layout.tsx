@@ -15,16 +15,16 @@ export default async function Layout({
   return (
     <>
       <p className="pb-8 pl-4 text-lg font-bold text-gray-500">商品详情</p>
-      <div className="grid grid-cols-6 gap-4">
-        <div className="col-start-1 col-end-5 rounded-md border p-10 shadow-xl">
+      <div className="flex flex-wrap">
+        <div className="mr-5 w-[65%] rounded-md border p-10 shadow-xl">
           <div
             className={`prose-h1:text-green prose-strong:text-blue prose-ul:text-dark prose prose-h1:text-4xl prose-p:text-base prose-ul:list-decimal`}
           >
             <Markdown>{content}</Markdown>
           </div>
         </div>
-        <div className="sticky top-20 col-span-2 h-96 max-h-max rounded-md border p-4 shadow-xl">
-          <div className="grid-rows-subgrid">{children}</div>
+        <div className="sticky top-20 self-start">
+          <div className="rounded-md border p-4 shadow-xl">{children}</div>
         </div>
       </div>
     </>
