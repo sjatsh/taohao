@@ -37,6 +37,7 @@ import JSONEditorReact from './jsoneditor'
 import { Content, Mode, OnChangeStatus } from 'vanilla-jsoneditor'
 import toast from 'react-hot-toast'
 import { products } from '@prisma/client'
+import { string } from 'zod'
 
 export default function IndexPage({ password }: { password: string }) {
   const [content, setContent] = React.useState(<div></div>)
@@ -184,8 +185,10 @@ const Product: FC<productsProps> = (props: productsProps) => {
     props.product?.image ? props.product?.image : '',
   )
   const [payType, setPayType] = React.useState(
-    props.product?.pay_type ? props.product?.pay_type : '',
+    props.product?.pay_type ? props.product?.pay_type : '自动发货',
   )
+  const payTypes = new Array(['自动发货'])
+
   const [content, setContent] = React.useState(
     props.product?.content ? props.product?.content : '',
   )
@@ -220,7 +223,7 @@ const Product: FC<productsProps> = (props: productsProps) => {
 
   return (
     <>
-      <div className="grid grid-cols-3 gap-2">
+      <div className="mb-5 grid grid-cols-3 gap-2">
         <Input
           type="text"
           label="标题"
@@ -247,14 +250,27 @@ const Product: FC<productsProps> = (props: productsProps) => {
           onValueChange={setOriginPrice}
           value={originPrice}
         />
-        <Input
-          type="text"
-          label="支付类型"
+        <Select
           variant="bordered"
-          className="mb-2 max-w-xs"
-          onValueChange={setPayType}
-          value={payType}
-        />
+          label="发货类型"
+          className="w-xs"
+          onSelectionChange={(e) => {
+            //@ts-ignore
+            if (e.values().next().value === undefined) {
+              return
+            }
+            //@ts-ignore
+            setPayType(e.values().next().value)
+          }}
+          items={payTypes}
+          defaultSelectedKeys={[payType]}
+        >
+          {(item) => (
+            <SelectItem key={item.toString()} textValue={item.toString()}>
+              {item}
+            </SelectItem>
+          )}
+        </Select>
 
         <div className="flex">
           <Image width={100} src={imageUrl} />
