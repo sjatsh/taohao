@@ -1,19 +1,13 @@
 'use client'
 
 import React, {
-  cache,
-  Children,
   FC,
-  FormEvent,
-  use,
   useCallback,
   useEffect,
-  useRef,
   useState,
 } from 'react'
 import {
   Avatar,
-  Code,
   Image,
   Input,
   Listbox,
@@ -37,7 +31,6 @@ import JSONEditorReact from './jsoneditor'
 import { Content, Mode, OnChangeStatus } from 'vanilla-jsoneditor'
 import toast from 'react-hot-toast'
 import { products } from '@prisma/client'
-import { string } from 'zod'
 
 export default function IndexPage({ password }: { password: string }) {
   const [content, setContent] = React.useState(<div></div>)
@@ -45,7 +38,7 @@ export default function IndexPage({ password }: { password: string }) {
   return (
     <div className="grid grid-cols-6">
       <div className="col-span-1">
-        <ListboxWrapper>
+        <ListBoxWrapper>
           <Listbox
             selectionMode="single"
             variant="flat"
@@ -58,7 +51,7 @@ export default function IndexPage({ password }: { password: string }) {
               商品管理
             </ListboxItem>
           </Listbox>
-        </ListboxWrapper>
+        </ListBoxWrapper>
       </div>
       <div className="col-span-4 col-start-2">
         <>{content}</>
@@ -67,7 +60,7 @@ export default function IndexPage({ password }: { password: string }) {
   )
 }
 
-const ListboxWrapper = ({ children }: { children: React.ReactNode }) => (
+const ListBoxWrapper = ({ children }: { children: React.ReactNode }) => (
   <div className="w-full max-w-[260px] rounded-small border-small border-default-200 px-1 py-2 dark:border-default-100">
     {children}
   </div>
@@ -396,10 +389,12 @@ const Product: FC<productsProps> = (props: productsProps) => {
           <ModalContent>
             {(onClose) => (
               <ModalBody>
-                <div
-                  className={`prose-h1:text-green prose-strong:text-blue prose-ul:text-dark prose prose-h1:text-4xl prose-p:text-base prose-ul:list-decimal`}
-                >
-                  <Markdown>{content}</Markdown>
+                <div className="flex flex-col mx-auto">
+                  <div
+                    className={`prose-h1:text-green prose-strong:text-blue prose-ul:text-dark prose prose-h1:text-4xl prose-p:text-base prose-ul:list-decimal`}
+                  >
+                    <Markdown>{content}</Markdown>
+                  </div>
                 </div>
               </ModalBody>
             )}
