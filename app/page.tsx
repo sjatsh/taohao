@@ -10,7 +10,7 @@ export default function Home() {
   const { data: products } = trpc.products.listNoAuth.useQuery()
 
   return (
-    <div className="p-5">
+    <div className="p-3">
       <div className="ml-2">
         <Announcement />
       </div>
