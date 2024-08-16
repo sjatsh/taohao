@@ -8,7 +8,7 @@ export async function GET() {
     })
     const fields = list.map((item) => (
         {
-          loc: `${siteConfig.url}/${item.id}`,
+          loc: `${siteConfig.url}/orders/buy/${item.id}`,
           lastmod: new Date().toISOString(),
         }
     ))
