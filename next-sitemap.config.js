@@ -1,6 +1,6 @@
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
-  siteUrl: process.env.SITE_URL.replace('https://', ''),
+  siteUrl: process.env.SITE_URL,
   changefreq: 'daily',
   priority: 0.7,
   sitemapSize: 5000,
@@ -9,7 +9,7 @@ module.exports = {
   exclude: ['/orders/buy/sitemap.xml'],
   robotsTxtOptions: {
     additionalSitemaps: [
-      process.env.SITE_URL.replace('https://', '')+'/orders/buy/sitemap.xml',
+      process.env.SITE_URL+'/orders/buy/sitemap.xml',
     ],
   },
   transform: async (config, path) => {
