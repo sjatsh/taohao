@@ -1,9 +1,8 @@
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
   siteUrl: process.env.SITE_URL,
-  changefreq: 'daily',
-  priority: 0.7,
-  sitemapSize: 5000,
+  changefreq: 'always',
+  autoLastmod: true,
   generateRobotsTxt: true,
   generateIndexSitemap: true,
   exclude: ['/orders/buy/sitemap.xml'],
@@ -16,6 +15,7 @@ module.exports = {
     return {
       loc: path,
       priority: config.priority,
+      changefreq: config.changefreq,
       lastmod: config.autoLastmod ? new Date().toISOString() : undefined,
       alternateRefs: config.alternateRefs ?? [],
     }
