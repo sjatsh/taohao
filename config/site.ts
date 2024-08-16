@@ -31,6 +31,13 @@ const baseSiteConfig = {
 
 export const siteConfig = {
   ...baseSiteConfig,
+  tg_name: 'taohao360',
+  pages: {
+    orders: {
+      search: '/orders/search',
+      buy: '/orders/buy',
+    },
+  },
   openGraph: {
     type: "website",
     locale: "en_US",
