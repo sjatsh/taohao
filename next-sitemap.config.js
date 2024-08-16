@@ -5,11 +5,17 @@ module.exports = {
   priority: 0.7,
   sitemapSize: 5000,
   generateRobotsTxt: true,
-  // Default transformation function
+  generateIndexSitemap: false,
+  exclude: ['/buy/sitemap.xml'],
+  robotsTxtOptions: {
+    additionalSitemaps: [
+      process.env.SITE_URL + '/buy/sitemap.xml',
+    ],
+  },
   transform: async (config, path) => {
+    console.log('path', path)
     return {
-      loc: path, // => this will be exported as http(s)://<config.siteUrl>/<path>
-      changefreq: config.changefreq,
+      loc: path,
       priority: config.priority,
       lastmod: config.autoLastmod ? new Date().toISOString() : undefined,
       alternateRefs: config.alternateRefs ?? [],
