@@ -1,9 +1,0 @@
-# *
-User-agent: *
-Allow: /
-
-# Host
-Host: https://taohao.sjis.me
-
-# Sitemaps
-Sitemap: https://taohao.sjis.me/sitemap.xml
