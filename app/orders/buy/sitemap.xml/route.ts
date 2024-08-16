@@ -8,8 +8,8 @@ export async function GET() {
     })
     const fields = list.map((item) => (
         {
-            loc: `${siteConfig.url}/${item.id}`,
-            lastModified: new Date().toISOString(),
+          loc: `${siteConfig.url}/${item.id}`,
+          lastmod: new Date().toISOString(),
         }
     ))
     return getServerSideSitemap(fields)
