@@ -7,4 +7,4 @@ Host: https://taohao.sjis.me
 
 # Sitemaps
 Sitemap: https://taohao.sjis.me/sitemap.xml
-Sitemap: https://taohao.sjis.me/buy/sitemap.xml
+Sitemap: https://taohao.sjis.me/orders/buy/sitemap.xml

@@ -5,15 +5,14 @@ module.exports = {
   priority: 0.7,
   sitemapSize: 5000,
   generateRobotsTxt: true,
-  generateIndexSitemap: false,
-  exclude: ['/buy/sitemap.xml'],
+  generateIndexSitemap: true,
+  exclude: ['/orders/buy/sitemap.xml'],
   robotsTxtOptions: {
     additionalSitemaps: [
-      process.env.SITE_URL + '/buy/sitemap.xml',
+      process.env.SITE_URL + '/orders/buy/sitemap.xml',
     ],
   },
   transform: async (config, path) => {
-    console.log('path', path)
     return {
       loc: path,
       priority: config.priority,
