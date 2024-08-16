@@ -2,17 +2,32 @@ import React, { cache } from 'react'
 import Markdown from 'react-markdown'
 
 import { prisma } from '@/prisma'
-import { siteConfig } from '@/config/site';
+import {Metadata, ResolvedMetadata, ResolvingMetadata} from "next";
 
-export const metadata = {
-  title: "账号购买",
-  description: siteConfig.description,
-  keywords: siteConfig.keywords,
-  themeColor: siteConfig.themeColor,
-  icons: siteConfig.icons,
-  openGraph: siteConfig.openGraph,
-  twitter: siteConfig.twitter,
-};
+type Props = {
+  params: { id: string }
+}
+
+export async function generateMetadata(
+  { params }: Props,
+  parent: ResolvingMetadata,
+): Promise<Metadata | ResolvedMetadata> {
+  const res = await prisma.products.findUnique({
+    select: { title: true, image: true },
+    where: { id: parseInt(params.id) },
+  })
+  if (!res) {
+    throw new Error('Product not found')
+  }
+  const previousImages = (await parent).openGraph?.images || []
+
+  return {
+    title: '购买'+res.title,
+    openGraph: {
+      images: [res.image, ...previousImages],
+    },
+  }
+}
 
 export default async function Layout({
   children,
@@ -21,7 +36,11 @@ export default async function Layout({
   children: React.ReactNode
   params: { id: string }
 }) {
-  const content = await getContent(params.id)
+  const res = await prisma.products.findUnique({
+    select: { content: true },
+    where: { id: parseInt(params.id) },
+  })
+  const content = res?.content ? res.content : ''
 
   return (
     <>
@@ -41,13 +60,3 @@ export default async function Layout({
     </>
   )
 }
-
-const getContent = cache(async (id: string) => {
-  'use server'
-  const res = await prisma.products.findUnique({
-    select: { content: true },
-    where: { id: parseInt(id) },
-  })
-
-  return res?.content ? res.content : ''
-})
