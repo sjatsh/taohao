@@ -21,16 +21,15 @@ export const viewport: Viewport = {
   ],
 }
 
-export const metadata: Metadata = {
-  title: {
-    default: siteConfig.name,
-    template: `%s - ${siteConfig.name}`,
-  },
+export const metadata = {
+  title: siteConfig.name,
   description: siteConfig.description,
-  icons: {
-    icon: '/taohao.png',
-  },
-}
+  keywords: siteConfig.keywords,
+  themeColor: siteConfig.themeColor,
+  icons: siteConfig.icons,
+  openGraph: siteConfig.openGraph,
+  twitter: siteConfig.twitter,
+};
 
 export default function RootLayout({
   children,

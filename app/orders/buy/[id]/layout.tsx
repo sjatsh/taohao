@@ -2,6 +2,17 @@ import React, { cache } from 'react'
 import Markdown from 'react-markdown'
 
 import { prisma } from '@/prisma'
+import { siteConfig } from '@/config/site';
+
+export const metadata = {
+  title: "账号购买",
+  description: siteConfig.description,
+  keywords: siteConfig.keywords,
+  themeColor: siteConfig.themeColor,
+  icons: siteConfig.icons,
+  openGraph: siteConfig.openGraph,
+  twitter: siteConfig.twitter,
+};
 
 export default async function Layout({
   children,
