@@ -40,7 +40,7 @@ export const siteConfig = {
   },
   openGraph: {
     type: "website",
-    locale: "en_US",
+    locale: "zh_CN",
     url: baseSiteConfig.url,
     title: baseSiteConfig.name,
     description: baseSiteConfig.description,

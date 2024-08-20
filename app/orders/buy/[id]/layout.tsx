@@ -3,6 +3,7 @@ import Markdown from 'react-markdown'
 
 import { prisma } from '@/prisma'
 import {Metadata, ResolvedMetadata, ResolvingMetadata} from "next";
+import { siteConfig } from '@/config/site';
 
 type Props = {
   params: { id: string }
@@ -19,17 +20,25 @@ export async function generateMetadata(
   if (!res) {
     throw new Error('Product not found')
   }
+  const title = '购买'+res.title
   const previousImages = (await parent).openGraph?.images || []
 
   return {
-    title: '购买'+res.title,
+    title: title,
     description: siteConfig.description,
-    keywords: [res.title, '购买'+res.title],
+    keywords: [res.title, title],
     themeColor: siteConfig.themeColor,
     icons: res.image,
-    twitter: siteConfig.twitter,
+    twitter: {
+      ...siteConfig.twitter,
+      title: title,
+      description: siteConfig.description,
+      images: [res.image, ...previousImages]
+    },
     openGraph: {
       images: [res.image, ...previousImages],
+      url: `${siteConfig.url}${siteConfig.pages.orders.buy}/${params.id}`,
+      title: title,
     },
   }
 }
