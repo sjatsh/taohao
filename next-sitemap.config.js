@@ -5,7 +5,7 @@ module.exports = {
   autoLastmod: true,
   generateRobotsTxt: true,
   generateIndexSitemap: true,
-  exclude: ['/orders/buy/sitemap.xml'],
+  exclude: ['/admin/*'],
   robotsTxtOptions: {
     additionalSitemaps: [
       process.env.SITE_URL+'/orders/buy/sitemap.xml',

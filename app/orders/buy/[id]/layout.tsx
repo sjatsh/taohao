@@ -23,6 +23,11 @@ export async function generateMetadata(
 
   return {
     title: '购买'+res.title,
+    description: siteConfig.description,
+    keywords: [res.title, '购买'+res.title],
+    themeColor: siteConfig.themeColor,
+    icons: res.image,
+    twitter: siteConfig.twitter,
     openGraph: {
       images: [res.image, ...previousImages],
     },
