@@ -3,8 +3,8 @@ User-agent: *
 Allow: /
 
 # Host
-Host: https://taohao.sjis.me
+Host: https://taohao.org
 
 # Sitemaps
-Sitemap: https://taohao.sjis.me/sitemap.xml
-Sitemap: https://taohao.sjis.me/orders/buy/sitemap.xml
+Sitemap: https://taohao.org/sitemap.xml
+Sitemap: https://taohao.org/orders/buy/sitemap.xml
