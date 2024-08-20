@@ -20,19 +20,19 @@ export async function generateMetadata(
   if (!res) {
     throw new Error('Product not found')
   }
-  const title = '购买'+res.title
+  const title = '购买'+res.title + '|' + siteConfig.name
   const previousImages = (await parent).openGraph?.images || []
 
   return {
     title: title,
-    description: siteConfig.description,
-    keywords: [res.title, title],
+    description: title,
+    keywords: [title],
     themeColor: siteConfig.themeColor,
     icons: res.image,
     twitter: {
       ...siteConfig.twitter,
       title: title,
-      description: siteConfig.description,
+      description: title,
       images: [res.image, ...previousImages]
     },
     openGraph: {
