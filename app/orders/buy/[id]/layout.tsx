@@ -2,7 +2,7 @@ import React, { cache } from 'react'
 import Markdown from 'react-markdown'
 
 import { prisma } from '@/prisma'
-import {Metadata, ResolvedMetadata, ResolvingMetadata} from "next";
+import { Metadata, ResolvedMetadata, ResolvingMetadata } from "next";
 import { siteConfig } from '@/config/site';
 
 type Props = {
@@ -20,11 +20,11 @@ export async function generateMetadata(
   if (!res) {
     throw new Error('Product not found')
   }
-  const title = '购买'+res.title + '|' + siteConfig.name
+  const title = '购买' + res.title
   const previousImages = (await parent).openGraph?.images || []
 
   return {
-    title: title,
+    title: title + ' | ' + siteConfig.name,
     description: title,
     keywords: [title],
     themeColor: siteConfig.themeColor,
