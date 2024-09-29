@@ -1,5 +1,6 @@
 'use server'
 
+import { ADMIN_EMAIL } from '@/env/server'
 import { resend } from '@/lib/resend'
 import {
   Body,
@@ -34,7 +35,7 @@ export const OrderEmail = ({
   email,
 }: EmailProps) => {
   return resend.emails.send({
-    from: 'admin@sjis.me',
+    from: ADMIN_EMAIL,
     to: email,
     subject: '【淘号网】感谢您的购买，请查收您的收据',
     react: orderEmail({

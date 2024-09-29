@@ -15,6 +15,7 @@ export const config = createEnv({
     NODE_ENV: z.enum(['development', 'production', 'test']),
     NEXTAUTH_SECRET: z.string(),
     ADMIN_PASSWORD: z.string(),
+    ADMIN_EMAIL: z.string(),
   },
   experimental__runtimeEnv: process.env,
 })
@@ -32,4 +33,5 @@ export const {
   NODE_ENV,
   NEXTAUTH_SECRET,
   ADMIN_PASSWORD,
+  ADMIN_EMAIL,
 } = config
