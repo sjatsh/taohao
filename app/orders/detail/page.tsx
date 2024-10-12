@@ -34,10 +34,9 @@ export default async function Page({
 
   return (
     <div>
-      {orders.map((order, index) => (
-        <div key={index} className="my-5">
+      {orders.map((order) => (
+        <div key={order.id} className="my-5">
           <DetailPage
-            key={index}
             props={{
               ...order,
             }}
