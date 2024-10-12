@@ -5,8 +5,9 @@ import { TRPCError } from '@trpc/server'
 
 import { router, trpc } from '../trpc'
 
-import { prisma } from '@/prisma'
 import { isLogin } from './middlewares/auth'
+
+import { prisma } from '@/prisma'
 
 export const defaultProductSelect = {
   id: true,

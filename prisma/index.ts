@@ -33,12 +33,10 @@ declare const globalThis: {
 export const prisma: PrismaClient =
   globalThis.prismaGlobal || prismaClientSingleton()
 
-// @ts-ignore
 if (!globalThis.prismaGlobal && process.env.NODE_ENV === 'production') {
   // @ts-ignore
-  prisma.$on('query', (e) => {
+  prisma.$on('query', (e: Prisma.QueryEvent) => {
     console.log(
-      // @ts-ignore
       `Query: ${e.query}, Params: ${e.params}, Duration: ${e.duration}ms`,
     )
   })
