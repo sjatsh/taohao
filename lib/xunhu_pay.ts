@@ -13,6 +13,7 @@ export interface wxPayOptions {
   order_id: string
   money: number
   title: string
+  email: string
 }
 
 export async function wxPay(options: wxPayOptions) {
@@ -28,6 +29,7 @@ export async function wxPay(options: wxPayOptions) {
     type: 'WAP',
     wap_url: XUNHU_PAY_WAP_URL,
     wap_name: XUNHU_PAY_WAP_NAME,
+    attach: options.email,
   }
   const hash = getHash(params)
   const requestParams = new URLSearchParams({ ...params, hash })

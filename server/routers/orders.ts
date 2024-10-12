@@ -54,6 +54,7 @@ export const orders = router({
         order_id: order_id,
         money: product.price * input.num,
         title: product.title,
+        email: input.email,
       })
 
       return {

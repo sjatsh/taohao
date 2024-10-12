@@ -18,6 +18,9 @@ import { redirect } from 'next/navigation'
 import { WeiXin } from '@/app/components/icons'
 import { trpc } from '@/lib/trpc'
 
+const validateEmail = (value: string) =>
+  value.match(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}$/i)
+
 export default function Page({ params }: { params: { id: string } }) {
   const { data: product } = trpc.products.byId.useQuery(parseInt(params.id))
 
@@ -27,12 +30,8 @@ export default function Page({ params }: { params: { id: string } }) {
   }, [product])
 
   const [email, setEmail] = React.useState('')
-  const validateEmail = (value: string) =>
-    value.match(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}$/i)
   const emailIsInvalid = useMemo(() => {
-    if (email === '') return false
-
-    return !validateEmail(email)
+    return email === '' ? false : !validateEmail(email)
   }, [email])
 
   const [num, setNum] = React.useState('1')

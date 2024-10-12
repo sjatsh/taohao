@@ -38,6 +38,7 @@ export const siteConfig = {
       search: '/orders/search',
       buy: '/orders/buy',
     },
+    app: '/app',
   },
   openGraph: {
     type: 'website',
