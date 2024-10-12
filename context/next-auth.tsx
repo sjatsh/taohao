@@ -11,8 +11,8 @@ export default function NextAuthSessionProvider({
 }) {
   return (
     <SessionProvider
-      refetchOnWindowFocus={false}
       refetchInterval={60 * 60}
+      refetchOnWindowFocus={false}
       session={session}
     >
       {children}

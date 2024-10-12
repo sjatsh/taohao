@@ -1,7 +1,7 @@
 import React from 'react'
+import { useSession } from 'next-auth/react'
 
 import NextAuthSessionProvider from '@/context/next-auth'
-import { useSession, signIn, signOut } from 'next-auth/react'
 
 export default async function Layout({
   children,

@@ -43,7 +43,7 @@ export const OrderCard: FC<OrderCardProps> = (props: OrderCardProps) => {
             />
           </CardBody>
         </Skeleton>
-        <CardFooter className="justify-between text-medium px-2">
+        <CardFooter className="justify-between px-2 text-medium">
           <b>{props.title}</b>
           <p className="text-default-500">￥{props.price}</p>
         </CardFooter>

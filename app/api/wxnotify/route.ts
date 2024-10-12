@@ -2,7 +2,6 @@ import { type NextRequest } from 'next/server'
 
 import { getHash } from '@/lib/xunhu_pay'
 import { getMaybeTransactionClient, prisma, startTransaction } from '@/prisma'
-import { resend } from '@/lib/resend'
 import { OrderEmail } from '@/module/emails/order'
 
 export async function POST(request: NextRequest) {
@@ -72,6 +71,7 @@ export async function POST(request: NextRequest) {
       },
     })
   })
+
   if (res instanceof Error) {
     return new Response('error', {
       status: 500,

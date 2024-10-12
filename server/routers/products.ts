@@ -30,6 +30,7 @@ export const products = router({
       if (ctx.authed) {
         return prisma.products.findMany()
       }
+
       return prisma.products.findMany({
         select: defaultProductSelect,
       })

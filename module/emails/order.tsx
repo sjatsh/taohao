@@ -1,7 +1,5 @@
 'use server'
 
-import { ADMIN_EMAIL } from '@/env/server'
-import { resend } from '@/lib/resend'
 import {
   Body,
   Column,
@@ -16,6 +14,9 @@ import {
   Row,
 } from '@react-email/components'
 import * as React from 'react'
+
+import { ADMIN_EMAIL } from '@/env/server'
+import { resend } from '@/lib/resend'
 
 interface EmailProps {
   title_text: string
@@ -57,8 +58,8 @@ const orderEmail = ({ title_text, order_id, num, price, kami }: EmailProps) => {
         <Container style={container}>
           <Section style={logo}>
             <Img
-              width={50}
               src="https://vz7a7a7pnsqvl2ta.public.blob.vercel-storage.com/images/taohao-figGwbbpBDFO3pJvpPb0phQChtjLPG.png"
+              width={50}
             />
           </Section>
 
@@ -128,19 +129,6 @@ const headerContentTitle = {
   lineHeight: '27px',
 }
 
-const headerContentSubtitle = {
-  color: '#fff',
-  fontSize: '17px',
-}
-
-const headerImageContainer = {
-  padding: '30px 10px',
-}
-
-const headerImage = {
-  maxWidth: '100%',
-}
-
 const title = {
   margin: '0 0 15px',
   fontWeight: 'bold',
@@ -166,13 +154,6 @@ const container = {
   backgroundColor: '#ffffff',
 }
 
-const footer = {
-  width: '680px',
-  maxWidth: '100%',
-  margin: '32px auto 0 auto',
-  padding: '0 30px',
-}
-
 const content = {
   padding: '30px 30px 40px 30px',
 }
@@ -188,61 +169,4 @@ const header = {
   display: 'flex',
   flexDireciont: 'column',
   backgroundColor: '#2b2d6e',
-}
-
-const buttonContainer = {
-  marginTop: '24px',
-  display: 'block',
-}
-
-const button = {
-  backgroundColor: '#0095ff',
-  border: '1px solid #0077cc',
-  fontSize: '17px',
-  lineHeight: '17px',
-  padding: '13px 17px',
-  borderRadius: '4px',
-  maxWidth: '120px',
-  color: '#fff',
-}
-
-const footerDivider = {
-  ...divider,
-  borderColor: '#d6d8db',
-}
-
-const footerText = {
-  fontSize: '12px',
-  lineHeight: '15px',
-  color: '#9199a1',
-  margin: '0',
-}
-
-const footerLink = {
-  display: 'inline-block',
-  color: '#9199a1',
-  textDecoration: 'underline',
-  fontSize: '12px',
-  marginRight: '10px',
-  marginBottom: '0',
-  marginTop: '8px',
-}
-
-const footerAddress = {
-  margin: '4px 0',
-  fontSize: '12px',
-  lineHeight: '15px',
-  color: '#9199a1',
-}
-
-const footerHeart = {
-  borderRadius: '1px',
-  border: '1px solid #d6d9dc',
-  padding: '4px 6px 3px 6px',
-  fontSize: '11px',
-  lineHeight: '11px',
-  fontFamily: 'Consolas,monospace',
-  color: '#e06c77',
-  maxWidth: 'min-content',
-  margin: '0 0 32px 0',
 }

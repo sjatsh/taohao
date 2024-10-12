@@ -1,6 +1,8 @@
-import { ADMIN_PASSWORD } from '@/env/server'
-import IndexPage from '.'
 import { redirect } from 'next/navigation'
+
+import IndexPage from '.'
+
+import { ADMIN_PASSWORD } from '@/env/server'
 
 export default function Page({
   searchParams,

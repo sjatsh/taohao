@@ -16,6 +16,7 @@ const humanize = (times: string[]) => {
 
 const time = (start: number) => {
   const delta = Date.now() - start
+
   return humanize([
     delta < 1000 ? delta + 'ms' : Math.round(delta / 1000) + 's',
   ])
@@ -24,6 +25,7 @@ const time = (start: number) => {
 export const customerLog: MiddlewareHandler = async (c, next) => {
   const { method } = c.req
   const reqId = cuid()
+
   console.log = (...args: any[]) => {
     if (method === 'HEAD') {
       // 过滤存活探针日志

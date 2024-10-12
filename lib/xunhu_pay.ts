@@ -1,5 +1,6 @@
 import { Md5 } from 'ts-md5'
 import cuid from 'cuid'
+
 import {
   XUNHU_PAY_API_URL,
   XUNHU_PAY_APP_ID,
@@ -38,13 +39,16 @@ export async function wxPay(options: wxPayOptions) {
     },
     body: requestParams,
   })
+
   if (resp.status !== 200) {
     throw new Error(resp.statusText)
   }
   const data = await resp.json()
+
   if (data.errcode !== 0) {
     throw new Error(data.errmsg)
   }
+
   return data
 }
 
@@ -65,13 +69,16 @@ export async function query(orderId: string) {
     },
     body: requestParams,
   })
+
   if (resp.status !== 200) {
     throw new Error(resp.statusText)
   }
   const data = await resp.json()
+
   if (data.errcode !== 0) {
     throw new Error(data.errmsg)
   }
+
   return data
 }
 
@@ -81,5 +88,6 @@ export function getHash(params: { [key: string]: string }) {
     .sort()
     .map((key) => `${key}=${params[key]}`)
     .join('&')
+
   return Md5.hashStr(sortedParams + XUNHU_PAY_APP_SECRET)
 }

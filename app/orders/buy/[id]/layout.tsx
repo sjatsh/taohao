@@ -1,9 +1,9 @@
-import React, { cache } from 'react'
+import React from 'react'
 import Markdown from 'react-markdown'
+import { Metadata, ResolvedMetadata, ResolvingMetadata } from 'next'
 
+import { siteConfig } from '@/config/site'
 import { prisma } from '@/prisma'
-import { Metadata, ResolvedMetadata, ResolvingMetadata } from "next";
-import { siteConfig } from '@/config/site';
 
 type Props = {
   params: { id: string }
@@ -17,6 +17,7 @@ export async function generateMetadata(
     select: { title: true, image: true },
     where: { id: parseInt(params.id) },
   })
+
   if (!res) {
     throw new Error('Product not found')
   }
@@ -33,7 +34,7 @@ export async function generateMetadata(
       ...siteConfig.twitter,
       title: title,
       description: title,
-      images: [res.image, ...previousImages]
+      images: [res.image, ...previousImages],
     },
     openGraph: {
       images: [res.image, ...previousImages],

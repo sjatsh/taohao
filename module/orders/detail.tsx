@@ -1,6 +1,6 @@
 'use client'
 
-import React, { Suspense, useState } from 'react'
+import React, { Suspense } from 'react'
 import { Button } from '@nextui-org/button'
 import toast from 'react-hot-toast'
 import { Textarea } from '@nextui-org/input'

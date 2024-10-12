@@ -61,7 +61,6 @@ const transactionStorage = new AsyncLocalStorage<TransactionClient>()
 
 export function startTransaction<R>(
   callback: Callback<R>,
-  options?: Options,
 ): Types.Utils.JsPromise<R> {
   return prisma.$transaction((prisma) =>
     transactionStorage.run(prisma, () => callback(prisma)),

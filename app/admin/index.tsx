@@ -1,11 +1,8 @@
 'use client'
 
-import React, {
-  FC,
-  useCallback,
-  useEffect,
-  useState,
-} from 'react'
+import type { PutBlobResult } from '@vercel/blob'
+
+import React, { FC, useCallback, useEffect, useState } from 'react'
 import {
   Avatar,
   Image,
@@ -25,24 +22,25 @@ import {
 } from '@nextui-org/react'
 import Markdown from 'react-markdown'
 import { Button } from '@nextui-org/button'
-import type { PutBlobResult } from '@vercel/blob'
-import { trpc } from '@/lib/trpc'
-import JSONEditorReact from './jsoneditor'
 import { Content, Mode, OnChangeStatus } from 'vanilla-jsoneditor'
 import toast from 'react-hot-toast'
 import { products } from '@prisma/client'
 
+import JSONEditorReact from './jsoneditor'
+
+import { trpc } from '@/lib/trpc'
+
 export default function IndexPage({ password }: { password: string }) {
-  const [content, setContent] = React.useState(<div></div>)
+  const [content, setContent] = React.useState(<div />)
 
   return (
     <div className="grid grid-cols-6">
       <div className="col-span-1">
         <ListBoxWrapper>
           <Listbox
+            aria-label="Admin Menu"
             selectionMode="single"
             variant="flat"
-            aria-label="Admin Menu"
           >
             <ListboxItem
               key="products"
@@ -80,6 +78,7 @@ const Pdoducts: FC<{ password: string }> = (props: { password: string }) => {
             const productsRes = await productsMutaion.mutateAsync({
               password: props.password,
             })
+
             //@ts-ignore
             setProductsData(productsRes)
           }
@@ -92,24 +91,8 @@ const Pdoducts: FC<{ password: string }> = (props: { password: string }) => {
           <Select
             key={'products-select'}
             className="mb-5 max-w-xs"
-            label="选择修改商品"
             items={productsData}
-            onSelectionChange={(e) => {
-              //@ts-ignore
-              if (e.values().next().value === undefined) {
-                //@ts-ignore
-                setProduct({})
-                return
-              }
-              //@ts-ignore
-              const id = parseInt(e.values().next().value)
-              //@ts-ignore
-              productsData.map((item: products) => {
-                if (item.id === id) {
-                  setProduct(item)
-                }
-              })
-            }}
+            label="选择修改商品"
             renderValue={(items) => {
               return items.map((item) => (
                 <div key={item.key} className="flex items-center gap-2">
@@ -127,6 +110,24 @@ const Pdoducts: FC<{ password: string }> = (props: { password: string }) => {
                   </div>
                 </div>
               ))
+            }}
+            onSelectionChange={(e) => {
+              //@ts-ignore
+              if (e.values().next().value === undefined) {
+                //@ts-ignore
+                setProduct({})
+
+                return
+              }
+              //@ts-ignore
+              const id = parseInt(e.values().next().value)
+
+              //@ts-ignore
+              productsData.map((item: products) => {
+                if (item.id === id) {
+                  setProduct(item)
+                }
+              })
             }}
           >
             {(product: products) => (
@@ -189,7 +190,7 @@ const Product: FC<productsProps> = (props: productsProps) => {
     text: props.product?.kami ? props.product?.kami : '[]',
   })
   const handler = useCallback(
-    (content: Content, previousContent: Content, status: OnChangeStatus) => {
+    (content: Content, _previousContent: Content, _status: OnChangeStatus) => {
       setJsonContent(content)
     },
     [jsonContent],
@@ -218,35 +219,37 @@ const Product: FC<productsProps> = (props: productsProps) => {
     <>
       <div className="mb-5 grid grid-cols-3 gap-2">
         <Input
-          type="text"
+          className="mb-2 max-w-xs"
           label="标题"
-          variant="bordered"
-          className="mb-2 max-w-xs"
-          onValueChange={setTitle}
+          type="text"
           value={title}
+          variant="bordered"
+          onValueChange={setTitle}
         />
         <Input
-          type="number"
+          className="mb-2 max-w-xs"
           label="价格"
-          variant="bordered"
           placeholder="0.00"
-          className="mb-2 max-w-xs"
-          onValueChange={setPrice}
+          type="number"
           value={price}
+          variant="bordered"
+          onValueChange={setPrice}
         />
         <Input
-          type="number"
-          label="原始价格"
-          variant="bordered"
-          placeholder="0.00"
           className="mb-2 max-w-xs"
-          onValueChange={setOriginPrice}
+          label="原始价格"
+          placeholder="0.00"
+          type="number"
           value={originPrice}
+          variant="bordered"
+          onValueChange={setOriginPrice}
         />
         <Select
-          variant="bordered"
-          label="发货类型"
           className="w-xs"
+          defaultSelectedKeys={[payType]}
+          items={payTypes}
+          label="发货类型"
+          variant="bordered"
           onSelectionChange={(e) => {
             //@ts-ignore
             if (e.values().next().value === undefined) {
@@ -255,8 +258,6 @@ const Product: FC<productsProps> = (props: productsProps) => {
             //@ts-ignore
             setPayType(e.values().next().value)
           }}
-          items={payTypes}
-          defaultSelectedKeys={[payType]}
         >
           {(item) => (
             <SelectItem key={item.toString()} textValue={item.toString()}>
@@ -266,13 +267,14 @@ const Product: FC<productsProps> = (props: productsProps) => {
         </Select>
 
         <div className="flex">
-          <Image width={100} src={imageUrl} />
+          <Image src={imageUrl} width={100} />
           <Input
             isRequired
-            type="file"
             accept="image/*"
+            type="file"
             onChange={async (e) => {
               const file = e.target.files![0]
+
               if (!file) return
 
               const response = await fetch(
@@ -283,6 +285,7 @@ const Product: FC<productsProps> = (props: productsProps) => {
                 },
               )
               const newBlob = (await response.json()) as PutBlobResult
+
               setImageUrl(newBlob.url)
             }}
           />
@@ -293,44 +296,51 @@ const Product: FC<productsProps> = (props: productsProps) => {
 
       <JSONEditorReact
         content={jsonContent}
-        onChange={handler}
         mode={Mode.text}
+        onChange={handler}
       />
 
-      <Button color="primary" className="mb-2 mt-5" onClick={onOpen}>
+      <Button className="mb-2 mt-5" color="primary" onClick={onOpen}>
         预览
       </Button>
       <Button
-        color="primary"
         className="mb-2 ml-5 mt-5"
+        color="primary"
         isLoading={submit}
         onClick={async () => {
           if (title === '') {
             toast.error('标题不能为空')
+
             return
           }
           if (parseFloat(price) <= 0) {
             toast.error('价格必须大于零')
+
             return
           }
           if (parseFloat(originPrice) <= 0) {
             toast.error('原始价格必须大于零')
+
             return
           }
           if (imageUrl === '') {
             toast.error('图片不能为空')
+
             return
           }
           if (content === '') {
             toast.error('商品描述不能为空')
+
             return
           }
 
           // @ts-ignore
           const jsonText = jsonContent.text
           const jsonObj = JSON.parse(jsonText)
+
           if (jsonObj.length <= 0) {
             toast.error('卡密不能为空')
+
             return
           }
           if (payType === '') {
@@ -364,32 +374,32 @@ const Product: FC<productsProps> = (props: productsProps) => {
 
       <ScrollShadow>
         <Textarea
-          variant="bordered"
-          placeholder="商品描述"
           disableAnimation
           disableAutosize
           classNames={{
             base: 'min-w-xs mb-2',
             input: 'resize-y min-h-[500px]',
           }}
-          onValueChange={setContent}
+          placeholder="商品描述"
           value={content}
+          variant="bordered"
+          onValueChange={setContent}
         />
       </ScrollShadow>
 
       <ScrollShadow>
         <Modal
-          size="5xl"
           isOpen={isOpen}
-          onClose={onClose}
-          shouldBlockScroll={false}
           placement="center"
           scrollBehavior="inside"
+          shouldBlockScroll={false}
+          size="5xl"
+          onClose={onClose}
         >
           <ModalContent>
-            {(onClose) => (
+            {(_onClose) => (
               <ModalBody>
-                <div className="flex flex-col mx-auto">
+                <div className="mx-auto flex flex-col">
                   <div
                     className={`prose-h1:text-green prose-strong:text-blue prose-ul:text-dark prose prose-h1:text-4xl prose-p:text-base prose-ul:list-decimal`}
                   >

@@ -8,5 +8,6 @@ export async function POST(request: NextRequest) {
   const blob = await put('images/' + filename, request.body, {
     access: 'public',
   })
+
   return NextResponse.json(blob)
 }

@@ -3,7 +3,7 @@ import { Link } from '@nextui-org/link'
 import clsx from 'clsx'
 import { Toaster } from 'react-hot-toast'
 import React from 'react'
-import { Metadata, Viewport } from 'next'
+import { Viewport } from 'next'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import { Analytics } from '@vercel/analytics/react'
 import { GoogleAnalytics } from '@next/third-parties/google'
@@ -29,7 +29,7 @@ export const metadata = {
   icons: siteConfig.icons,
   openGraph: siteConfig.openGraph,
   twitter: siteConfig.twitter,
-};
+}
 
 export default function RootLayout({
   children,

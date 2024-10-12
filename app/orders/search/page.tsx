@@ -5,7 +5,6 @@ import { Tab, Tabs } from '@nextui-org/react'
 import { Button } from '@nextui-org/button'
 import { Input } from '@nextui-org/input'
 import NextLink from 'next/link'
-import { siteConfig } from '@/config/site'
 
 export default function Page() {
   const [email, setEmail] = React.useState('')
@@ -18,7 +17,6 @@ export default function Page() {
   }, [email])
 
   const [orderId, setOrderId] = React.useState('')
-
 
   return (
     <>
