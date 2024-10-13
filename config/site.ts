@@ -27,7 +27,7 @@ const baseSiteConfig = {
     shortcut: '/taohao.png',
     apple: '/taohao.png',
   },
-  ogImage: 'https://taohao.sjis.me/taohao.png',
+  ogImage: 'https://taohao.org/taohao.png',
 }
 
 export const siteConfig = {

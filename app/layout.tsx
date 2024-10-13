@@ -25,7 +25,6 @@ export const metadata = {
   title: siteConfig.name,
   description: siteConfig.description,
   keywords: siteConfig.keywords,
-  themeColor: siteConfig.themeColor,
   icons: siteConfig.icons,
   openGraph: siteConfig.openGraph,
   twitter: siteConfig.twitter,
@@ -44,7 +43,7 @@ export default function RootLayout({
           fontSans.variable,
         )}
       >
-        <Providers>
+        <Providers themeProps={{ enableSystem: true }}>
           <div className="relative flex h-screen flex-col">
             <Navbar />
             <main className="container mx-auto flex-grow pt-8">
