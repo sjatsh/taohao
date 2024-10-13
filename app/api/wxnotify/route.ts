@@ -43,6 +43,8 @@ export async function POST(request: NextRequest) {
     })
   }
 
+  let kamiPaid = ''
+
   const res = await startTransaction(async () => {
     const p = getMaybeTransactionClient()
     const kami = JSON.parse(order.product.kami) as string[]
@@ -61,13 +63,15 @@ export async function POST(request: NextRequest) {
         kami: restKami.join('\n'),
       },
     })
+
+    kamiPaid = JSON.stringify(kami.slice(order.num, kami.length))
     await p.products.updateMany({
       where: {
         id: order.product_id,
       },
       data: {
         num: order.product.num - order.num,
-        kami: JSON.stringify(kami.slice(order.num, kami.length)),
+        kami: kamiPaid,
       },
     })
   })
@@ -83,7 +87,7 @@ export async function POST(request: NextRequest) {
     order_id: order.order_id,
     num: order.num,
     price: order.price,
-    kami: order.kami,
+    kami: kamiPaid,
     email: order.email,
   })
 
