@@ -3,7 +3,7 @@ import { Link } from '@nextui-org/link'
 import clsx from 'clsx'
 import { Toaster } from 'react-hot-toast'
 import React from 'react'
-import { Viewport } from 'next'
+// import { Viewport } from 'next'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import { Analytics } from '@vercel/analytics/react'
 import { GoogleAnalytics } from '@next/third-parties/google'
@@ -14,12 +14,12 @@ import { siteConfig } from '@/config/site'
 import TrpcContext from '@/context/trpc'
 import { Providers } from '@/app/providers'
 
-export const viewport: Viewport = {
-  themeColor: [
-    { media: '(prefers-color-scheme: light)', color: 'black' },
-    { media: '(prefers-color-scheme: dark)', color: 'black' },
-  ],
-}
+// export const viewport: Viewport = {
+//   themeColor: [
+//     { media: '(prefers-color-scheme: light)', color: 'black' },
+//     { media: '(prefers-color-scheme: dark)', color: 'black' },
+//   ],
+// }
 
 export const metadata = {
   title: siteConfig.name,
@@ -43,7 +43,7 @@ export default function RootLayout({
           fontSans.variable,
         )}
       >
-        <Providers themeProps={{ enableSystem: true }}>
+        <Providers themeProps={{ forcedTheme: 'light' }}>
           <div className="relative flex h-screen flex-col">
             <Navbar />
             <main className="container mx-auto flex-grow pt-8">
