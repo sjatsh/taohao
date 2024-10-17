@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
 
   const product = await prisma.products.findUnique({
     where: {
-      id: Number(productId),
+      id: Number(productId.toString()),
     },
   })
 
@@ -64,8 +64,8 @@ export async function POST(request: NextRequest) {
 
       await p.orders.create({
         data: {
-          order_id: orderId,
-          product_id: productId,
+          order_id: orderId.toString(),
+          product_id: Number(productId.toString()),
           num: orderNum,
           price: product.price,
           email: '',
