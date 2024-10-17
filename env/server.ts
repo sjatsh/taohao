@@ -16,6 +16,7 @@ export const config = createEnv({
     NEXTAUTH_SECRET: z.string(),
     ADMIN_PASSWORD: z.string(),
     ADMIN_EMAIL: z.string(),
+    API_KEY: z.string(),
   },
   experimental__runtimeEnv: process.env,
 })
@@ -34,4 +35,5 @@ export const {
   NEXTAUTH_SECRET,
   ADMIN_PASSWORD,
   ADMIN_EMAIL,
+  API_KEY,
 } = config
