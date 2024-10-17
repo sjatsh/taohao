@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
   const orderId = formData.get('order_id')
   const from = formData.get('from')
 
-  if (!orderId || !key || !productId) {
+  if (!orderId || !key || !productId || !from) {
     return NextResponse.json(
       { success: false, message: 'params error' },
       { status: 200 },
@@ -69,7 +69,7 @@ export async function POST(request: NextRequest) {
           num: orderNum,
           price: product.price,
           email: '',
-          payment: from,
+          payment: from.toString(),
           status: 1,
           kami: restKamiStr,
         },
