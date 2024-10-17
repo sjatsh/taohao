@@ -1,4 +1,4 @@
-import { type NextRequest } from 'next/server'
+import { NextResponse, type NextRequest } from 'next/server'
 
 import { getMaybeTransactionClient, prisma, startTransaction } from '@/prisma'
 import { API_KEY, SITE_URL } from '@/env/server'
@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
   const key = formData.get('key')
 
   if (key !== API_KEY) {
-    return Response.json(
+    return NextResponse.json(
       { success: false, message: 'key error' },
       { status: 200 },
     )
@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
   const from = formData.get('from')
 
   if (!orderId || !key || !productId) {
-    return Response.json(
+    return NextResponse.json(
       { success: false, message: 'params error' },
       { status: 200 },
     )
@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
   })
 
   if (!product) {
-    return Response.json(
+    return NextResponse.json(
       { success: false, message: 'product not found' },
       { status: 200 },
     )
@@ -50,7 +50,10 @@ export async function POST(request: NextRequest) {
   const orderNum = 1
 
   if (kami.length < orderNum) {
-    return new Error('kami not enough')
+    return NextResponse.json(
+      { success: false, message: 'kami not enough' },
+      { status: 200 },
+    )
   }
   const restKami = kami.slice(0, orderNum)
   const restKamiStr = restKami.join('\n')
@@ -85,13 +88,13 @@ export async function POST(request: NextRequest) {
       })
     })
   } catch (e) {
-    return Response.json(
+    return NextResponse.json(
       { success: false, message: 'Internal Server Error' },
       { status: 200 },
     )
   }
 
-  return Response.json(
+  return NextResponse.json(
     {
       success: true,
       kami: restKamiStr,
