@@ -1,4 +1,4 @@
-import { NextResponse, type NextRequest } from 'next/server'
+import { type NextRequest } from 'next/server'
 
 import { getMaybeTransactionClient, prisma, startTransaction } from '@/prisma'
 import { API_KEY, SITE_URL } from '@/env/server'
@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
   const key = formData.get('key')
 
   if (key !== API_KEY) {
-    return NextResponse.json(
+    return Response.json(
       { success: false, message: 'key error' },
       { status: 200 },
     )
@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
   const from = formData.get('from')
 
   if (!orderId || !key || !productId) {
-    return NextResponse.json(
+    return Response.json(
       { success: false, message: 'params error' },
       { status: 200 },
     )
@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
   })
 
   if (!product) {
-    return NextResponse.json(
+    return Response.json(
       { success: false, message: 'product not found' },
       { status: 200 },
     )
@@ -85,13 +85,13 @@ export async function POST(request: NextRequest) {
       })
     })
   } catch (e) {
-    return NextResponse.json(
+    return Response.json(
       { success: false, message: 'Internal Server Error' },
       { status: 200 },
     )
   }
 
-  return NextResponse.json(
+  return Response.json(
     {
       success: true,
       kami: restKamiStr,
