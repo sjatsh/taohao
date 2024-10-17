@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
 
   const product = await prisma.products.findUnique({
     where: {
-      id: productId.toString(),
+      id: Number(productId),
     },
   })
 
