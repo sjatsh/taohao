@@ -17,7 +17,7 @@
     "@taohao/prisma": "workspace:^",
     "@taohao/trpc-encrypt-transformer": "workspace:^",
     "@hono/trpc-server": "0.1.0",
-    "hono": "4.4.2",
+    "hono": "^4.6.5",
     "cuid": "^3.0.0"
   },
   "devDependencies": {

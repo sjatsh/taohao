@@ -1,5 +1,4 @@
 import { BaseException } from './base-exception'
-export * from './did-exception'
 
 export { BaseException } from './base-exception'
 export class UnimplementedException extends BaseException {

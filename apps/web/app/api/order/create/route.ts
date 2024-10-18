@@ -47,8 +47,6 @@ export async function POST(request: NextRequest) {
     })
   }
 
-  let kamiPaid = ''
-
   const res = await startTransaction(async () => {
     const p = getMaybeTransactionClient()
     const kami = JSON.parse(order.product.kami) as string[]
@@ -68,14 +66,14 @@ export async function POST(request: NextRequest) {
       },
     })
 
-    kamiPaid = JSON.stringify(kami.slice(order.num, kami.length))
+    const kamiLeft = JSON.stringify(kami.slice(order.num, kami.length))
     await p.products.updateMany({
       where: {
         id: order.product_id,
       },
       data: {
         num: order.product.num - order.num,
-        kami: kamiPaid,
+        kami: kamiLeft,
       },
     })
   })
@@ -85,15 +83,6 @@ export async function POST(request: NextRequest) {
       status: 500,
     })
   }
-
-  await OrderEmail({
-    title_text: order.product.title,
-    order_id: order.order_id,
-    num: order.num,
-    price: order.price,
-    kami: kamiPaid,
-    email: order.email,
-  })
 
   return new Response('success', {
     status: 200,

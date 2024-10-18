@@ -57,6 +57,7 @@ export async function POST(request: NextRequest) {
       return new Error('kami not enough')
     }
     const restKami = kami.slice(0, order.num)
+    kamiPaid = restKami.join('\n')
 
     await p.orders.updateMany({
       where: {
@@ -64,18 +65,18 @@ export async function POST(request: NextRequest) {
       },
       data: {
         status: 1,
-        kami: restKami.join('\n'),
+        kami: kamiPaid,
       },
     })
 
-    kamiPaid = JSON.stringify(kami.slice(order.num, kami.length))
+    const kamiLeft = JSON.stringify(kami.slice(order.num, kami.length))
     await p.products.updateMany({
       where: {
         id: order.product_id,
       },
       data: {
         num: order.product.num - order.num,
-        kami: kamiPaid,
+        kami: kamiLeft,
       },
     })
   })

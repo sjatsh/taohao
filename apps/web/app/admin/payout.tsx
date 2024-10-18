@@ -9,7 +9,6 @@ export default async function Layout({
   children: React.ReactNode
 }) {
   const { data: session } = useSession()
-
   return (
     <NextAuthSessionProvider session={session}>
       {children}

@@ -13,6 +13,8 @@ import { Navbar } from '@/app/components/navbar'
 import { siteConfig } from '@/config/site'
 import TrpcContext from '@/context/trpc'
 import { Providers } from '@/app/providers'
+import { rscAuth } from '@/app/api/auth/[[...nextauth]]/auth'
+import NextAuthSessionProvider from '@/context/next-auth'
 
 // export const viewport: Viewport = {
 //   themeColor: [
@@ -30,11 +32,12 @@ export const metadata = {
   twitter: siteConfig.twitter,
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const session = await rscAuth()
   return (
     <html suppressHydrationWarning lang="en">
       <body
@@ -47,7 +50,11 @@ export default function RootLayout({
           <div className="relative flex h-screen flex-col">
             <Navbar />
             <main className="container mx-auto flex-grow pt-8">
-              <TrpcContext>{children}</TrpcContext>
+              <TrpcContext>
+                <NextAuthSessionProvider session={session}>
+                  {children}
+                </NextAuthSessionProvider>
+              </TrpcContext>
             </main>
             <footer className="flex w-full items-center justify-center py-3">
               <Link isExternal className="flex items-center gap-1 text-current">
