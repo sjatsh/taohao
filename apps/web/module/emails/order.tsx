@@ -56,13 +56,6 @@ const orderEmail = ({ title_text, order_id, num, price, kami }: EmailProps) => {
       <Head />
       <Body style={main}>
         <Container style={container}>
-          <Section style={logo}>
-            <Img
-              src="https://vz7a7a7pnsqvl2ta.public.blob.vercel-storage.com/images/taohao-figGwbbpBDFO3pJvpPb0phQChtjLPG.png"
-              width={50}
-            />
-          </Section>
-
           <Section style={header}>
             <div style={headerContent}>
               <div style={headerContentTitle}>{title_text}</div>
