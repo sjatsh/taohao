@@ -1,0 +1,12 @@
+{
+  "name": "@taohao/error",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "tsup": "^8.2.4"
+  }
+}

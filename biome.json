@@ -1,0 +1,54 @@
+{
+	"$schema": "https://biomejs.dev/schemas/1.9.3/schema.json",
+	"formatter": {
+	  "indentStyle": "space"
+	},
+	"javascript": {
+	  "formatter": {
+		"quoteStyle": "single",
+		"jsxQuoteStyle": "single",
+		"semicolons": "asNeeded"
+	  }
+	},
+	"files": {
+	  "maxSize": 2000000,
+	  "ignore": [
+		"**/*/build",
+		".*"
+	  ]
+	},
+	"linter": {
+	  "enabled": true,
+	  "rules": {
+		"recommended": true,
+		"style": {
+		  "noNonNullAssertion": { "level": "info", "fix": "none" },
+		  "noUselessElse": "off",
+		  "useSelfClosingElements": { "level": "error", "fix": "safe" },
+		  "useNodejsImportProtocol": { "level": "error", "fix": "safe" },
+		  "noUnusedTemplateLiteral": { "level": "error", "fix": "safe" }
+		},
+		"suspicious": { "noExplicitAny": "info", "noArrayIndexKey": "warn" },
+		"a11y": { "all": false },
+		"complexity": { "noForEach": "off" },
+		"correctness": { "noUnreachable": "off" }
+	  }
+	},
+	"vcs": {
+	  "enabled": true,
+	  "clientKind": "git",
+	  "useIgnoreFile": true,
+	  "defaultBranch": "main"
+	},
+	"overrides": [
+	  {
+		"include": ["packages/error/*.ts"],
+		"linter": {
+		  "rules": {
+			"complexity": { "noStaticOnlyClass": "off" }
+		  }
+		}
+	  }
+	]
+  }
+  

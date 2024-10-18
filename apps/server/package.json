@@ -1,0 +1,34 @@
+{
+  "name": "@taohao/server",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "module": "index.ts",
+  "scripts": {
+    "start": "bun run src/index.ts",
+    "dev": "BUN_PORT=3001 bun run --hot src/index.ts",
+    "trpc-type": "rm -rf ../trpc-types/trpc-tsconfig.tsbuildinfo && tsc -p trpc-tsconfig.json"
+  },
+  "dependencies": {
+    "@taohao/env": "workspace:^",
+    "@taohao/logger": "workspace:^",
+    "@taohao/error": "workspace:^",
+    "@taohao/xunhu_pay": "workspace:^",
+    "@taohao/prisma": "workspace:^",
+    "@taohao/trpc-encrypt-transformer": "workspace:^",
+    "@hono/trpc-server": "0.1.0",
+    "hono": "4.4.2",
+    "cuid": "^3.0.0"
+  },
+  "devDependencies": {
+    "@taohao/typescript-config": "workspace:^",
+    "@types/flake-idgen": "0.1.34",
+    "@types/lodash": "^4.17.7",
+    "@types/node": "^20.14.7",
+    "@types/react": "18.2.45",
+    "dotenv": "^16.4.5",
+    "trpc-panel": "1.3.4",
+    "typescript": "5.3.3",
+    "vitest": "^1.0.4"
+  }
+}

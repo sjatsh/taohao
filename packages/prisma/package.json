@@ -1,0 +1,24 @@
+{
+  "name": "@taohao/prisma",
+  "version": "0.0.0",
+  "private": true,
+  "main": "index.ts",
+  "module": "index.ts",
+  "scripts": {
+    "generate": "prisma generate",
+    "migrate": "prisma migrate deploy",
+    "push": "prisma db push",
+    "pull": "prisma db pull",
+    "migrate:dev": "prisma migrate dev --create-only"
+  },
+  "dependencies": {
+    "prisma": "^5.20.0",
+    "@prisma/client": "^5.20.0",
+    "@taohao/logger": "workspace:^",
+    "zod": "3.20.2",
+    "zod-prisma-types": "3.1.6"
+  },
+  "devDependencies": {
+    "prisma": "5.20.0"
+  }
+}

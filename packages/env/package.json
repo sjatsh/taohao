@@ -1,0 +1,19 @@
+{
+  "name": "@taohao/env",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.ts",
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.14.7",
+    "@taohao/typescript-config": "workspace:^"
+  },
+  "dependencies": {
+    "@t3-oss/env-nextjs": "^0.10.1",
+    "zod": "3.23.8",
+    "typescript": "^5.4.5"
+  }
+}

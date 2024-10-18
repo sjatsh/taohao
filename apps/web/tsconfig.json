@@ -1,0 +1,23 @@
+{
+  "extends": "@taohao/typescript-config/nextjs.json",
+  "compilerOptions": {
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "@/*": ["./*"]
+    },
+    "strictNullChecks": true
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "tailwind.config.js",
+    "shadcn.tailwind.config.js"
+  ],
+  "exclude": ["node_modules"]
+}

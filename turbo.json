@@ -1,0 +1,51 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "globalEnv": [
+    "LOG_LEVEL",
+    "XUNHU_PAY_APP_ID",
+    "XUNHU_PAY_APP_SECRET",
+    "XUNHU_PAY_API_URL",
+    "XUNHU_PAY_WAP_URL",
+    "XUNHU_PAY_WAP_NAME",
+    "SITE_URL",
+    "POSTGRES_PRISMA_URL",
+    "RESEND_API_KEY",
+    "BLOB_READ_WRITE_TOKEN",
+    "NODE_ENV",
+    "NEXTAUTH_SECRET",
+    "ADMIN_PASSWORD",
+    "ADMIN_EMAIL",
+    "NEXT_PUBLIC_ENCRYPTION_KEY",
+    "NEXT_PUBLIC_SERVER_URL"
+  ],
+  "tasks": {
+    "build": {
+      "cache": false,
+      "dependsOn": [
+        "^generate",
+        "^build"
+      ]
+    },
+    "dev": {
+      "cache": false,
+      "dependsOn": [
+        "^generate"
+      ]
+    },
+    "start": {
+      "dependsOn": [
+        "^generate"
+      ]
+    },
+    "deploy": {},
+    "generate": {
+      "cache": false
+    },
+    "format": {
+      "cache": false
+    },
+    "test": {
+      "cache": false
+    }
+  }
+}

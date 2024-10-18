@@ -1,0 +1,47 @@
+generator client {
+  provider        = "prisma-client-js"
+  relationMode    = "prisma"
+  previewFeatures = ["postgresqlExtensions", "relationJoins"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("POSTGRES_PRISMA_URL")
+}
+
+generator zod {
+  provider         = "zod-prisma-types"
+  useMultipleFiles = true
+}
+
+model products {
+  id           Int      @id @default(autoincrement())
+  title        String   @unique @db.VarChar(255)
+  num          Int
+  price        Float
+  origin_price Float?
+  image        String   @default("") @db.VarChar(255)
+  content      String   @db.Text
+  pay_type     String   @default("") @db.VarChar(255)
+  kami         String   @db.Text
+  created_at   DateTime @default(now())
+  updated_at   DateTime @default(now()) @updatedAt
+  orders       orders[]
+}
+
+model orders {
+  id         Int      @id @default(autoincrement())
+  order_id   String   @unique @db.VarChar(255)
+  product    products @relation(fields: [product_id], references: [id])
+  product_id Int
+  num        Int
+  price      Float    @default(0)
+  email      String   @db.VarChar(255)
+  payment    String   @default("") @db.VarChar(255)
+  status     Int      @default(0)
+  kami       String   @db.Text
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
+
+  @@index([order_id, email])
+}
