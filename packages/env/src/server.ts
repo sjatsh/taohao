@@ -3,7 +3,7 @@ import { z } from 'zod'
 
 export const config = createEnv({
   server: {
-    LOG_LEVEL: z.string(),
+    LOG_LEVEL: z.string().optional().default('info'),
     XUNHU_PAY_APP_ID: z.string(),
     XUNHU_PAY_APP_SECRET: z.string(),
     XUNHU_PAY_API_URL: z.string().url(),
