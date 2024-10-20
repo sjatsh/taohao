@@ -6,6 +6,7 @@ import { ZodError } from 'zod'
 
 import { NEXT_PUBLIC_ENCRYPTION_KEY } from '@taohao/env/src/client'
 import { EncryptTransformer } from '@taohao/trpc-encrypt-transformer'
+import { logger } from '@taohao/logger'
 
 export interface AuthContext {
   user: {
@@ -77,7 +78,27 @@ export const trpc = initTRPC
 
 export const middleware = trpc.middleware
 
-export const procedure = trpc.procedure
+export const procedure = trpc.procedure.use(async (opts) => {
+  const start = Date.now()
+  try {
+    const result = await opts.next()
+
+    const duration = Date.now() - start
+
+    if (result.ok) {
+      logger.info({ path: opts.path, params: opts.rawInput, duration })
+    } else {
+      logger.error({ opts, result, duration })
+    }
+
+    return result
+  } catch (err) {
+    logger.error(err)
+    throw err
+  }
+})
+
+trpc.procedure = procedure
 
 export const router = trpc.router
 

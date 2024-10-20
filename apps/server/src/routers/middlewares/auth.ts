@@ -1,14 +1,17 @@
+import { logger } from '@taohao/logger'
 import { middleware } from '../../trpc'
-
-import { ADMIN_PASSWORD } from '@taohao/env/src/server'
+import { TRPCError } from '@trpc/server'
 
 export const isLogin = middleware(async (opts) => {
-  // @ts-ignore
-  const authed = opts.rawInput?.password === ADMIN_PASSWORD
-
+  const { ctx } = opts
+  if (!ctx.user) {
+    throw new TRPCError({
+      code: 'UNAUTHORIZED',
+    })
+  }
   return opts.next({
     ctx: {
-      authed: authed,
+      user: ctx.user,
     },
   })
 })

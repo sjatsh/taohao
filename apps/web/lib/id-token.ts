@@ -50,3 +50,17 @@ export async function findSessionToken(sessionToken: string) {
     },
   })
 }
+
+export async function findUserByName(name: string, password: string) {
+  let user =  await prisma.user.findUnique({
+    where: {
+      name,
+      password,
+    },
+  })
+  if (!user) {
+    return null
+  }
+  user.password = ''
+  return user
+}

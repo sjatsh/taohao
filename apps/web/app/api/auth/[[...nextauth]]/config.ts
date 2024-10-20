@@ -2,6 +2,7 @@ import { adapter } from '@/lib/auth-adapter'
 import type { CookiesOptions, NextAuthOptions } from 'next-auth'
 import { decode, encode } from 'next-auth/jwt'
 import { taohao } from './taohao'
+import { logger } from '@taohao/logger'
 
 const devCookieSettings = {
   state: {
@@ -23,6 +24,7 @@ const devCookieSettings = {
     }
   }
 } satisfies Partial<CookiesOptions>
+
 const productionCookieSettings = {
   state: {
     name: '__Secure-next-auth.state',
@@ -52,9 +54,7 @@ export const authOptions: NextAuthOptions = {
   },
   providers: [taohao],
   pages: {
-    signIn: '/admin/signin',
-    verifyRequest: '/admin/verify-request',
-    error: '/admin/error'
+    // signIn: '/auth/signin',
   },
   // https://github.com/nextauthjs/next-auth/discussions/6898
   cookies:
@@ -62,19 +62,36 @@ export const authOptions: NextAuthOptions = {
       ? productionCookieSettings
       : devCookieSettings,
   callbacks: {
-    async signIn({ account }) {
-      return true
+    async signIn({ user }) {
+      if (user) {
+        return true
+      }
+      return false
     },
-    session({ session, user }) {
+    async redirect({ url, baseUrl }) {
+      return baseUrl + '/admin'
+    },
+    async jwt({ token, user }) {
+      if (user) {
+        return {
+          ...token,
+          id: user.id,
+        };
+      }
+      return token;
+    },
+    session({ session, token }) {
       return {
         ...session,
-        id: user.id,
-        user
-      }
+        user: {
+          ...session.user,
+          id: token.id,
+        },
+      };
     }
   },
   session: {
-    strategy: 'jwt'
+    strategy: 'jwt',
   },
   jwt: {
     async encode(param) {

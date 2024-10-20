@@ -7,9 +7,10 @@ import { z } from 'zod';
 export const UserSchema = z.object({
   id: z.string().cuid(),
   name: z.string().nullable(),
+  password: z.string().nullable(),
   email: z.string().nullable(),
-  created_at: z.coerce.date(),
-  updated_at: z.coerce.date().nullable(),
+  emailVerified: z.coerce.date().nullable(),
+  image: z.string().nullable(),
 })
 
 export type User = z.infer<typeof UserSchema>

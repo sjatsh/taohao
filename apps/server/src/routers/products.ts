@@ -1,7 +1,6 @@
 import type { Prisma } from '@taohao/prisma'
 
 import { z } from 'zod'
-import { TRPCError } from '@trpc/server'
 
 import { router, trpc } from '../trpc'
 
@@ -21,17 +20,10 @@ export const defaultProductSelect = {
 
 export const products = router({
   list: trpc.procedure
-    .use(isLogin)
-    .input(
-      z.object({
-        password: z.string().optional(),
-      }),
-    )
     .mutation(async ({ ctx }) => {
-      if (ctx.authed) {
+      if (ctx.user) {
         return prisma.products.findMany()
       }
-
       return prisma.products.findMany({
         select: defaultProductSelect,
       })
@@ -53,8 +45,7 @@ export const products = router({
     .use(isLogin)
     .input(
       z.object({
-        id: z.number(),
-        password: z.string(),
+        id: z.number().optional(),
         title: z.string(),
         num: z.number(),
         price: z.number(),
@@ -65,24 +56,9 @@ export const products = router({
         kami: z.string(),
       }),
     )
-    .mutation(async ({ ctx, input }) => {
-      if (!ctx.authed) {
-        throw new TRPCError({
-          code: 'UNAUTHORIZED',
-        })
-      }
-
-      const data = {
-        title: input.title,
-        num: input.num,
-        price: input.price,
-        origin_price: input.origin_price,
-        image: input.image,
-        pay_type: input.pay_type,
-        content: input.content,
-        kami: input.kami,
-      }
-
+    .mutation(async ({ input }) => {
+      let data = { ...input }
+      delete data.id
       return prisma.products.upsert({
         create: data,
         update: data,
