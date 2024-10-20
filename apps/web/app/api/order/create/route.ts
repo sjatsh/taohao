@@ -6,8 +6,6 @@ import {
   startTransaction,
 } from '@taohao/prisma'
 
-import { OrderEmail } from '@/module/emails/order'
-
 export async function POST(request: NextRequest) {
   const formData = await request.formData()
   let params: { [key: string]: string } = {}

@@ -5,6 +5,7 @@ import type { PutBlobResult } from '@vercel/blob'
 import React, { FC, useCallback, useEffect, useState } from 'react'
 import {
   Avatar,
+  breadcrumbItem,
   Image,
   Input,
   Listbox,
@@ -32,7 +33,7 @@ import { trpc } from '@/lib/trpc'
 
 export default function Page() {
   const [content, setContent] = React.useState(<div />)
-  
+
   return (
     <div className="grid grid-cols-6">
       <div className="col-span-1">
@@ -44,7 +45,7 @@ export default function Page() {
           >
             <ListboxItem
               key="products"
-              onClick={() => setContent(<Pdoducts/>)}
+              onClick={() => setContent(<Pdoducts />)}
             >
               商品管理
             </ListboxItem>
@@ -65,88 +66,69 @@ const ListBoxWrapper = ({ children }: { children: React.ReactNode }) => (
 )
 
 const Pdoducts: FC = () => {
-  const [productsData, setProductsData] = useState<products[]>([])
+  const { data: products } = trpc.products.list.useQuery()
   const [product, setProduct] = useState<products>()
-  const productsMutaion = trpc.products.list.useMutation()
 
   return (
     <div className="ml-5">
-      <Tabs
-        size="lg"
-        onSelectionChange={async (e) => {
-          if (e === 'search') {
-            const productsRes = await productsMutaion.mutateAsync()
-
-            //@ts-ignore
-            setProductsData(productsRes)
-          }
-        }}
-      >
+      <Tabs>
         <Tab key="add" title="添加">
           <Product />
         </Tab>
         <Tab key="search" title="查询">
-          <Select
-            key={'products-select'}
-            className="mb-5 max-w-xs"
-            items={productsData}
-            label="选择修改商品"
-            renderValue={(items) => {
-              return items.map((item) => (
-                <div key={item.key} className="flex items-center gap-2">
-                  <Avatar
-                    alt={item.data?.title}
-                    className="flex-shrink-0"
-                    size="sm"
-                    src={item.data?.image}
-                  />
-                  <div className="flex flex-col">
-                    <span>{item.data?.title}</span>
-                    <span className="text-tiny text-default-500">
-                      ￥{item.data?.price}
-                    </span>
+          <div className='grid grid-cols-3 gap-2'>
+            <Select
+              key='products-select'
+              className="mb-5 max-w-xs"
+              items={products}
+              label="选择修改商品"
+              renderValue={(items) => {
+                return items.map((item) => (
+                  <div key={item.key} className="flex items-center gap-2">
+                    <Avatar
+                      alt={item.data?.title}
+                      className="flex-shrink-0"
+                      size="sm"
+                      src={item.data?.image}
+                    />
+                    <div className="flex flex-col">
+                      <span>{item.data?.title}</span>
+                      <span className="text-tiny text-default-500">
+                        ￥{item.data?.price}
+                      </span>
+                    </div>
                   </div>
-                </div>
-              ))
-            }}
-            onSelectionChange={(e) => {
-              //@ts-ignore
-              if (e.values().next().value === undefined) {
-                //@ts-ignore
-                setProduct({})
-
-                return
-              }
-              //@ts-ignore
-              const id = parseInt(e.values().next().value)
-
-              //@ts-ignore
-              productsData.map((item: products) => {
-                if (item.id === id) {
-                  setProduct(item)
+                ))
+              }}
+              onChange={(e) => {
+                for (var i = 0; i < products.length; i++) {
+                  if (products[i]?.id.toString() === e.target.value) {
+                    setProduct(products[i])
+                    break
+                  }
                 }
-              })
-            }}
-          >
-            {(product: products) => (
-              <SelectItem key={product.id} textValue={product.title}>
-                <div className="flex items-center gap-2">
-                  <Avatar
-                    alt={product.title}
-                    className="flex-shrink-0"
-                    size="sm"
-                    src={product.image}
-                  />
-                  <div className="flex flex-col">
-                    <span className="text-small">{product.title}</span>
-                    <span className="text-tiny text-default-400">
-                      ￥{product.price}
-                    </span>
+              }}
+            >
+              {(product: products) => (
+                <SelectItem key={product.id} textValue={product.title}>
+                  <div className="flex items-center gap-2">
+                    <Avatar
+                      alt={product.title}
+                      className="flex-shrink-0"
+                      size="sm"
+                      src={product.image}
+                    />
+                    <div className="flex flex-col">
+                      <span className="text-small">{product.title}</span>
+                      <span className="text-tiny text-default-400">
+                        ￥{product.price}
+                      </span>
+                    </div>
                   </div>
-                </div>
-              </SelectItem>
-            )}
-          </Select>
+                </SelectItem>
+              )}
+            </Select>
+          </div>
 
           <Product product={product} />
         </Tab>
@@ -203,7 +185,7 @@ const Product: FC<productsProps> = (props: productsProps) => {
         : '0.00',
     )
     setImageUrl(props.product?.image ? props.product?.image : '')
-    setPayType(props.product?.pay_type ? props.product?.pay_type : '')
+    setPayType(props.product?.pay_type ? props.product?.pay_type : '自动发货')
     setContent(props.product?.content ? props.product?.content : '')
     setJsonContent({ text: props.product?.kami ? props.product?.kami : '[]' })
   }, [props.product])

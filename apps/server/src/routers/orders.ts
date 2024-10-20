@@ -7,13 +7,15 @@ import { prisma } from '@taohao/prisma'
 import { wxPay } from '@taohao/xunhu_pay'
 
 export const orders = router({
-  byOrderId: trpc.procedure.input(z.string()).query(async ({ input }) => {
-    return prisma.orders.findFirst({
-      where: {
-        order_id: input,
-      },
-    })
-  }),
+  byOrderId: trpc.procedure.
+    input(z.string()).
+    mutation(async ({ input }) => {
+      return prisma.orders.findFirst({
+        where: {
+          order_id: input,
+        },
+      })
+    }),
   create: trpc.procedure
     .input(
       z.object({
@@ -62,11 +64,4 @@ export const orders = router({
         qrcode_url: createWxPayRes.url_qrcode,
       }
     }),
-  find: trpc.procedure.input(z.string()).mutation(async ({ input }) => {
-    return prisma.orders.findFirst({
-      where: {
-        order_id: input,
-      },
-    })
-  }),
 })

@@ -20,7 +20,7 @@ export const defaultProductSelect = {
 
 export const products = router({
   list: trpc.procedure
-    .mutation(async ({ ctx }) => {
+    .query(async ({ ctx }) => {
       if (ctx.user) {
         return prisma.products.findMany()
       }
@@ -28,19 +28,16 @@ export const products = router({
         select: defaultProductSelect,
       })
     }),
-  listNoAuth: trpc.procedure.query(async () => {
-    return prisma.products.findMany({
-      select: defaultProductSelect,
-    })
-  }),
-  byId: trpc.procedure.input(z.number()).query(async ({ input }) => {
-    return prisma.products.findUnique({
-      select: defaultProductSelect,
-      where: {
-        id: input,
-      },
-    })
-  }),
+  byId: trpc.procedure.
+    input(z.number()).
+    query(async ({ input }) => {
+      return prisma.products.findUnique({
+        select: defaultProductSelect,
+        where: {
+          id: input,
+        },
+      })
+    }),
   create: trpc.procedure
     .use(isLogin)
     .input(

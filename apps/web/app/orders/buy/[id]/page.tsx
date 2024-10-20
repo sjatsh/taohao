@@ -22,32 +22,23 @@ const validateEmail = (value: string) =>
   value.match(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}$/i)
 
 export default function Page({ params }: { params: { id: string } }) {
-  const { data: product } = trpc.products.byId.useQuery(parseInt(params.id))
-
-  useEffect(() => {
-    if (!product) return
-    setLoaded(true)
-  }, [product])
-
   const [email, setEmail] = React.useState('')
-  const emailIsInvalid = useMemo(() => {
-    return email === '' ? false : !validateEmail(email)
-  }, [email])
-
+  const [loaded, setLoaded] = useState(false)
   const [num, setNum] = React.useState('1')
-  const validateNum = (value: string) => value.match(/^[1-9]\d*$/i)
-  const numIsInvalid = useMemo(() => {
-    if (num === '') return false
-
-    return !validateNum(num)
-  }, [num])
-
+  const { data: product } = trpc.products.byId.useQuery(parseInt(params.id))
+  useEffect(() => { if (!product) return setLoaded(true) }, [product])
   const [payment, setPayment] = React.useState('微信')
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [qrCodeUrl, setQrcodeUrl] = React.useState('')
   const orderCreate = trpc.orders.create.useMutation()
-  const orderFind = trpc.orders.find.useMutation()
+  const orderFind = trpc.orders.byOrderId.useMutation()
   const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms))
+  const validateNum = (value: string) => value.match(/^[1-9]\d*$/i)
+  const numIsInvalid = useMemo(() => {
+    if (num === '') return false
+    return !validateNum(num)
+  }, [num])
+  const emailIsInvalid = useMemo(() => { return email === '' ? false : !validateEmail(email) }, [email])
 
   useEffect(() => {
     orderCreate.error && toast.error(orderCreate.error.message)
@@ -106,8 +97,6 @@ export default function Page({ params }: { params: { id: string } }) {
       payment: payment,
     })
   }
-
-  const [loaded, setLoaded] = useState(false)
 
   return (
     <>

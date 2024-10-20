@@ -7,7 +7,7 @@ import Announcement from '@/app/components/announcement'
 import { trpc } from '@/lib/trpc'
 
 export default function Home() {
-  const { data: products } = trpc.products.listNoAuth.useQuery()
+  const { data: products } = trpc.products.list.useQuery()
 
   return (
     <div className="p-2">

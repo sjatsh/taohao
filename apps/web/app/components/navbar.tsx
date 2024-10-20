@@ -8,7 +8,7 @@ import { Button } from '@nextui-org/button'
 import NextLink from 'next/link'
 
 import { siteConfig } from '@/config/site'
-import { Android, Logo, Order } from '@/app/components/icons'
+import { Logo, Order } from '@/app/components/icons'
 
 export const Navbar = () => {
   return (
