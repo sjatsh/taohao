@@ -3,7 +3,7 @@ export type SiteConfig = typeof siteConfig
 const baseSiteConfig = {
   name: '淘号网',
   description:
-    '淘号网是一个专注于账号交易的网站，提供账号买卖服务，包括各种社交平台账号：Telegrame、Twitter、TikTok、Discord、Instagram、ChatGPT等',
+    '淘号网是一个专注于账号交易的网站，提供账号买卖服务，包括各种社交平台账号：Telegram、Twitter、TikTok、Discord、Instagram、ChatGPT等',
   url: process.env.SITE_URL,
   keywords: [
     '淘号网',

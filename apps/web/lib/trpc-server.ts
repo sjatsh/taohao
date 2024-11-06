@@ -7,7 +7,7 @@ export const trpcServer = createTRPCProxyClient<Router>({
   transformer: new EncryptTransformer(NEXT_PUBLIC_ENCRYPTION_KEY),
   links: [
     httpBatchLink({
-      url: 'http://localhost:3000/trpc',
+      url: 'http://localhost:3001/trpc',
     }),
   ],
 }) as any

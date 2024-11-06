@@ -3,7 +3,6 @@ import { Link } from '@nextui-org/link'
 import clsx from 'clsx'
 import { Toaster } from 'react-hot-toast'
 import React from 'react'
-// import { Viewport } from 'next'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import { Analytics } from '@vercel/analytics/react'
 import { GoogleAnalytics } from '@next/third-parties/google'
@@ -15,13 +14,6 @@ import TrpcContext from '@/context/trpc'
 import { Providers } from '@/app/providers'
 import { rscAuth } from '@/app/api/auth/[[...nextauth]]/auth'
 import NextAuthSessionProvider from '@/context/next-auth'
-
-// export const viewport: Viewport = {
-//   themeColor: [
-//     { media: '(prefers-color-scheme: light)', color: 'black' },
-//     { media: '(prefers-color-scheme: dark)', color: 'black' },
-//   ],
-// }
 
 export const metadata = {
   title: siteConfig.name,

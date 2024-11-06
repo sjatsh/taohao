@@ -1,4 +1,3 @@
-import { logger } from '@taohao/logger'
 import { middleware } from '../../trpc'
 import { TRPCError } from '@trpc/server'
 
