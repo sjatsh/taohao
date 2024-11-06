@@ -19,6 +19,8 @@ const baseSiteConfig = {
     'X', 'X账号', 'X购买', 'X账号购买', '购买X', '购买X账号',
     'TW', 'TW账号', 'TW购买', 'TW账号购买', '购买TW', '购买TW账号',
     'tw', 'tw账号', 'tw购买', 'tw账号购买', '购买tw', '购买tw账号',
+    '推特蓝标', '推特蓝标账号', '推特蓝标购买', '推特蓝标账号购买', '购买推特蓝标', '购买推特蓝标账号',
+    '推特蓝V', '推特蓝V账号', '推特蓝V购买', '推特蓝V账号购买', '购买推特蓝V', '购买推特蓝V账号',
     'ChatGPT', 'ChatGPT账号', 'ChatGPT购买', 'ChatGPT账号购买', '购买ChatGPT', '购买ChatGPT账号',
     'chatgpt', 'chatgpt账号', 'chatgpt购买', 'chatgpt账号购买', '购买chatgpt', '购买chatgpt账号',
     'Instagram', 'Instagram账号', 'Instagram购买', 'Instagram账号购买', '购买Instagram', '购买Instagram账号',
