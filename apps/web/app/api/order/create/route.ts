@@ -1,88 +1,106 @@
-import { type NextRequest } from 'next/server'
-import { getHash } from '@taohao/xunhu_pay'
-import {
-  getMaybeTransactionClient,
-  prisma,
-  startTransaction,
-} from '@taohao/prisma'
+import { type NextRequest, NextResponse } from 'next/server'
+
+import { getMaybeTransactionClient, prisma, startTransaction } from '@taohao/prisma'
+import { API_KEY } from '@taohao/env/src/server'
+import { NEXT_PUBLIC_HOSTNAME } from '@taohao/env/src/client'
 
 export async function POST(request: NextRequest) {
   const formData = await request.formData()
   let params: { [key: string]: string } = {}
 
-  formData.forEach(function (value, key) {
+  formData.forEach(function(value, key) {
     if (typeof value !== 'string') {
       return
     }
     params[key] = value
   })
-  if (formData.get('hash') !== getHash(params)) {
-    return new Response('hash error', {
-      status: 400,
-    })
+  const key = formData.get('key')
+
+  if (key !== API_KEY) {
+    return NextResponse.json(
+      { success: false, message: 'key error' },
+      { status: 200 }
+    )
   }
 
-  const orderId = formData.get('trade_order_id')
+  const productId = formData.get('product_id')
+  const orderId = formData.get('order_id')
+  const from = formData.get('from')
 
-  if (!orderId) {
-    return new Response('order_id error', {
-      status: 400,
-    })
+  if (!orderId || !key || !productId || !from) {
+    return NextResponse.json(
+      { success: false, message: 'params error' },
+      { status: 200 }
+    )
   }
 
-  const order = await prisma.orders.findUnique({
+  const product = await prisma.products.findUnique({
     where: {
-      order_id: orderId.toString(),
-    },
-    include: {
-      product: true,
-    },
-  })
-
-  if (!order) {
-    return new Response('order not found', {
-      status: 404,
-    })
-  }
-
-  const res = await startTransaction(async () => {
-    const p = getMaybeTransactionClient()
-    const kami = JSON.parse(order.product.kami) as string[]
-
-    if (kami.length < order.num) {
-      return new Error('kami not enough')
+      id: Number(productId.toString())
     }
-    const restKami = kami.slice(0, order.num)
-
-    await p.orders.updateMany({
-      where: {
-        order_id: orderId.toString(),
-      },
-      data: {
-        status: 1,
-        kami: restKami.join('\n'),
-      },
-    })
-
-    const kamiLeft = JSON.stringify(kami.slice(order.num, kami.length))
-    await p.products.updateMany({
-      where: {
-        id: order.product_id,
-      },
-      data: {
-        num: order.product.num - order.num,
-        kami: kamiLeft,
-      },
-    })
   })
 
-  if (res instanceof Error) {
-    return new Response('error', {
-      status: 500,
-    })
+  if (!product) {
+    return NextResponse.json(
+      { success: false, message: 'product not found' },
+      { status: 200 }
+    )
   }
 
-  return new Response('success', {
-    status: 200,
-  })
+  const kami = JSON.parse(product.kami) as string[]
+  const orderNum = 1
+
+  if (kami.length < orderNum) {
+    return NextResponse.json(
+      { success: false, message: 'kami not enough' },
+      { status: 200 }
+    )
+  }
+  const restKami = kami.slice(0, orderNum)
+  const restKamiStr = restKami.join('\n')
+
+  try {
+    await startTransaction(async () => {
+      const p = getMaybeTransactionClient()
+
+      await p.orders.create({
+        data: {
+          order_id: orderId.toString(),
+          product_id: Number(productId.toString()),
+          num: orderNum,
+          price: product.price,
+          email: '',
+          payment: from.toString(),
+          status: 1,
+          kami: restKamiStr
+        }
+      })
+
+      const kamiPaid = JSON.stringify(kami.slice(orderNum, kami.length))
+
+      await p.products.updateMany({
+        where: {
+          id: product.id
+        },
+        data: {
+          num: product.num - orderNum,
+          kami: kamiPaid
+        }
+      })
+    })
+  } catch (e) {
+    return NextResponse.json(
+      { success: false, message: 'Internal Server Error' },
+      { status: 200 }
+    )
+  }
+
+  return NextResponse.json(
+    {
+      success: true,
+      kami: restKamiStr,
+      desc:  'https://'+NEXT_PUBLIC_HOSTNAME+'/orders/buy/' + productId
+    },
+    { status: 200 }
+  )
 }
