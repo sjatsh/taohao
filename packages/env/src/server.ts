@@ -12,7 +12,7 @@ export const config = createEnv({
     RESEND_API_KEY: z.string(),
     NODE_ENV: z.enum(['development', 'production', 'test']),
     ADMIN_EMAIL: z.string(),
-    API_KEY: z.string()
+    API_KEY: z.string().optional().default('')
   },
   experimental__runtimeEnv: process.env
 })
