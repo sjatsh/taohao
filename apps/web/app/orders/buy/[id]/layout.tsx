@@ -5,19 +5,14 @@ import { prisma } from '@taohao/prisma'
 
 import { siteConfig } from '@/config/site'
 
-type Props = {
-  params: { id: string }
-}
-
 export async function generateMetadata(
-  { params }: Props,
+  { id }: { id: string },
   parent: ResolvingMetadata,
 ): Promise<Metadata | ResolvedMetadata> {
   const res = await prisma.products.findUnique({
     select: { title: true, content: true, image: true, keywords: true },
-    where: { id: parseInt(params.id) },
+    where: { id: parseInt(id) },
   })
-
   if (!res) {
     throw new Error('Product not found')
   }
@@ -37,7 +32,7 @@ export async function generateMetadata(
     },
     openGraph: {
       images: [res.image, ...previousImages],
-      url: `${siteConfig.url}${siteConfig.pages.orders.buy}/${params.id}`,
+      url: `${siteConfig.url}${siteConfig.pages.orders.buy}/${id}`,
       title: title,
     },
   }

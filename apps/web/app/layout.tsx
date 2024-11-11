@@ -51,7 +51,7 @@ export default async function RootLayout({
           fontSans.variable,
         )}
       >
-        <Providers themeProps={{ forcedTheme: 'light' }}>
+        <Providers themeProps={{ defaultTheme: 'light' }}>
           <div className="relative flex h-screen flex-col">
             <Navbar />
             <main className="container mx-auto flex-grow pt-8">

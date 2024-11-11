@@ -6,6 +6,7 @@ import { siteConfig } from '@/config/site'
 export async function GET() {
   const list = await prisma.products.findMany({
     select: { id: true },
+    orderBy: { id: 'asc' }
   })
   const fields = list.map((item) => ({
     loc: `${siteConfig.url}/orders/buy/${item.id}`,
