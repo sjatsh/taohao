@@ -1,8 +1,6 @@
 import type { Prisma } from '@prisma/client';
 
 import { z } from 'zod';
-import { NullableJsonNullValueInputSchema } from './NullableJsonNullValueInputSchema';
-import { InputJsonValueSchema } from './InputJsonValueSchema';
 import { ordersUncheckedCreateNestedManyWithoutProductInputSchema } from './ordersUncheckedCreateNestedManyWithoutProductInputSchema';
 
 export const productsUncheckedCreateInputSchema: z.ZodType<Prisma.productsUncheckedCreateInput> = z.object({
@@ -17,7 +15,7 @@ export const productsUncheckedCreateInputSchema: z.ZodType<Prisma.productsUnchec
   kami: z.string(),
   created_at: z.coerce.date().optional(),
   updated_at: z.coerce.date().optional(),
-  keywords: z.union([ z.lazy(() => NullableJsonNullValueInputSchema),InputJsonValueSchema ]).optional(),
+  keywords: z.string().optional(),
   orders: z.lazy(() => ordersUncheckedCreateNestedManyWithoutProductInputSchema).optional()
 }).strict();
 

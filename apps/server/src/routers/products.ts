@@ -22,10 +22,17 @@ export const products = router({
   list: trpc.procedure
     .query(async ({ ctx }) => {
       if (ctx.user) {
-        return prisma.products.findMany()
+        return prisma.products.findMany({
+          orderBy: {
+            id: 'asc',
+          }
+        })
       }
       return prisma.products.findMany({
         select: defaultProductSelect,
+        orderBy: {
+          id: 'asc',
+        }
       })
     }),
   byId: trpc.procedure.

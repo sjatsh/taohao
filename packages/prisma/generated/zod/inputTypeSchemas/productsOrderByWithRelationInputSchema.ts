@@ -17,7 +17,7 @@ export const productsOrderByWithRelationInputSchema: z.ZodType<Prisma.productsOr
   kami: z.lazy(() => SortOrderSchema).optional(),
   created_at: z.lazy(() => SortOrderSchema).optional(),
   updated_at: z.lazy(() => SortOrderSchema).optional(),
-  keywords: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  keywords: z.lazy(() => SortOrderSchema).optional(),
   orders: z.lazy(() => ordersOrderByRelationAggregateInputSchema).optional()
 }).strict();
 

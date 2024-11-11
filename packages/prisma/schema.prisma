@@ -20,13 +20,13 @@ model products {
   num          Int
   price        Float
   origin_price Float?
-  image        String   @default("") @db.VarChar(255)
+  image        String   @db.VarChar(255) @default("")
   content      String   @db.Text
-  pay_type     String   @default("") @db.VarChar(255)
+  pay_type     String   @db.VarChar(255) @default("")
   kami         String   @db.Text
   created_at   DateTime @default(now())
   updated_at   DateTime @default(now()) @updatedAt
-  keywords     Json?    @default("[]")
+  keywords     String   @db.Text @default("[]")
   orders       orders[]
 }
 

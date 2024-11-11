@@ -27,7 +27,7 @@ export async function generateMetadata(
   return {
     title: title + ' | ' + siteConfig.title,
     description: res.content,
-    keywords: JSON.parse(res.keywords as string),
+    keywords: JSON.parse(res.keywords),
     icons: res.image,
     twitter: {
       ...siteConfig.twitter,

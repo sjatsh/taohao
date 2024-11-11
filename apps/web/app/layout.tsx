@@ -28,7 +28,7 @@ export async function generateMetadata(
   }
   let keywords = siteConfig.keywords
   res.forEach((item) => {
-    keywords = keywords.concat(JSON.parse(item.keywords as string))
+    keywords = keywords.concat(JSON.parse(item.keywords))
   })
 
   return {
