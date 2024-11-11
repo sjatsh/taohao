@@ -11,6 +11,7 @@ import {
 } from '@taohao/env/src/server'
 
 export interface wxPayOptions {
+    product_id: number
     order_id: string
     money: number
     title: string
@@ -26,6 +27,7 @@ export async function wxPay(options: wxPayOptions) {
         title: options.title,
         time: Math.floor(new Date().valueOf() / 1000).toString(),
         notify_url: `${XUNHU_PAY_WAP_URL}/api/wxnotify`,
+        // return_url: `${XUNHU_PAY_WAP_URL}/orders/buy/${options.product_id}`,
         nonce_str: cuid(),
         type: 'WAP',
         wap_url: XUNHU_PAY_WAP_URL,

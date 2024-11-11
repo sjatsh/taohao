@@ -7,7 +7,6 @@ const baseSiteConfig = {
   description: '淘号网是一个专注于账号交易的网站，提供账号买卖服务，包括各种社交平台账号：Telegram、Twitter、Twitch、TikTok、Discord、Instagram、ChatGPT等',
   url: NEXT_PUBLIC_SITE_URL,
   keywords: ['淘号网', '掏号网', '账号', '账号购买', '购买账号'],
-  themeColor: '#fff',
   icons: {
     icon: '/taohao.png',
     shortcut: '/taohao.png',

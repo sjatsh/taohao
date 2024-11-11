@@ -17,7 +17,8 @@
     "NEXT_PUBLIC_SERVER_URL",
     "NEXT_PUBLIC_SITE_URL",
     "NEXTAUTH_URL",
-    "NEXTAUTH_SECRET"
+    "NEXTAUTH_SECRET",
+    "CRON_SECRET"
   ],
   "tasks": {
     "build": {
