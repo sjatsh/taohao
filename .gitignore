@@ -2,11 +2,11 @@ node_modules/
 dist/
 .turbo/
 .env
+.env.local
 .DS_Store
 *.pem
 .next/
 *.tsbuildinfo
 .vscode
 .vercel
-.env*
 .idea/

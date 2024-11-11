@@ -16,13 +16,7 @@ export default function Home() {
       </div>
       <div className="mt-5 flex flex-wrap">
         {products?.map(
-          (item: {
-            id: number
-            num: number
-            image: string
-            price: number
-            title: string
-          }) => (
+          (item) => (
             <div key={item.id} className="mx-2">
               {item.num > 0 ? (
                 <NextLink href={`/orders/buy/${item.id}`}>

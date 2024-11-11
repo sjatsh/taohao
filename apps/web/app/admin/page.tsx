@@ -22,7 +22,7 @@ import {
 } from '@nextui-org/react'
 import Markdown from 'react-markdown'
 import { Button } from '@nextui-org/button'
-import { Content, Mode, OnChangeStatus } from 'vanilla-jsoneditor'
+import { Content, Mode, OnChangeStatus, TextContent } from 'vanilla-jsoneditor'
 import toast from 'react-hot-toast'
 import { products } from '@prisma/client'
 
@@ -165,14 +165,25 @@ const Product: FC<productsProps> = (props: productsProps) => {
   const [content, setContent] = React.useState(
     props.product?.content ? props.product?.content : ''
   )
-  const [jsonContent, setJsonContent] = useState<Content>({
+
+  const [kami, setKami] = React.useState<TextContent>({
     text: props.product?.kami ? props.product?.kami : '[]'
   })
-  const handler = useCallback(
+  const kamiHandler = useCallback(
     (content: Content, _previousContent: Content, _status: OnChangeStatus) => {
-      setJsonContent(content)
+      setKami(content as TextContent)
     },
-    [jsonContent]
+    [kami]
+  )
+
+  const [keywords, setKeywords] = React.useState<TextContent>({
+    text: props.product?.keywords ? props.product?.keywords : '[]'
+  })
+  const keywordsHandler = useCallback(
+    (content: Content, _previousContent: Content, _status: OnChangeStatus) => {
+      setKeywords(content as TextContent)
+    },
+    [keywords]
   )
 
   useEffect(() => {
@@ -187,7 +198,8 @@ const Product: FC<productsProps> = (props: productsProps) => {
     setImageUrl(props.product?.image ? props.product?.image : '')
     setPayType(props.product?.pay_type ? props.product?.pay_type : '自动发货')
     setContent(props.product?.content ? props.product?.content : '')
-    setJsonContent({ text: props.product?.kami ? props.product?.kami : '[]' })
+    setKami({ text: props.product?.kami ? props.product?.kami : '[]' })
+    setKeywords({ text: props.product?.keywords ? props.product?.keywords : '[]' })
   }, [props.product])
 
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -196,7 +208,7 @@ const Product: FC<productsProps> = (props: productsProps) => {
 
   return (
     <>
-      <div className="mb-5 grid grid-cols-3 gap-2">
+      <div className="grid grid-cols-3 gap-2">
         <Input
           className="mb-2 max-w-xs"
           label="标题"
@@ -271,15 +283,7 @@ const Product: FC<productsProps> = (props: productsProps) => {
         </div>
       </div>
 
-      <p>卡密：</p>
-
-      <JSONEditorReact
-        content={jsonContent}
-        mode={Mode.text}
-        onChange={handler}
-      />
-
-      <Button className="mb-2 mt-5" color="primary" onClick={onOpen}>
+      <Button className="mb-2" color="primary" onClick={onOpen}>
         预览
       </Button>
       <Button
@@ -313,13 +317,10 @@ const Product: FC<productsProps> = (props: productsProps) => {
             return
           }
 
-          // @ts-ignore
-          const jsonText = jsonContent.text
-          const jsonObj = JSON.parse(jsonText)
+          const kamiJson = JSON.parse(kami.text)
 
-          if (jsonObj.length <= 0) {
+          if (kamiJson.length <= 0) {
             toast.error('卡密不能为空')
-
             return
           }
           if (payType === '') {
@@ -331,12 +332,13 @@ const Product: FC<productsProps> = (props: productsProps) => {
             await createProduct.mutateAsync({
               id: id,
               title: title,
-              num: jsonObj.length,
+              num: kamiJson.length,
               price: parseFloat(price),
               origin_price: parseFloat(originPrice),
               image: imageUrl,
               content: content,
-              kami: jsonText,
+              kami: kami.text,
+              keywords: keywords.text,
               pay_type: payType
             })
           } catch (e: any) {
@@ -350,7 +352,21 @@ const Product: FC<productsProps> = (props: productsProps) => {
         提交
       </Button>
 
-      <ScrollShadow>
+      <p className="mt-5">卡密：</p>
+      <JSONEditorReact
+        content={kami}
+        mode={Mode.text}
+        onChange={kamiHandler}
+      />
+
+      <p className="mt-5">关键词：</p>
+      <JSONEditorReact
+        content={keywords}
+        mode={Mode.text}
+        onChange={keywordsHandler}
+      />
+
+      <ScrollShadow className="mt-5">
         <Textarea
           disableAnimation
           disableAutosize

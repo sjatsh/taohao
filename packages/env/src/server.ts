@@ -13,6 +13,8 @@ export const config = createEnv({
     NODE_ENV: z.enum(['test', 'development', 'production']),
     ADMIN_EMAIL: z.string(),
     API_KEY: z.string().optional().default(''),
+    NEXTAUTH_URL: z.string(),
+    NEXTAUTH_SECRET: z.string()
   },
   experimental__runtimeEnv: process.env
 })
@@ -28,4 +30,6 @@ export const {
   NODE_ENV,
   ADMIN_EMAIL,
   API_KEY,
+  NEXTAUTH_URL,
+  NEXTAUTH_SECRET
 } = config

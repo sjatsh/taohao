@@ -53,9 +53,6 @@ export const authOptions: NextAuthOptions = {
     ...adapter
   },
   providers: [taohao],
-  pages: {
-    // signIn: '/auth/signin',
-  },
   // https://github.com/nextauthjs/next-auth/discussions/6898
   cookies:
     process.env.NODE_ENV === 'production'
@@ -63,10 +60,7 @@ export const authOptions: NextAuthOptions = {
       : devCookieSettings,
   callbacks: {
     async signIn({ user }) {
-      if (user) {
-        return true
-      }
-      return false
+      return !!user
     },
     async redirect({ url, baseUrl }) {
       return baseUrl + '/admin'
@@ -75,23 +69,23 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         return {
           ...token,
-          id: user.id,
-        };
+          id: user.id
+        }
       }
-      return token;
+      return token
     },
     session({ session, token }) {
       return {
         ...session,
         user: {
           ...session.user,
-          id: token.id,
-        },
-      };
+          id: token.id
+        }
+      }
     }
   },
   session: {
-    strategy: 'jwt',
+    strategy: 'jwt'
   },
   jwt: {
     async encode(param) {

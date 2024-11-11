@@ -1,12 +1,11 @@
 import type { Prisma } from '@taohao/prisma'
+import { prisma } from '@taohao/prisma'
 
 import { z } from 'zod'
 
 import { router, trpc } from '../trpc'
 
 import { isLogin } from './middlewares/auth'
-
-import { prisma } from '@taohao/prisma'
 
 export const defaultProductSelect = {
   id: true,
@@ -15,7 +14,7 @@ export const defaultProductSelect = {
   price: true,
   origin_price: true,
   image: true,
-  pay_type: true,
+  pay_type: true
 } satisfies Prisma.productsSelect
 
 export const products = router({
@@ -24,31 +23,28 @@ export const products = router({
       if (ctx.user) {
         return prisma.products.findMany({
           orderBy: {
-            id: 'asc',
+            id: 'asc'
           }
         })
       }
       return prisma.products.findMany({
         select: defaultProductSelect,
         orderBy: {
-          id: 'asc',
+          id: 'asc'
         }
       })
     }),
-  byId: trpc.procedure.
-    input(z.number()).
-    query(async ({ input }) => {
-      return prisma.products.findUnique({
-        select: defaultProductSelect,
-        where: {
-          id: input,
-        },
-      })
-    }),
+  byId: trpc.procedure.input(z.number()).query(async ({ input }) => {
+    return prisma.products.findUnique({
+      select: defaultProductSelect,
+      where: {
+        id: input
+      }
+    })
+  }),
   create: trpc.procedure
     .use(isLogin)
-    .input(
-      z.object({
+    .input(z.object({
         id: z.number().optional(),
         title: z.string(),
         num: z.number(),
@@ -58,7 +54,8 @@ export const products = router({
         pay_type: z.string(),
         content: z.string(),
         kami: z.string(),
-      }),
+        keywords: z.string()
+      })
     )
     .mutation(async ({ input }) => {
       let data = { ...input }
@@ -67,8 +64,8 @@ export const products = router({
         create: data,
         update: data,
         where: {
-          id: input.id,
-        },
+          id: input.id
+        }
       })
-    }),
+    })
 })
