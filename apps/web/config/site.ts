@@ -9,12 +9,12 @@ const baseSiteConfig = {
   keywords: ['淘号网', '掏号网', '账号', '账号购买', '购买账号'],
   themeColor: '#fff',
   icons: {
-    icon: '/favicon.ico',
-    shortcut: '/favicon.ico',
-    apple: '/favicon.ico',
-    android: '/favicon.ico'
+    icon: '/taohao.png',
+    shortcut: '/taohao.png',
+    apple: '/taohao.png',
+    android: '/taohao.png'
   },
-  ogImage: NEXT_PUBLIC_SITE_URL + '/favicon.ico',
+  ogImage: NEXT_PUBLIC_SITE_URL + '/taohao.png',
 }
 
 export const siteConfig = {
@@ -39,6 +39,6 @@ export const siteConfig = {
     card: 'summary_large_image',
     title: baseSiteConfig.title,
     description: baseSiteConfig.description,
-    images: [`${baseSiteConfig.url}/favicon.ico`],
+    images: [`${baseSiteConfig.url}/taohao.png`],
   },
 }
