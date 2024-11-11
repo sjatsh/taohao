@@ -4,7 +4,15 @@ import React, { Suspense, useEffect, useMemo, useState } from 'react'
 import { Button } from '@nextui-org/button'
 import toast from 'react-hot-toast'
 import { Input } from '@nextui-org/input'
-import { Image, Modal, ModalBody, ModalContent, ModalHeader, Skeleton, useDisclosure } from '@nextui-org/react'
+import {
+  Image,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalHeader,
+  Skeleton,
+  useDisclosure,
+} from '@nextui-org/react'
 import { redirect } from 'next/navigation'
 
 import { WeiXin } from '@/app/components/icons'
@@ -13,17 +21,12 @@ import { trpc } from '@/lib/trpc'
 const validateEmail = (value: string) =>
   value.match(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}$/i)
 
-export default async function Page(
-  params: Promise<{ id: string }>
-) {
-  const id = (await params).id
+export default function Page({ params }: { params: { id: string } }) {
   const [email, setEmail] = React.useState('')
   const [loaded, setLoaded] = useState(false)
   const [num, setNum] = React.useState('1')
-  const { data: product } = trpc.products.byId.useQuery(parseInt(id))
-  useEffect(() => {
-    if (!product) return setLoaded(true)
-  }, [product])
+  const { data: product } = trpc.products.byId.useQuery(parseInt(params.id))
+  useEffect(() => { if (!product) return setLoaded(true) }, [product])
   const [payment, setPayment] = React.useState('微信')
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [qrCodeUrl, setQrcodeUrl] = React.useState('')
@@ -35,9 +38,7 @@ export default async function Page(
     if (num === '') return false
     return !validateNum(num)
   }, [num])
-  const emailIsInvalid = useMemo(() => {
-    return email === '' ? false : !validateEmail(email)
-  }, [email])
+  const emailIsInvalid = useMemo(() => { return email === '' ? false : !validateEmail(email) }, [email])
 
   useEffect(() => {
     orderCreate.error && toast.error(orderCreate.error.message)
@@ -90,10 +91,10 @@ export default async function Page(
     onOpen()
 
     orderCreate.mutate({
-      product_id: parseInt(id),
+      product_id: parseInt(params.id),
       num: parseInt(num),
       email: email,
-      payment: payment
+      payment: payment,
     })
   }
 
@@ -207,11 +208,11 @@ export default async function Page(
 }
 
 function PaymentDialog({
-                         isOpen,
-                         onClose,
-                         price,
-                         qrCodeUrl
-                       }: {
+  isOpen,
+  onClose,
+  price,
+  qrCodeUrl,
+}: {
   isOpen: boolean
   onClose: () => void
   price?: number

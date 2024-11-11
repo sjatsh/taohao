@@ -43,12 +43,11 @@ export default async function Layout({
   params,
 }: {
   children: React.ReactNode
-  params: Promise<{ id: string }>
+  params: { id: string }
 }) {
-  const id = (await params).id
   const res = await prisma.products.findUnique({
     select: { content: true },
-    where: { id: parseInt(id) },
+    where: { id: parseInt(params.id) },
   })
   const content = res?.content ? res.content : ''
 
