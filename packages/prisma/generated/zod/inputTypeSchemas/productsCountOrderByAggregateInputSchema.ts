@@ -14,7 +14,8 @@ export const productsCountOrderByAggregateInputSchema: z.ZodType<Prisma.products
   pay_type: z.lazy(() => SortOrderSchema).optional(),
   kami: z.lazy(() => SortOrderSchema).optional(),
   created_at: z.lazy(() => SortOrderSchema).optional(),
-  updated_at: z.lazy(() => SortOrderSchema).optional()
+  updated_at: z.lazy(() => SortOrderSchema).optional(),
+  keywords: z.lazy(() => SortOrderSchema).optional()
 }).strict();
 
 export default productsCountOrderByAggregateInputSchema;

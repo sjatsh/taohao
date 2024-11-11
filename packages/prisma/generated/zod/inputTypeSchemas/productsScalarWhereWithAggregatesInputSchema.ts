@@ -6,6 +6,7 @@ import { StringWithAggregatesFilterSchema } from './StringWithAggregatesFilterSc
 import { FloatWithAggregatesFilterSchema } from './FloatWithAggregatesFilterSchema';
 import { FloatNullableWithAggregatesFilterSchema } from './FloatNullableWithAggregatesFilterSchema';
 import { DateTimeWithAggregatesFilterSchema } from './DateTimeWithAggregatesFilterSchema';
+import { JsonNullableWithAggregatesFilterSchema } from './JsonNullableWithAggregatesFilterSchema';
 
 export const productsScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.productsScalarWhereWithAggregatesInput> = z.object({
   AND: z.union([ z.lazy(() => productsScalarWhereWithAggregatesInputSchema),z.lazy(() => productsScalarWhereWithAggregatesInputSchema).array() ]).optional(),
@@ -22,6 +23,7 @@ export const productsScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.prod
   kami: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   created_at: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
   updated_at: z.union([ z.lazy(() => DateTimeWithAggregatesFilterSchema),z.coerce.date() ]).optional(),
+  keywords: z.lazy(() => JsonNullableWithAggregatesFilterSchema).optional()
 }).strict();
 
 export default productsScalarWhereWithAggregatesInputSchema;

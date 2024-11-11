@@ -21,6 +21,7 @@ export const productsSelectSchema: z.ZodType<Prisma.productsSelect> = z.object({
   kami: z.boolean().optional(),
   created_at: z.boolean().optional(),
   updated_at: z.boolean().optional(),
+  keywords: z.boolean().optional(),
   orders: z.union([z.boolean(),z.lazy(() => ordersFindManyArgsSchema)]).optional(),
   _count: z.union([z.boolean(),z.lazy(() => ProductsCountOutputTypeArgsSchema)]).optional(),
 }).strict()

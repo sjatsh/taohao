@@ -7,6 +7,7 @@ import { FloatFilterSchema } from './FloatFilterSchema';
 import { FloatNullableFilterSchema } from './FloatNullableFilterSchema';
 import { StringFilterSchema } from './StringFilterSchema';
 import { DateTimeFilterSchema } from './DateTimeFilterSchema';
+import { JsonNullableFilterSchema } from './JsonNullableFilterSchema';
 import { OrdersListRelationFilterSchema } from './OrdersListRelationFilterSchema';
 
 export const productsWhereUniqueInputSchema: z.ZodType<Prisma.productsWhereUniqueInput> = z.union([
@@ -36,6 +37,7 @@ export const productsWhereUniqueInputSchema: z.ZodType<Prisma.productsWhereUniqu
   kami: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   created_at: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
   updated_at: z.union([ z.lazy(() => DateTimeFilterSchema),z.coerce.date() ]).optional(),
+  keywords: z.lazy(() => JsonNullableFilterSchema).optional(),
   orders: z.lazy(() => OrdersListRelationFilterSchema).optional()
 }).strict());
 

@@ -13,6 +13,7 @@ export const CreateManyproductsAndReturnOutputTypeSelectSchema: z.ZodType<Prisma
   kami: z.boolean().optional(),
   created_at: z.boolean().optional(),
   updated_at: z.boolean().optional(),
+  keywords: z.boolean().optional(),
 }).strict()
 
 export default CreateManyproductsAndReturnOutputTypeSelectSchema;

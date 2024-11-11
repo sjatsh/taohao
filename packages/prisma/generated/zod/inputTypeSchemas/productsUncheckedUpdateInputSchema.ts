@@ -6,6 +6,8 @@ import { StringFieldUpdateOperationsInputSchema } from './StringFieldUpdateOpera
 import { FloatFieldUpdateOperationsInputSchema } from './FloatFieldUpdateOperationsInputSchema';
 import { NullableFloatFieldUpdateOperationsInputSchema } from './NullableFloatFieldUpdateOperationsInputSchema';
 import { DateTimeFieldUpdateOperationsInputSchema } from './DateTimeFieldUpdateOperationsInputSchema';
+import { NullableJsonNullValueInputSchema } from './NullableJsonNullValueInputSchema';
+import { InputJsonValueSchema } from './InputJsonValueSchema';
 import { ordersUncheckedUpdateManyWithoutProductNestedInputSchema } from './ordersUncheckedUpdateManyWithoutProductNestedInputSchema';
 
 export const productsUncheckedUpdateInputSchema: z.ZodType<Prisma.productsUncheckedUpdateInput> = z.object({
@@ -20,6 +22,7 @@ export const productsUncheckedUpdateInputSchema: z.ZodType<Prisma.productsUnchec
   kami: z.union([ z.string(),z.lazy(() => StringFieldUpdateOperationsInputSchema) ]).optional(),
   created_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
   updated_at: z.union([ z.coerce.date(),z.lazy(() => DateTimeFieldUpdateOperationsInputSchema) ]).optional(),
+  keywords: z.union([ z.lazy(() => NullableJsonNullValueInputSchema),InputJsonValueSchema ]).optional(),
   orders: z.lazy(() => ordersUncheckedUpdateManyWithoutProductNestedInputSchema).optional()
 }).strict();
 

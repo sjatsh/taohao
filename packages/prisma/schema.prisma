@@ -26,6 +26,7 @@ model products {
   kami         String   @db.Text
   created_at   DateTime @default(now())
   updated_at   DateTime @default(now()) @updatedAt
+  keywords     Json?    @default("[]")
   orders       orders[]
 }
 
