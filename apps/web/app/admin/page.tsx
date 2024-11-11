@@ -5,7 +5,6 @@ import type { PutBlobResult } from '@vercel/blob'
 import React, { FC, useCallback, useEffect, useState } from 'react'
 import {
   Avatar,
-  breadcrumbItem,
   Image,
   Input,
   Listbox,
@@ -19,7 +18,7 @@ import {
   Tab,
   Tabs,
   Textarea,
-  useDisclosure,
+  useDisclosure
 } from '@nextui-org/react'
 import Markdown from 'react-markdown'
 import { Button } from '@nextui-org/button'
@@ -66,7 +65,8 @@ const ListBoxWrapper = ({ children }: { children: React.ReactNode }) => (
 )
 
 const Pdoducts: FC = () => {
-  const { data: products } = trpc.products.list.useQuery()
+  const { data: data } = trpc.products.list.useQuery()
+  const products = data ? data : []
   const [product, setProduct] = useState<products>()
 
   return (
@@ -76,9 +76,9 @@ const Pdoducts: FC = () => {
           <Product />
         </Tab>
         <Tab key="search" title="查询">
-          <div className='grid grid-cols-3 gap-2'>
+          <div className="grid grid-cols-3 gap-2">
             <Select
-              key='products-select'
+              key="products-select"
               className="mb-5 max-w-xs"
               items={products}
               label="选择修改商品"
@@ -101,10 +101,10 @@ const Pdoducts: FC = () => {
                 ))
               }}
               onChange={(e) => {
-                for (var i = 0; i < products.length; i++) {
+                for (let i = 0; i < products.length; i++) {
                   if (products[i]?.id.toString() === e.target.value) {
                     setProduct(products[i])
-                    break
+                    return
                   }
                 }
               }}
@@ -144,35 +144,35 @@ interface productsProps {
 const Product: FC<productsProps> = (props: productsProps) => {
   const [id, setId] = React.useState(props.product?.id ? props.product?.id : 0)
   const [title, setTitle] = React.useState(
-    props.product?.title ? props.product?.title : '',
+    props.product?.title ? props.product?.title : ''
   )
   const [price, setPrice] = React.useState(
-    props.product?.price ? props.product?.price.toString() : '0.00',
+    props.product?.price ? props.product?.price.toString() : '0.00'
   )
   const [originPrice, setOriginPrice] = React.useState(
     props.product?.origin_price
       ? props.product?.origin_price.toString()
-      : '0.00',
+      : '0.00'
   )
   const [imageUrl, setImageUrl] = React.useState(
-    props.product?.image ? props.product?.image : '',
+    props.product?.image ? props.product?.image : ''
   )
   const [payType, setPayType] = React.useState(
-    props.product?.pay_type ? props.product?.pay_type : '自动发货',
+    props.product?.pay_type ? props.product?.pay_type : '自动发货'
   )
   const payTypes = new Array(['自动发货'])
 
   const [content, setContent] = React.useState(
-    props.product?.content ? props.product?.content : '',
+    props.product?.content ? props.product?.content : ''
   )
   const [jsonContent, setJsonContent] = useState<Content>({
-    text: props.product?.kami ? props.product?.kami : '[]',
+    text: props.product?.kami ? props.product?.kami : '[]'
   })
   const handler = useCallback(
     (content: Content, _previousContent: Content, _status: OnChangeStatus) => {
       setJsonContent(content)
     },
-    [jsonContent],
+    [jsonContent]
   )
 
   useEffect(() => {
@@ -182,7 +182,7 @@ const Product: FC<productsProps> = (props: productsProps) => {
     setOriginPrice(
       props.product?.origin_price
         ? props.product?.origin_price.toString()
-        : '0.00',
+        : '0.00'
     )
     setImageUrl(props.product?.image ? props.product?.image : '')
     setPayType(props.product?.pay_type ? props.product?.pay_type : '自动发货')
@@ -260,8 +260,8 @@ const Product: FC<productsProps> = (props: productsProps) => {
                 `/api/images/upload?filename=${file.name}`,
                 {
                   method: 'POST',
-                  body: file,
-                },
+                  body: file
+                }
               )
               const newBlob = (await response.json()) as PutBlobResult
 
@@ -337,7 +337,7 @@ const Product: FC<productsProps> = (props: productsProps) => {
               image: imageUrl,
               content: content,
               kami: jsonText,
-              pay_type: payType,
+              pay_type: payType
             })
           } catch (e: any) {
             toast.error(e.toString())
@@ -356,7 +356,7 @@ const Product: FC<productsProps> = (props: productsProps) => {
           disableAutosize
           classNames={{
             base: 'min-w-xs mb-2',
-            input: 'resize-y min-h-[500px]',
+            input: 'resize-y min-h-[500px]'
           }}
           placeholder="商品描述"
           value={content}

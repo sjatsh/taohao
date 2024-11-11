@@ -5,9 +5,9 @@ import { ordersCreateNestedManyWithoutProductInputSchema } from './ordersCreateN
 
 export const productsCreateInputSchema: z.ZodType<Prisma.productsCreateInput> = z.object({
   title: z.string(),
-  num: z.number().int(),
-  price: z.number(),
-  origin_price: z.number().optional().nullable(),
+  num: z.number().int().optional(),
+  price: z.number().optional(),
+  origin_price: z.number().optional(),
   image: z.string().optional(),
   content: z.string(),
   pay_type: z.string().optional(),

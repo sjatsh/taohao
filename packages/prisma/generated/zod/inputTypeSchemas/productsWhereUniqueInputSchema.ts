@@ -4,7 +4,6 @@ import { z } from 'zod';
 import { productsWhereInputSchema } from './productsWhereInputSchema';
 import { IntFilterSchema } from './IntFilterSchema';
 import { FloatFilterSchema } from './FloatFilterSchema';
-import { FloatNullableFilterSchema } from './FloatNullableFilterSchema';
 import { StringFilterSchema } from './StringFilterSchema';
 import { DateTimeFilterSchema } from './DateTimeFilterSchema';
 import { OrdersListRelationFilterSchema } from './OrdersListRelationFilterSchema';
@@ -29,7 +28,7 @@ export const productsWhereUniqueInputSchema: z.ZodType<Prisma.productsWhereUniqu
   NOT: z.union([ z.lazy(() => productsWhereInputSchema),z.lazy(() => productsWhereInputSchema).array() ]).optional(),
   num: z.union([ z.lazy(() => IntFilterSchema),z.number().int() ]).optional(),
   price: z.union([ z.lazy(() => FloatFilterSchema),z.number() ]).optional(),
-  origin_price: z.union([ z.lazy(() => FloatNullableFilterSchema),z.number() ]).optional().nullable(),
+  origin_price: z.union([ z.lazy(() => FloatFilterSchema),z.number() ]).optional(),
   image: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   content: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),
   pay_type: z.union([ z.lazy(() => StringFilterSchema),z.string() ]).optional(),

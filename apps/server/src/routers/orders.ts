@@ -49,7 +49,7 @@ export const orders = router({
           price: product.price,
           email: input.email,
           payment: input.payment,
-          kami: '',
+          kami: '[]',
         },
       })
       const createWxPayRes = await wxPay({

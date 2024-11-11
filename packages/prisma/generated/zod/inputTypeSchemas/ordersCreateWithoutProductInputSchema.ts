@@ -4,7 +4,7 @@ import { z } from 'zod';
 
 export const ordersCreateWithoutProductInputSchema: z.ZodType<Prisma.ordersCreateWithoutProductInput> = z.object({
   order_id: z.string(),
-  num: z.number().int(),
+  num: z.number().int().optional(),
   price: z.number().optional(),
   email: z.string(),
   payment: z.string().optional(),

@@ -41,7 +41,7 @@ export const createUserSession = async (userId: string) => {
 }
 
 export async function findSessionToken(sessionToken: string) {
-  return await prisma.session.findUnique({
+  return prisma.session.findUnique({
     where: {
       sessionToken,
     },

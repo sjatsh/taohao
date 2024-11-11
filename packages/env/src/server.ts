@@ -10,9 +10,9 @@ export const config = createEnv({
     XUNHU_PAY_WAP_URL: z.string().url(),
     XUNHU_PAY_WAP_NAME: z.string(),
     RESEND_API_KEY: z.string(),
-    NODE_ENV: z.enum(['development', 'production', 'test']),
+    NODE_ENV: z.enum(['test', 'development', 'production']),
     ADMIN_EMAIL: z.string(),
-    API_KEY: z.string().optional().default('')
+    API_KEY: z.string().optional().default(''),
   },
   experimental__runtimeEnv: process.env
 })
@@ -27,5 +27,5 @@ export const {
   RESEND_API_KEY,
   NODE_ENV,
   ADMIN_EMAIL,
-  API_KEY
+  API_KEY,
 } = config

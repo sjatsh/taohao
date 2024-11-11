@@ -17,16 +17,16 @@ generator zod {
 model products {
   id           Int      @id @default(autoincrement())
   title        String   @unique @db.VarChar(255)
-  num          Int
-  price        Float
-  origin_price Float?
-  image        String   @db.VarChar(255) @default("")
+  num          Int      @default(0)
+  price        Float    @default(0)
+  origin_price Float    @default(0)
+  image        String   @default("") @db.VarChar(255)
   content      String   @db.Text
-  pay_type     String   @db.VarChar(255) @default("")
+  pay_type     String   @default("") @db.VarChar(255)
   kami         String   @db.Text
   created_at   DateTime @default(now())
   updated_at   DateTime @default(now()) @updatedAt
-  keywords     String   @db.Text @default("[]")
+  keywords     String   @default("[]") @db.Text
   orders       orders[]
 }
 
@@ -34,8 +34,8 @@ model orders {
   id         Int      @id @default(autoincrement())
   order_id   String   @unique @db.VarChar(255)
   product    products @relation(fields: [product_id], references: [id])
-  product_id Int
-  num        Int
+  product_id Int      @default(0)
+  num        Int      @default(0)
   price      Float    @default(0)
   email      String   @db.VarChar(255)
   payment    String   @default("") @db.VarChar(255)

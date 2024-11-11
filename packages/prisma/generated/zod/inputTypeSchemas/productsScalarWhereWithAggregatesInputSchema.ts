@@ -4,7 +4,6 @@ import { z } from 'zod';
 import { IntWithAggregatesFilterSchema } from './IntWithAggregatesFilterSchema';
 import { StringWithAggregatesFilterSchema } from './StringWithAggregatesFilterSchema';
 import { FloatWithAggregatesFilterSchema } from './FloatWithAggregatesFilterSchema';
-import { FloatNullableWithAggregatesFilterSchema } from './FloatNullableWithAggregatesFilterSchema';
 import { DateTimeWithAggregatesFilterSchema } from './DateTimeWithAggregatesFilterSchema';
 
 export const productsScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.productsScalarWhereWithAggregatesInput> = z.object({
@@ -15,7 +14,7 @@ export const productsScalarWhereWithAggregatesInputSchema: z.ZodType<Prisma.prod
   title: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   num: z.union([ z.lazy(() => IntWithAggregatesFilterSchema),z.number() ]).optional(),
   price: z.union([ z.lazy(() => FloatWithAggregatesFilterSchema),z.number() ]).optional(),
-  origin_price: z.union([ z.lazy(() => FloatNullableWithAggregatesFilterSchema),z.number() ]).optional().nullable(),
+  origin_price: z.union([ z.lazy(() => FloatWithAggregatesFilterSchema),z.number() ]).optional(),
   image: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   content: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),
   pay_type: z.union([ z.lazy(() => StringWithAggregatesFilterSchema),z.string() ]).optional(),

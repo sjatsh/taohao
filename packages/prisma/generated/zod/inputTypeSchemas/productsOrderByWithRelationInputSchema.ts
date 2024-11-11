@@ -2,7 +2,6 @@ import type { Prisma } from '@prisma/client';
 
 import { z } from 'zod';
 import { SortOrderSchema } from './SortOrderSchema';
-import { SortOrderInputSchema } from './SortOrderInputSchema';
 import { ordersOrderByRelationAggregateInputSchema } from './ordersOrderByRelationAggregateInputSchema';
 
 export const productsOrderByWithRelationInputSchema: z.ZodType<Prisma.productsOrderByWithRelationInput> = z.object({
@@ -10,7 +9,7 @@ export const productsOrderByWithRelationInputSchema: z.ZodType<Prisma.productsOr
   title: z.lazy(() => SortOrderSchema).optional(),
   num: z.lazy(() => SortOrderSchema).optional(),
   price: z.lazy(() => SortOrderSchema).optional(),
-  origin_price: z.union([ z.lazy(() => SortOrderSchema),z.lazy(() => SortOrderInputSchema) ]).optional(),
+  origin_price: z.lazy(() => SortOrderSchema).optional(),
   image: z.lazy(() => SortOrderSchema).optional(),
   content: z.lazy(() => SortOrderSchema).optional(),
   pay_type: z.lazy(() => SortOrderSchema).optional(),
