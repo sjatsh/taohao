@@ -14,7 +14,7 @@ export async function generateMetadata(
   parent: ResolvingMetadata,
 ): Promise<Metadata | ResolvedMetadata> {
   const res = await prisma.products.findUnique({
-    select: { title: true, image: true },
+    select: { title: true, content: true, image: true, keywords: true },
     where: { id: parseInt(params.id) },
   })
 
@@ -25,10 +25,9 @@ export async function generateMetadata(
   const previousImages = (await parent).openGraph?.images || []
 
   return {
-    title: title + ' | ' + siteConfig.name,
-    description: title,
-    keywords: [title],
-    themeColor: siteConfig.themeColor,
+    title: title + ' | ' + siteConfig.title,
+    description: res.content,
+    keywords: JSON.parse(res.keywords as string),
     icons: res.image,
     twitter: {
       ...siteConfig.twitter,

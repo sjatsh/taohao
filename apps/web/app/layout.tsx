@@ -14,14 +14,27 @@ import TrpcContext from '@/context/trpc'
 import { Providers } from '@/app/providers'
 import { rscAuth } from '@/app/api/auth/[[...nextauth]]/auth'
 import NextAuthSessionProvider from '@/context/next-auth'
+import { Metadata, ResolvedMetadata, ResolvingMetadata } from 'next'
+import { prisma } from '@taohao/prisma'
 
-export const metadata = {
-  title: siteConfig.name,
-  description: siteConfig.description,
-  keywords: siteConfig.keywords,
-  icons: siteConfig.icons,
-  openGraph: siteConfig.openGraph,
-  twitter: siteConfig.twitter,
+export async function generateMetadata(
+  parent: ResolvingMetadata,
+): Promise<Metadata | ResolvedMetadata> {
+  const res = await prisma.products.findMany({
+    select: { image: true, keywords: true },
+  })
+  if (!res) {
+    throw new Error('Product not found')
+  }
+  let keywords = siteConfig.keywords
+  res.forEach((item) => {
+    keywords = keywords.concat(JSON.parse(item.keywords as string))
+  })
+
+  return {
+    ...siteConfig,
+    keywords,
+  }
 }
 
 export default async function RootLayout({

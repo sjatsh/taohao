@@ -2,13 +2,13 @@ import { type NextRequest, NextResponse } from 'next/server'
 
 import { getMaybeTransactionClient, prisma, startTransaction } from '@taohao/prisma'
 import { API_KEY } from '@taohao/env/src/server'
-import { NEXT_PUBLIC_HOSTNAME } from '@taohao/env/src/client'
+import { NEXT_PUBLIC_SITE_URL } from '@taohao/env/src/client'
 
 export async function POST(request: NextRequest) {
   const formData = await request.formData()
   let params: { [key: string]: string } = {}
 
-  formData.forEach(function(value, key) {
+  formData.forEach(function (value, key) {
     if (typeof value !== 'string') {
       return
     }
@@ -99,7 +99,7 @@ export async function POST(request: NextRequest) {
     {
       success: true,
       kami: restKamiStr,
-      desc:  'https://'+NEXT_PUBLIC_HOSTNAME+'/orders/buy/' + productId
+      desc: NEXT_PUBLIC_SITE_URL + '/orders/buy/' + productId
     },
     { status: 200 }
   )
