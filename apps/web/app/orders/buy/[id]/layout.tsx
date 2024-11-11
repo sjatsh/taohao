@@ -6,12 +6,12 @@ import { prisma } from '@taohao/prisma'
 import { siteConfig } from '@/config/site'
 
 export async function generateMetadata(
-  { id }: { id: string },
+  params: { id: string },
   parent: ResolvingMetadata,
 ): Promise<Metadata | ResolvedMetadata> {
   const res = await prisma.products.findUnique({
     select: { title: true, content: true, image: true, keywords: true },
-    where: { id: parseInt(id) },
+    where: { id: parseInt(params.id) },
   })
   if (!res) {
     throw new Error('Product not found')
