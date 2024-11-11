@@ -21,12 +21,14 @@ import { trpc } from '@/lib/trpc'
 const validateEmail = (value: string) =>
   value.match(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}$/i)
 
-export default function Page({ params }: { params: { id: string } }) {
+export default function Page(
+  { params }: { params: { id: string } }
+) {
+  const { data: product } = trpc.products.byId.useQuery(parseInt(params.id))
+  useEffect(() => { if (!product) return setLoaded(true) }, [product])
   const [email, setEmail] = React.useState('')
   const [loaded, setLoaded] = useState(false)
   const [num, setNum] = React.useState('1')
-  const { data: product } = trpc.products.byId.useQuery(parseInt(params.id))
-  useEffect(() => { if (!product) return setLoaded(true) }, [product])
   const [payment, setPayment] = React.useState('微信')
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [qrCodeUrl, setQrcodeUrl] = React.useState('')

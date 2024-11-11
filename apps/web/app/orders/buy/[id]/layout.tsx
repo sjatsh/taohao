@@ -5,8 +5,12 @@ import { prisma } from '@taohao/prisma'
 
 import { siteConfig } from '@/config/site'
 
+type Props = {
+  params: { id: string }
+}
+
 export async function generateMetadata(
-  params: { id: string },
+  { params }: Props,
   parent: ResolvingMetadata,
 ): Promise<Metadata | ResolvedMetadata> {
   const res = await prisma.products.findUnique({
@@ -32,7 +36,7 @@ export async function generateMetadata(
     },
     openGraph: {
       images: [res.image, ...previousImages],
-      url: `${siteConfig.url}${siteConfig.pages.orders.buy}/${id}`,
+      url: `${siteConfig.url}${siteConfig.pages.orders.buy}/${params.id}`,
       title: title,
     },
   }
