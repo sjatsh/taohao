@@ -17,7 +17,8 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "tailwind.config.js",
-    "shadcn.tailwind.config.js"
+    "shadcn.tailwind.config.js",
+    "vercel.json"
   ],
   "exclude": ["node_modules"]
 }
