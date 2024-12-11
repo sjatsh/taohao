@@ -1,6 +1,6 @@
 {
   "crons": [{
     "path": "/api/cron/trc20usdt",
-    "schedule": "*/10 * * * *"
+    "schedule": "0 0 10 * *"
   }]
 }
