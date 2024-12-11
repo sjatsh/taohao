@@ -45,6 +45,9 @@ export default async function RootLayout({
   const session = await rscAuth()
   return (
     <html suppressHydrationWarning lang="en">
+      <head>
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3948770852656239" crossOrigin="anonymous"></script>
+      </head>
       <body
         className={clsx(
           'min-h-screen bg-background font-sans antialiased',
