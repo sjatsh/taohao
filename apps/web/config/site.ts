@@ -33,6 +33,7 @@ export const siteConfig = {
     title: baseSiteConfig.title,
     description: baseSiteConfig.description,
     siteName: baseSiteConfig.title,
+    images: [baseSiteConfig.ogImage],
   },
   twitter: {
     card: 'summary_large_image',
